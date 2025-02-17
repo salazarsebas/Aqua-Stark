@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AquariumManagerPage from "@/pages/aquarium/manager/page";
+import App from "./App"; 
 
 import "./styles/globals.css";
 
@@ -9,11 +10,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<App />} />
         <Route path="/aquarium/manager" element={<AquariumManagerPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );
+
 
 /*
 import { StrictMode } from "react";

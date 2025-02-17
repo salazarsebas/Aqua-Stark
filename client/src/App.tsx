@@ -1,12 +1,14 @@
 export default function App() {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
-        <h1 className="text-3xl font-bold">Aqua Stark 🌊</h1>
+        <img
+          src="/logo/aqua-stark.png"
+          alt="Aqua Stark Logo"
+          className="w-[700px] h-[700px] object-contain"
+        />
       </div>
     );
-  }
-
-
+  }  
 
 /*
 import { useEffect, useMemo } from "react";
