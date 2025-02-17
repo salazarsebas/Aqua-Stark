@@ -34,6 +34,12 @@ This is the **frontend** of **Aqua Stark**, a Web3 aquarium game built with **Re
 ```
 ## 📦 Installation & Running  
 
+### 1️⃣ Navigate to the Client Directory  
+Before installing dependencies, make sure you are in the correct directory:  
+```sh
+cd client
+```
+
 ### 1️⃣ Install Dependencies  
 Make sure you have **pnpm** installed. If not, install it globally:  
 ```sh
