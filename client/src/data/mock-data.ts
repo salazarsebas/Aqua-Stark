@@ -32,7 +32,7 @@ export const mockPlayerData = {
   playerLevel: 5,
   playerExperience: 50000,
   maxExperience: 100000,
-  profileImage: "/profile/profile-mock.png"
+  profileImage: "profile-mock.png"
 };
 
 export default mockFishData;
