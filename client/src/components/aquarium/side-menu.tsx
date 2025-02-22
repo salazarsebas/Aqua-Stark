@@ -1,30 +1,25 @@
-import Button from "../ui/button"; // Import the existing Button component
-import { ButtonColor } from "../ui/button-large";
+import Button from "@/components/ui/button"; 
 
 export default function SideMenu() {
   return (
-    <div className="absolute right-4 top-20 flex flex-col space-y-2 md:right-8 md:top-24">
-      {[
-         { icon: "/textures/icons/Chest02.svg", label: "Library", color: "teal" },
-        { icon: "/textures/icons/StarOrange.svg", label: "Security", color: "yellow", hasWhiteBg: true },
-        { icon: "/textures/icons/Chat.svg", label: "Favorites", color: "red" },
-        { icon: "/textures/icons/Book01.svg", label: "Messages", color: "green" },
-       
-      ].map((item, index) => (
-        <div key={index} className="flex flex-col md:mt-7 mt-12 items-center">
-        <Button color={item.color as ButtonColor} className="lg:w-13 lg:h-12 h-14 w-14 flex items-center justify-center">
-        {item.hasWhiteBg ? (
-              <div className="md:w-6 md:h-6 h-7 w-7 flex items-center justify-center rounded-full bg-white">
-                <img src={item.icon} alt={item.label} className="md:w-5 md:h-5 w-6 h-6" />
-              </div>
-            ) : (
-              <img src={item.icon} alt={item.label} className="md:w-6 md:h-6 w-6 h-6" />
-            )}
+    <div className="absolute right-4 top-20 flex flex-col space-y-2 md:right-10 md:top-36">
+     
+<Button color="teal" iconSrc="/textures/icons/Chest02.svg" className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1" />
+<Button
+  color="yellow"
+  className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1"
+>
+  <div className="rounded-full bg-white flex items-center justify-center md:w-6 md:h-6 w-5 h-5">
+    <img src="/textures/icons/StarOrange.svg" alt="icon" className="md:w-5 md:h-5 w-4 h-4" />
+  </div>
 </Button>
-
-         {/*   <span className="mt-2 text-white text-sm">{item.label}</span>Label outside the button */}
-        </div>
-      ))}
-    </div>
+<Button color="red" iconSrc="/textures/icons/Chat.svg" className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1" />
+<Button color="green" iconSrc="/textures/icons/Book01.svg" className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1" />
+        
+          
+          
+           </div>
+    
+   
   );
 }
