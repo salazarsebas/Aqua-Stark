@@ -24,7 +24,8 @@ export default function LevelBar({ setIsMenuOpen }: LevelBarProps) {
       <Button
         iconSrc="/textures/icons/Menu.svg"
         onClick={() => setIsMenuOpen(true)}
-        className="md:w-12 md:h-12 w-6 h-6"
+        color="teal"
+        className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1"
       />
     </div>
   );
