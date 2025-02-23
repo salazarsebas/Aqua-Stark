@@ -38,11 +38,12 @@ export default function CenteredMenu({ onClose }: CenteredMenuProps) {
         </button>
 
         {/* Grid Layout */}
-        <div className="grid grid-cols-3 gap-1 mt-8 ">
+        <div className="grid grid-cols-3 gap-1 mt-8">
           {[...Array(9)].map((_, index) => (
             <Button
               key={index}
               onClick={onClose}
+              color="teal"
               iconSrc={
                 index === 6
                   ? "/textures/icons/Chest02.svg"
