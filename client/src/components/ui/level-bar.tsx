@@ -1,7 +1,12 @@
 import ProgressBar from "@/components/ui/progress-bar";
 import { mockPlayerData } from "@/data/mock-data";
+import Button from "./button";
 
-export default function LevelBar() {
+type LevelBarProps = {
+  setIsMenuOpen: (isOpen: boolean) => void;
+};
+
+export default function LevelBar({ setIsMenuOpen }: LevelBarProps) {
   const { playerLevel, playerExperience, maxExperience, profileImage } = mockPlayerData;
   const progressPercentage = (playerExperience / maxExperience) * 100;
 
@@ -16,6 +21,10 @@ export default function LevelBar() {
       <div className="w-20 h-20 overflow-hidden rounded-full z-10 -ml-5">
         <img src={`/profile/${profileImage}`} alt="Profile" width={100} height={100} />
       </div>
+      <Button
+        iconSrc="/textures/icons/Menu.svg"
+        onClick={() => setIsMenuOpen(true)}
+      />
     </div>
   );
 }
