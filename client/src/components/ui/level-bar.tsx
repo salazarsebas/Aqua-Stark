@@ -11,7 +11,7 @@ export default function LevelBar() {
         <span className="text-blue-500 font-extrabold text-2xl">{playerLevel}</span>
       </div>
       <div className="flex-1 h-7 bg-white rounded-full overflow-hidden">
-        <ProgressBar percentage={progressPercentage} color="bg-yellow-400" />
+        <ProgressBar percentage={progressPercentage} color="bg-[#ffa500]" />
       </div>
       <div className="w-20 h-20 overflow-hidden rounded-full z-10 -ml-5">
         <img src={`/profile/${profileImage}`} alt="Profile" width={100} height={100} />
