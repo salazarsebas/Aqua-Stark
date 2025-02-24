@@ -31,7 +31,7 @@ export default function StatusBar({ setIsMenuOpen }: StatusBarProps) {
           </div>
         ))}
         <div className="w-full max-w-[500px]">
-          <LevelBar setIsMenuOpen={setIsMenuOpen} />
+          <LevelBar />
         </div>
       </div>
 

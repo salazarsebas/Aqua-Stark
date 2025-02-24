@@ -1,11 +1,7 @@
 import ProgressBar from "@/components/ui/progress-bar";
 import { mockPlayerData } from "@/data/mock-data";
 
-type LevelBarProps = {
-  setIsMenuOpen: (isOpen: boolean) => void;
-};
-
-export default function LevelBar({ setIsMenuOpen }: LevelBarProps) {
+export default function LevelBar() {
   const { playerLevel, playerExperience, maxExperience, profileImage } = mockPlayerData;
   const progressPercentage = (playerExperience / maxExperience) * 100;
 
