@@ -3,6 +3,7 @@ import ProgressBar from "@/components/ui/progress-bar";
 import LevelBar from "@/components/ui/level-bar";
 import FishCounter from "@/components/ui/fish-counter";
 import { mockAquariumStats } from "@/data/mock-data";
+import Button from "../ui/button";
 
 type StatusBarProps = {
   setIsMenuOpen: (isOpen: boolean) => void;
@@ -33,6 +34,14 @@ export default function StatusBar({ setIsMenuOpen }: StatusBarProps) {
           <LevelBar setIsMenuOpen={setIsMenuOpen} />
         </div>
       </div>
+
+
+      <Button
+        iconSrc="/textures/icons/Menu.svg"
+        onClick={() => setIsMenuOpen(true)}
+        color="teal"
+        className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1"
+      />
     </div>
   );
 }

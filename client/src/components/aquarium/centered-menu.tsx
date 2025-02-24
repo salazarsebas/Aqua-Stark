@@ -27,12 +27,8 @@ export default function CenteredMenu({ onClose }: CenteredMenuProps) {
         <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue-900 rounded-xl px-24 py-2 shadow-[0_4px_0px_#08316b]">
           <p className="text-white font-bold text-3xl">MENU</p>
         </div>
-        <button
-          onClick={onClose}
-          className="absolute -top-4 -right-4 p-2 text-xl w-12 h-12 rounded-full bg-red-900 text-white shadow-[0_3px_0px_#6B0810]"
-        >
-          <img src="/textures/icons/X.svg" alt="Close" />
-        </button>
+        <Button iconSrc="/textures/icons/X.svg" color="red" onClick={onClose} className="absolute -top-[2.3rem] left-[18rem] md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1" />
+
 
         <div className="grid grid-cols-3 gap-2 mt-8">
           {[...Array(9)].map((_, index) => (
