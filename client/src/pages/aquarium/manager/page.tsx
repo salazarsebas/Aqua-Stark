@@ -8,11 +8,13 @@ import SideMenu from "@/components/aquarium/side-menu";
 import FloatingControls from "@/components/aquarium/floating-controls";
 import { mockAquariums } from "@/data/mock-data";
 import CenteredMenu from "@/components/aquarium/centered-menu";
+import AquariumSettings from "@/components/aquarium/aquarium-settings";
 
 export default function AquariumManagerPage() {
   const [aquariums, setAquariums] = useState(mockAquariums);
   const [activeAquarium, setActiveAquarium] = useState(mockAquariums[0].id);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
     <div className="w-screen h-screen flex flex-col bg-blue-200">
@@ -23,7 +25,13 @@ export default function AquariumManagerPage() {
       </div>
       <AquariumMenu aquariums={aquariums} setActiveAquarium={setActiveAquarium} />
       <FloatingControls />
-      {isMenuOpen && <CenteredMenu onClose={() => setIsMenuOpen(false)} />}
+      {isMenuOpen && (
+        <CenteredMenu 
+          onClose={() => setIsMenuOpen(false)} 
+          setIsSettingsOpen={setIsSettingsOpen}
+        />
+      )}
+      {isSettingsOpen && <AquariumSettings onClose={() => setIsSettingsOpen(false)} />}
     </div>
   );
 }

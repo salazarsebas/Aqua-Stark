@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
-import Button from "../ui/button";
+import Button from "@/components/ui/button";
 
 type CenteredMenuProps = {
   onClose: () => void;
+  setIsSettingsOpen: (isOpen: boolean) => void;
 };
 
-export default function CenteredMenu({ onClose }: CenteredMenuProps) {
+export default function CenteredMenu({ onClose, setIsSettingsOpen }: CenteredMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,10 +35,12 @@ export default function CenteredMenu({ onClose }: CenteredMenuProps) {
           {[...Array(9)].map((_, index) => (
             <Button
               key={index}
-              onClick={onClose}
+              onClick={index === 5 ? () => setIsSettingsOpen(true) : onClose}
               color="blue"
               iconSrc={
-                index === 6
+                index === 5
+                  ? "/textures/icons/Tool.svg"
+                  : index === 6
                   ? "/textures/icons/Chest02.svg"
                   : index === 7
                   ? "/textures/icons/StarOrange.svg"
