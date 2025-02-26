@@ -24,7 +24,7 @@ export const mockAquariumStats = {
 
 export const mockAquariums = [
   { id: "1", name: "My First Aquarium" },
-  { id: "2", name: "Second Aquarium", locked: true },
+  { id: "2", name: "Second Aquarium" },
   { id: "3", name: "Tropical Paradise", locked: true }
 ];
 
