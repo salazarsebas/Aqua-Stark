@@ -5,6 +5,7 @@ import AquariumManagerPage from "@/pages/aquarium/manager/page";
 import App from "./App"; 
 
 import "./styles/globals.css";
+import Market from "./pages/market/page";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/aquarium/manager" element={<AquariumManagerPage />} />
+        <Route path="/market" element={<Market />}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
