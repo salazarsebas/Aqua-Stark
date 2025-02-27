@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import ButtonLarge from "../ui/button-large";
+import ButtonLarge from "@/components/ui/button-large";
 
 type Aquarium = {
     id: string;
