@@ -9,7 +9,7 @@ import FloatingControls from "@/components/aquarium/floating-controls";
 import { mockAquariums } from "@/data/mock-data";
 import CenteredMenu from "@/components/aquarium/centered-menu";
 import AquariumSettings from "@/components/aquarium/aquarium-settings";
-import FishStatusBar from "@/pages/aquarium/fish-status-bar";
+import FishStatusBar from "@/components/aquarium/fish-status-bar";
 
 
 export default function AquariumManagerPage() {
