@@ -26,7 +26,7 @@ export default function AquariumManagerPage() {
         <SideMenu />
 
         <div className="absolute bottom-3 left-2 flex gap-2 z-1">
-          <FishStatusBar level={100} />
+          <FishStatusBar level={75} />
         </div>
 
       </div>

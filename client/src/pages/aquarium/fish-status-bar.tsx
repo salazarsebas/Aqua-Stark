@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { 
+         fishStatusBarColors as statusColors, 
+         fishStatusBarIconPaths as statusIconPaths, 
+         getStatusByLevel
+       } from "@/data/mock-data";
 import clsx from "clsx";
 
 interface FishStatusBarProps {
@@ -10,23 +15,7 @@ const FishStatusBar: React.FC<FishStatusBarProps> = ({ level }) => {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   const [showBar, setShowBar] = useState(false);
 
-  let status: "sad" | "neutral" | "happy";
-  if (level <= 49) status = "sad";
-  else if (level <= 74) status = "neutral";
-  else status = "happy";
-
-  const statusColors = {
-    sad: "bg-red-500",
-    neutral: "bg-yellow-500",
-    happy: "bg-green-500",
-  };
-
-  const statusIcons = {
-    sad: <img src="/textures/icons/EmojiFrown.svg" alt="Sad face" className="w-10 h-10" />,
-    neutral: <img src="/textures/icons/EmojiSerious.svg" alt="Neutral face" className="w-10 h-10" />,
-    happy: <img src="/textures/icons/EmojiSmile.svg" alt="Happy face" className="w-10 h-10" />,
-  };
-
+  const status = getStatusByLevel(level);
 
   const handleClick = () => {
 
@@ -72,7 +61,7 @@ const FishStatusBar: React.FC<FishStatusBarProps> = ({ level }) => {
           isOpen ? "scale-110" : "hover:scale-110"
         )}
       >
-        {statusIcons[status]}
+       <img src={statusIconPaths[status]} alt={`${status} face`} className="w-10 h-10" />
       </button>
     </div>
   );

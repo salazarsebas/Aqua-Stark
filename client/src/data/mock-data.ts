@@ -35,4 +35,22 @@ export const mockPlayerData = {
   profileImage: "profile-mock.png"
 };
 
+export const fishStatusBarColors = {
+    sad: "bg-red-500",
+    neutral: "bg-yellow-500",
+    happy: "bg-green-500",
+  };
+
+  export const fishStatusBarIconPaths = {
+    sad: "/textures/icons/EmojiFrown.svg",
+    neutral: "/textures/icons/EmojiSerious.svg",
+    happy: "/textures/icons/EmojiSmile.svg",
+  };
+
+  export const getStatusByLevel = (level: number): "sad"| "neutral" | "happy" => {
+    if (level < 50) return "sad";
+    else if (level < 75) return "neutral";
+    else return "happy";
+  };
+
 export default mockFishData;
