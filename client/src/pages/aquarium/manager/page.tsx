@@ -9,6 +9,8 @@ import FloatingControls from "@/components/aquarium/floating-controls";
 import { mockAquariums } from "@/data/mock-data";
 import CenteredMenu from "@/components/aquarium/centered-menu";
 import AquariumSettings from "@/components/aquarium/aquarium-settings";
+import FishStatusBar from "@/pages/aquarium/fish-status-bar";
+
 
 export default function AquariumManagerPage() {
   const [aquariums, setAquariums] = useState(mockAquariums);
@@ -22,6 +24,11 @@ export default function AquariumManagerPage() {
       <div className="flex-grow flex items-center justify-center relative">
         <Aquarium aquariumId={activeAquarium} />
         <SideMenu />
+
+        <div className="absolute bottom-3 left-2 flex gap-2 z-1">
+          <FishStatusBar level={75} />
+        </div>
+
       </div>
       <AquariumMenu aquariums={aquariums} activeAquarium={activeAquarium} setActiveAquarium={setActiveAquarium} />
       <FloatingControls />
