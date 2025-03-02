@@ -22,15 +22,17 @@ export default function AquariumManagerPage() {
     <div className="w-screen h-screen flex flex-col bg-blue-200">
       <StatusBar setIsMenuOpen={setIsMenuOpen} />
       <div className="flex-grow flex items-center justify-center relative">
-
-        <FishStatusBar level={80} />
-        <FishStatusBar level={58} /> 
-        <FishStatusBar level={10} /> 
-
         <Aquarium aquariumId={activeAquarium} />
         <SideMenu />
+
+        <div className="absolute bottom-3 left-2 flex gap-2 z-1">
+          <FishStatusBar level={100} />
+        </div>
+
       </div>
+
       <AquariumMenu aquariums={aquariums} setActiveAquarium={setActiveAquarium} />
+      
       <FloatingControls />
       {isMenuOpen && (
         <CenteredMenu 
