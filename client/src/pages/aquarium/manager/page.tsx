@@ -30,9 +30,7 @@ export default function AquariumManagerPage() {
         </div>
 
       </div>
-
-      <AquariumMenu aquariums={aquariums} setActiveAquarium={setActiveAquarium} />
-      
+      <AquariumMenu aquariums={aquariums} activeAquarium={activeAquarium} setActiveAquarium={setActiveAquarium} />
       <FloatingControls />
       {isMenuOpen && (
         <CenteredMenu 
