@@ -40,13 +40,10 @@ export default function FloatingControls() {
         <Button
           color="teal"
           className="shrink-0"
+          size="medium"
+          iconSrc="/textures/icons/Tiles.svg"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <img
-            src="/textures/icons/Tiles.svg"
-            alt="Icon"
-            className="absolute inset-x-0 top-4 md:top-3.5 m-auto w-8 md:w-10 h-8 md:h-10 object-contain"
-          />
         </Button>
       </div>
     </div>
