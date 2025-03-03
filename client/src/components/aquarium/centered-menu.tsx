@@ -28,15 +28,14 @@ export default function CenteredMenu({ onClose, setIsSettingsOpen }: CenteredMen
         <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue-900 rounded-xl px-24 py-2 shadow-[0_4px_0px_#08316b]">
           <p className="text-white font-bold text-3xl">MENU</p>
         </div>
-        <Button iconSrc="/textures/icons/X.svg" color="red" onClick={onClose} className="absolute -top-[2.3rem] left-[18rem] md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1" />
-
-
+        <Button iconSrc="/textures/icons/X.svg" color="red" size="small" onClick={onClose} className="absolute -top-[2.3rem] left-[18rem] md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1" />
         <div className="grid grid-cols-3 gap-2 mt-8">
           {[...Array(9)].map((_, index) => (
             <Button
               key={index}
               onClick={index === 5 ? () => setIsSettingsOpen(true) : onClose}
               color="blue"
+              size="medium"
               iconSrc={
                 index === 5
                   ? "/textures/icons/Tool.svg"

@@ -3,7 +3,6 @@ import Button from "@/components/ui/button-large";
 import AudioSlider from "@/components/ui/audio-slider";
 import Button2 from "@/components/ui/button";
 
-
 interface SettingsMenuProps {
   onClose: () => void;
 }
@@ -52,13 +51,14 @@ export default function SettingsMenu({ onClose }: SettingsMenuProps) {
       <div className="relative w-full max-w-2xl mx-4 bg-[#0066FF] rounded-2xl shadow-lg overflow-hidden my-4">
         <div className="absolute left-0 right-0 bottom-0 h-2.5 bg-[#0044AA] rounded-b-2xl"></div>
 
-        {/* Botón de cierre */}
-        <Button2
-            iconSrc="/textures/icons/X.svg" 
-            color="red" 
-            onClick={onClose} 
-            className="!absolute !right-4 !left-auto top-4 md:w-14 md:h-14 w-10 h-10 flex items-center justify-center p-2"
-        />
+        <div className="absolute top-4 right-4">
+          <Button2
+            iconSrc="/textures/icons/X.svg"
+            color="red"
+            size="small"
+            onClick={onClose}
+          />
+        </div>
 
         <div className="p-6">
           <h1 className="text-white text-4xl font-bold text-center mb-8 md:text-4xl text-3xl">SETTINGS</h1>
