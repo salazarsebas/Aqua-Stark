@@ -3,7 +3,7 @@ import ProgressBar from "@/components/ui/progress-bar";
 import LevelBar from "@/components/ui/level-bar";
 import FishCounter from "@/components/ui/fish-counter";
 import { mockAquariumStats } from "@/data/mock-data";
-import Button from "../ui/button";
+import Button from "@/components/ui/button";
 
 type StatusBarProps = {
   setIsMenuOpen: (isOpen: boolean) => void;
@@ -19,9 +19,9 @@ export default function StatusBar({ setIsMenuOpen }: StatusBarProps) {
     <div className="w-full h-36 text-white flex items-center px-8 bg-transparent absolute top-0 left-0 z-50">
       <Logo size={200} />
       <div className="flex flex-1 justify-end items-center gap-12">
-      <div className="relative flex items-center">
-  <FishCounter />
-</div>
+        <div className="relative flex items-center">
+          <FishCounter />
+        </div>
         {statuses.map((status, index) => (
           <div key={index} className="relative flex items-center w-full max-w-[300px] h-16">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center z-10 mr-[-14px]">
@@ -37,12 +37,11 @@ export default function StatusBar({ setIsMenuOpen }: StatusBarProps) {
         </div>
       </div>
 
-
       <Button
         iconSrc="/textures/icons/Menu.svg"
         onClick={() => setIsMenuOpen(true)}
         color="teal"
-        className="md:w-12 md:h-12 w-6 h-6 flex items-center justify-center p-1"
+        size="medium"
       />
     </div>
   );
