@@ -55,8 +55,14 @@ const Button: React.FC<ButtonProps> = ({
 
   const sizeClass = {
     large: "w-[80px] h-[80px]",
-    medium: "w-[40px] h-[40px]",
-    small: "w-[20px] h-[20px]",
+    medium: "w-[60px] h-[60px]",
+    small: "w-[45px] h-[45px]",
+  }[size];
+
+  const iconSizeClass = {
+    large: "w-2/3 h-2/3",
+    medium: "w-1/2 h-1/2",
+    small: "w-1/3 h-1/3",
   }[size];
 
   return (
@@ -71,7 +77,7 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {iconSrc ? (
-        <img src={iconSrc} alt="icon" className="w-2/3 h-2/3 object-contain translate-y-[-2px]" />
+        <img src={iconSrc} alt="icon" className={`${iconSizeClass} object-contain translate-y-[-2px]`} />
       ) : (
         children
       )}
