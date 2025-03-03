@@ -38,7 +38,7 @@ export default function CenteredMenu({ onClose, setIsSettingsOpen }: CenteredMen
               size="medium"
               iconSrc={
                 index === 5
-                  ? "/textures/icons/Tool.svg"
+                  ? "/textures/icons/settings.svg"
                   : index === 6
                   ? "/textures/icons/Chest02.svg"
                   : index === 7
