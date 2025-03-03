@@ -17,8 +17,8 @@ type Aquarium = {
   export default function AquariumMenu({ aquariums, setActiveAquarium,activeAquarium }: Props) {
     const [active,setActive] = useState<string|null>(null)
     return (
-      <div className="w-full h-16 bg-blue-600 flex items-center justify-center space-x-4 text-white overflow-x-auto px-4 py-2 sm:justify-start">
-        {aquariums.map((aquarium) => (
+      <div className="w-full h-20 bg-blue-600 flex items-center justify-center space-x-4 text-white px-4 py-2 sm:justify-start overflow-hidden">
+          {aquariums.map((aquarium) => (
           <ButtonLarge
           color={aquarium.locked ?"inactive" : activeAquarium === aquarium.id ?"green":"blue"}
             key={aquarium.id}
