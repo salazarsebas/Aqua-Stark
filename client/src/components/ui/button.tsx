@@ -1,7 +1,7 @@
 import React from "react";
 
-type ButtonColor = "blue" | "red" | "green" | "yellow" | "teal" | "inactive" ;
-
+type ButtonColor = "blue" | "red" | "green" | "yellow" | "teal" | "inactive";
+type ButtonSize = "large" | "medium" | "small";
 
 const buttonVariants: Record<ButtonColor, { normal: string; hover: string; active: string }> = {
   blue: {
@@ -38,17 +38,31 @@ const buttonVariants: Record<ButtonColor, { normal: string; hover: string; activ
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColor;
+  size?: ButtonSize;
   iconSrc?: string;
   children?: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ color = "blue", iconSrc, children, className = "", ...props }) => {
+const Button: React.FC<ButtonProps> = ({ 
+  color = "blue", 
+  size = "large", 
+  iconSrc, 
+  children, 
+  className = "", 
+  ...props 
+}) => {
   const variant = buttonVariants[color];
+
+  const sizeClass = {
+    large: "w-[80px] h-[80px]",
+    medium: "w-[40px] h-[40px]",
+    small: "w-[20px] h-[20px]",
+  }[size];
 
   return (
     <button
-      className={`relative flex items-center justify-center w-[80px] h-[80px] text-white text-lg font-semibold
-                  transition-transform transform active:scale-95 bg-no-repeat bg-center bg-contain ${className}`}
+      className={`relative flex items-center justify-center text-white text-lg font-semibold
+                  transition-transform transform active:scale-95 bg-no-repeat bg-center bg-contain ${sizeClass} ${className}`}
       style={{ backgroundImage: `url(${variant.normal})` }}
       onMouseOver={(e) => (e.currentTarget.style.backgroundImage = `url(${variant.hover})`)}
       onMouseOut={(e) => (e.currentTarget.style.backgroundImage = `url(${variant.normal})`)}
@@ -57,7 +71,7 @@ const Button: React.FC<ButtonProps> = ({ color = "blue", iconSrc, children, clas
       {...props}
     >
       {iconSrc ? (
-        <img src={iconSrc} alt="icon" className="w-2/3 h-2/3 object-contain" />
+        <img src={iconSrc} alt="icon" className="w-2/3 h-2/3 object-contain translate-y-[-2px]" />
       ) : (
         children
       )}
