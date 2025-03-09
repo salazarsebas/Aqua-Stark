@@ -90,7 +90,4 @@ git push origin feature-new
 - `chore: refactor contract logic`  
 - `docs: update README with latest changes`  
 
-## 📜 License
-This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for details.
-
 🌊🐠 **Dive into Aqua Stark and build your dream aquarium!** 🎮🚀  
