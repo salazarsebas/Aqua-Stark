@@ -1,7 +1,7 @@
 import Logo from "@/components/ui/logo";
 import ProgressBar from "@/components/ui/progress-bar";
 import LevelBar from "@/components/ui/level-bar";
-import FishCounter from "@/components/ui/fish-counter";
+import FishCounter from "@/components/aquarium/fish-counter";
 import { mockAquariumStats } from "@/data/mock-data";
 import Button from "@/components/ui/button";
 
