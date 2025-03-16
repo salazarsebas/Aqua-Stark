@@ -1,88 +1,48 @@
-import React from "react";
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
 
-type ButtonColor = "blue" | "red" | "green" | "yellow" | "teal" | "inactive";
-type ButtonSize = "large" | "medium" | "small";
+import { cn } from "@/lib/utils"
 
-const buttonVariants: Record<ButtonColor, { normal: string; hover: string; active: string }> = {
-  blue: {
-    normal: "/textures/buttons/square/ButtonDarkBlue.svg",
-    hover: "/textures/buttons/square/ButtonDarkBlueHover.svg",
-    active: "/textures/buttons/square/ButtonDarkBlueDown.svg",
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
   },
-  red: {
-    normal: "/textures/buttons/square/ButtonRed.svg",
-    hover: "/textures/buttons/square/ButtonRedHover.svg",
-    active: "/textures/buttons/square/ButtonRedDown.svg",
-  },
-  green: {
-    normal: "/textures/buttons/square/ButtonGreen.svg",
-    hover: "/textures/buttons/square/ButtonGreenHover.svg",
-    active: "/textures/buttons/square/ButtonGreenDown.svg",
-  },
-  yellow: {
-    normal: "/textures/buttons/square/ButtonYellow.svg",
-    hover: "/textures/buttons/square/ButtonYellowHover.svg",
-    active: "/textures/buttons/square/ButtonYellowDown.svg",
-  },
-  teal: {
-    normal: "/textures/buttons/square/ButtonTeal.svg",
-    hover: "/textures/buttons/square/ButtonTealHover.svg",
-    active: "/textures/buttons/square/ButtonTealDown.svg",
-  },
-  inactive: {
-    normal: "/textures/buttons/square/ButtonInactive.svg",
-    hover: "/textures/buttons/square/ButtonInactive.svg",
-    active: "/textures/buttons/square/ButtonInactive.svg",
-  },
-};
+)
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: ButtonColor;
-  size?: ButtonSize;
-  iconSrc?: string;
-  children?: React.ReactNode;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-const Button: React.FC<ButtonProps> = ({ 
-  color = "blue", 
-  size = "large", 
-  iconSrc, 
-  children, 
-  className = "", 
-  ...props 
-}) => {
-  const variant = buttonVariants[color];
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+  },
+)
+Button.displayName = "Button"
 
-  const sizeClass = {
-    large: "w-[80px] h-[80px]",
-    medium: "w-[60px] h-[60px]",
-    small: "w-[45px] h-[45px]",
-  }[size];
+export { Button, buttonVariants }
 
-  const iconSizeClass = {
-    large: "w-2/3 h-2/3",
-    medium: "w-1/2 h-1/2",
-    small: "w-1/3 h-1/3",
-  }[size];
-
-  return (
-    <button
-      className={`relative flex items-center justify-center text-white text-lg font-semibold
-                  transition-transform transform active:scale-95 bg-no-repeat bg-center bg-contain ${sizeClass} ${className}`}
-      style={{ backgroundImage: `url(${variant.normal})` }}
-      onMouseOver={(e) => (e.currentTarget.style.backgroundImage = `url(${variant.hover})`)}
-      onMouseOut={(e) => (e.currentTarget.style.backgroundImage = `url(${variant.normal})`)}
-      onMouseDown={(e) => (e.currentTarget.style.backgroundImage = `url(${variant.active})`)}
-      onMouseUp={(e) => (e.currentTarget.style.backgroundImage = `url(${variant.hover})`)}
-      {...props}
-    >
-      {iconSrc ? (
-        <img src={iconSrc} alt="icon" className={`${iconSizeClass} object-contain translate-y-[-2px]`} />
-      ) : (
-        children
-      )}
-    </button>
-  );
-};
-
-export default Button;
