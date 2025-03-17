@@ -206,9 +206,9 @@ export default function GamePage() {
             <span className="text-white font-bold">2/10</span>
           </div>
 
-          <GameStatusBar icon="🌟" value={happiness} color="from-yellow-400 to-yellow-600" label="Felicidad" />
-          <GameStatusBar icon="🍖" value={food} color="from-orange-400 to-orange-600" label="Hambre" />
-          <GameStatusBar icon="⚡" value={energy} color="from-blue-400 to-blue-600" label="Energía" />
+          <GameStatusBar icon="🌟" value={happiness} color="from-yellow-400 to-yellow-600" label="Happiness" />
+          <GameStatusBar icon="🍖" value={food} color="from-orange-400 to-orange-600" label="Hunger" />
+          <GameStatusBar icon="⚡" value={energy} color="from-blue-400 to-blue-600" label="Energy" />
         </div>
 
         <div className="flex items-center gap-2">
