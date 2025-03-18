@@ -3,7 +3,7 @@ name: Backend
 about: Describe thiThis template is for creating backend issues.s issue template's
   purpose here.
 title: "[Backend]"
-labels: Backend
+labels: Backend, May Be Rewarded
 assignees: ''
 
 ---
