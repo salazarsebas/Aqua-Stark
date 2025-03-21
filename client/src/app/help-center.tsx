@@ -5,7 +5,7 @@ import { ChevronRight, Search } from "lucide-react";
 import {
   categories,
   featuredTopics,
-} from "@/lib/constants/mock-data/mock-data";
+} from "@/lib/constants/mock-data/mock-help-center";
 import BackToGameButton from "@/components/back-to-game-button";
 import HelpCategories from "@/components/help-categories";
 import FeaturedTopics from "@/components/featured-topics";
