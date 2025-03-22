@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import { useBubbles } from "@/components/landingPage/hooks/useBubbles" 
 import { Navbar } from "@/components/landingPage/navbar"
 import {HeroSection} from "@/components/landingPage/hero-section"
@@ -11,7 +10,7 @@ import { Footer } from "@/components/footer"
 import {BubblesEffect} from "@/components/landingPage/effects/bubbles-effect"
 
 export default function LandingPage() {
-  const { bubbles, backgroundBubbles, particles } = useBubbles() // ✅ Usamos el hook
+  const { bubbles, backgroundBubbles, particles } = useBubbles()
 
 
   return (
