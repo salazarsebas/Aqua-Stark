@@ -55,7 +55,7 @@ export const getStatusByLevel = (
   else return "happy";
 };
 
-export const loginRewards = [
+export const mockLoginRewards = [
   {
     id: 1,
     day: 1,
@@ -181,6 +181,69 @@ export const loginRewards = [
     collected: false,
     current_day: false,
     special: true,
+  },
+];
+
+export const mockGameMilestones = [
+  {
+    id: 1,
+    milestone: "Reach Level 10",
+    milestone_desc: "Achieve player level 10",
+    reward: "1,000 Coins + Premium Tank Expansion",
+    claimed: true,
+    type: "achievement",
+    progress: 10,
+    total: 10,
+  },
+  {
+    id: 2,
+    milestone: "Fish Collection: 20",
+    milestone_desc: "Collect 20 different fish species",
+    reward: "Rare Fish Egg + 500 Coins",
+    claimed: true,
+    type: "collection",
+    progress: 20,
+    total: 20,
+  },
+  {
+    id: 3,
+    milestone: "Fish Collection: 50",
+    milestone_desc: "Collect 40 different fish species",
+    reward: "Legendary Fish Egg + 2,000 Coins",
+    claimed: false,
+    type: "collection",
+    progress: 24,
+    total: 50,
+  },
+  {
+    id: 4,
+    milestone: "Master Breeder",
+    milestone_desc: "Successfully breed 10 different fish combinations",
+    reward: "Breeding Labouratory + 2,000 Coins",
+    claimed: false,
+    type: "collection",
+    progress: 7,
+    total: 10,
+  },
+  {
+    id: 5,
+    milestone: "Reach Level 25",
+    milestone_desc: "Achieve player level 25",
+    reward: "3,000 Coins + Exclusive Decoration Set",
+    claimed: false,
+    type: "achievement",
+    progress: 12,
+    total: 25,
+  },
+  {
+    id: 6,
+    milestone: "Social Butterfly",
+    milestone_desc: "Make 20 friends in the community",
+    reward: "Social Profile Frame + Special Title",
+    claimed: false,
+    type: "community",
+    progress: 4,
+    total: 20,
   },
 ];
 

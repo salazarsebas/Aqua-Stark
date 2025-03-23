@@ -22,6 +22,16 @@ interface LoginReward {
   current_day: boolean;
 }
 
+const formatTypeToName = (str: string) => {
+  return str
+    .split("_")
+    .map(
+      (word: string) =>
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    )
+    .join(" ");
+};
+
 export function LoginRewards({ data }: { data: LoginReward[] }) {
   const [timeUntilReset, setTimeUntilReset] = useState("");
 
@@ -68,7 +78,7 @@ export function LoginRewards({ data }: { data: LoginReward[] }) {
 
         <div className="flex items-center gap-6">
           <h2 className="flex-1 font-sans text-2xl font-bold text-center text-white md:flex-none">
-            5
+            {data.filter((reward) => reward.collected).length + 1}
             <span className="block mt-1 font-sans text-sm font-light text-blue-100">
               Days
             </span>
@@ -80,9 +90,11 @@ export function LoginRewards({ data }: { data: LoginReward[] }) {
             </span>
             <p className="font-bold text-white">
               <Coins className="inline-block mr-2 text-yellow-400" size={20} />
-              300
+              {data.filter((reward) => !reward.collected)[1].qty}
               <span className="ml-1 font-sans text-sm font-light text-blue-100">
-                Coins
+                {formatTypeToName(
+                  data.filter((reward) => !reward.collected)[1].type
+                )}
               </span>
             </p>
           </div>
@@ -202,13 +214,7 @@ function CalendarDay({ reward }: { reward: LoginReward }) {
         {reward.qty}
       </span>
       <span className="-mt-3 font-sans text-xs font-extralight">
-        {reward.type
-          .split("_")
-          .map(
-            (word: string) =>
-              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-          )
-          .join(" ")}
+        {formatTypeToName(reward.type)}
       </span>
     </div>
   );
