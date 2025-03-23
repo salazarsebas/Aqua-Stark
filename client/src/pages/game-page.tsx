@@ -1,80 +1,33 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
-  Menu,
-  ShoppingBag,
-  HelpCircle,
-  Camera,
-  Volume2,
-  Settings,
   Grid,
-  Trophy,
-  Home,
-  Fish,
-  Palette,
-  Sparkles,
   Droplets,
   Leaf,
+  Sparkles,
+  Palette,
   Layers,
   X,
+  Fish,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+
+import { GameButton } from "@/components/game/game-button"
+import { GameMenu } from "@/components/game/game-menu"
 import { GameStatusBar } from "@/components/game-status-bar"
-
-interface FishType {
-  id: number
-  name: string
-  image: string
-  rarity: string
-  generation: number
-  position: { x: number; y: number }
-}
-
-interface Bubble {
-  id: number
-  size: number
-  left: number
-  duration: number
-  delay: number
-}
-
-interface WaterRipple {
-  id: number
-  x: number
-  y: number
-}
+import { WaterEffects } from "@/components/game/water-effects"
+import { FishDisplay } from "@/components/game/fish-display"
+import { AquariumTab } from "@/components/game/aquarium-tab"
+import { MOCK_FISH, MOCK_AQUARIUMS, INITIAL_GAME_STATE } from "@/data/game-data"
 
 export default function GamePage() {
-  const [selectedAquarium, setSelectedAquarium] = useState("My First Aquarium")
-  const [happiness, setHappiness] = useState(75)
-  const [food, setFood] = useState(60)
-  const [energy, setEnergy] = useState(90)
+  const [selectedAquarium, setSelectedAquarium] = useState(MOCK_AQUARIUMS[0])
+  const [happiness, setHappiness] = useState(INITIAL_GAME_STATE.happiness)
+  const [food, setFood] = useState(INITIAL_GAME_STATE.food)
+  const [energy, setEnergy] = useState(INITIAL_GAME_STATE.energy)
   const [showMenu, setShowMenu] = useState(false)
   const [showTips, setShowTips] = useState(false)
-  const [bubbles, setBubbles] = useState<Bubble[]>([])
-  const [ripples, setRipples] = useState<WaterRipple[]>([])
   const tipsRef = useRef<HTMLDivElement>(null)
-  const [fish, setFish] = useState<FishType[]>([
-    {
-      id: 1,
-      name: "Fish 1",
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish1-ioYn5CvkJkCHPwgx1jBGoqibnAu5to.png",
-      rarity: "Common",
-      generation: 1,
-      position: { x: 20, y: 30 },
-    },
-    {
-      id: 2,
-      name: "Fish 2",
-      image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish2-D0YdqsjY0OgI0AZg98FS0Sq7zMm2Fe.png",
-      rarity: "Rare",
-      generation: 2,
-      position: { x: 60, y: 50 },
-    },
-  ])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -100,14 +53,11 @@ export default function GamePage() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-
       const random = Math.floor(Math.random() * 3)
       const change = Math.floor(Math.random() * 11) - 5 // -5 a +5
 
       if (random === 0) {
         setHappiness((prev) => Math.min(Math.max(0, prev + change), 100))
-      } else if (random === 1) {
-        setFood((prev) => Math.min(Math.max(0, prev + change), 100))
       } else if (random === 1) {
         setFood((prev) => Math.min(Math.max(0, prev + change), 100))
       } else {
@@ -118,40 +68,19 @@ export default function GamePage() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    const createBubble = () => {
-      const newBubble = {
-        id: Date.now(),
-        size: Math.random() * 20 + 10,
-        left: Math.random() * 100,
-        duration: Math.random() * 4 + 3,
-        delay: Math.random() * 2,
-      }
-      setBubbles((prev) => [...prev, newBubble])
-      setTimeout(() => {
-        setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id))
-      }, newBubble.duration * 1000)
-    }
-
-    const intervalId = setInterval(createBubble, 300)
-    return () => clearInterval(intervalId)
-  }, [])
-
-  const createRipple = useCallback((e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const ripple = {
-      id: Date.now(),
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    }
-    setRipples((prev) => [...prev, ripple])
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((r) => r.id !== ripple.id))
-    }, 4000)
-  }, [])
+  const sidebarButtons = [
+    { icon: "🌿", color: "from-green-400 to-green-600", tooltip: "Plants" },
+    { icon: "🪨", color: "from-blue-400 to-blue-600", tooltip: "Rocks" },
+    { icon: "🏰", color: "from-purple-400 to-purple-600", tooltip: "Decorations" },
+    { icon: <Droplets className="h-5 w-5" />, color: "from-cyan-400 to-cyan-600", tooltip: "Water" },
+    { icon: <Leaf className="h-5 w-5" />, color: "from-emerald-400 to-emerald-600", tooltip: "Algae" },
+    { icon: <Sparkles className="h-5 w-5" />, color: "from-amber-400 to-amber-600", tooltip: "Effects" },
+    { icon: <Palette className="h-5 w-5" />, color: "from-pink-400 to-pink-600", tooltip: "Colors" },
+    { icon: <Layers className="h-5 w-5" />, color: "from-indigo-400 to-indigo-600", tooltip: "Layers" },
+  ]
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#005C99]" onClick={createRipple}>
+    <div className="relative w-full h-screen overflow-hidden bg-[#005C99]">
       <img
         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Bg-hbI9X1J6jlWP2xj88XACJcaMqDLbHW.png"
         alt="Underwater Background"
@@ -160,34 +89,7 @@ export default function GamePage() {
 
       <div className="absolute inset-0 light-rays"></div>
 
-      {bubbles.map((bubble) => (
-        <div
-          key={bubble.id}
-          className="bubble"
-          style={
-            {
-              width: `${bubble.size}px`,
-              height: `${bubble.size}px`,
-              left: `${bubble.left}%`,
-              "--duration": `${bubble.duration}s`,
-              animationDelay: `${bubble.delay}s`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-
-      {ripples.map((ripple) => (
-        <div
-          key={ripple.id}
-          className="water-ripple absolute pointer-events-none"
-          style={{
-            left: ripple.x,
-            top: ripple.y,
-            width: "10px",
-            height: "10px",
-          }}
-        />
-      ))}
+      <WaterEffects />
 
       <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4 z-20">
         <div className="flex items-center gap-4">
@@ -212,123 +114,40 @@ export default function GamePage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            className="game-button bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center"
+          <GameButton
+            icon="☰"
+            className="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center"
             onClick={() => setShowMenu(!showMenu)}
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
+          />
         </div>
       </div>
 
-      {showMenu && (
-        <div className="absolute top-32 right-4 z-30 flex flex-col gap-3">
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <Volume2 className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <Trophy className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <ShoppingBag className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <HelpCircle className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <Camera className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <Home className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-12 h-12 rounded-xl bg-blue-500/20 hover:bg-blue-500/40 backdrop-blur-sm text-white border border-blue-400/30 shadow-lg hover:shadow-blue-400/20 transition-all duration-300 hover:-translate-y-0.5"
-            onClick={() => {}}
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
+      <GameMenu show={showMenu} />
 
-      {/* Peces */}
-      {fish.map((fish) => (
-        <div
-          key={fish.id}
-          className="absolute transition-all duration-1000 ease-in-out cursor-pointer group"
-          style={{ left: `${fish.position.x}%`, top: `${fish.position.y}%` }}
-        >
-          <div className="relative">
-            <img
-              src={fish.image || "/placeholder.svg"}
-              alt={fish.name}
-              width={80}
-              height={80}
-              className="transform hover:scale-110 transition-transform duration-200"
-            />
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 game-container p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-              <div className="font-bold text-white">{fish.name}</div>
-              <div className="text-xs text-white/80">
-                Rarity: {fish.rarity} • Gen {fish.generation}
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
+      <FishDisplay fish={MOCK_FISH} />
 
       <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-2">
-        <GameButton icon="🌿" color="from-green-400 to-green-600" tooltip="Plants" />
-        <GameButton icon="🪨" color="from-blue-400 to-blue-600" tooltip="Rocks" />
-        <GameButton icon="🏰" color="from-purple-400 to-purple-600" tooltip="Decorations" />
-        <GameButton icon={<Droplets className="h-5 w-5" />} color="from-cyan-400 to-cyan-600" tooltip="Water" />
-        <GameButton icon={<Leaf className="h-5 w-5" />} color="from-emerald-400 to-emerald-600" tooltip="algae" />
-        <GameButton icon={<Sparkles className="h-5 w-5" />} color="from-amber-400 to-amber-600" tooltip="Effects" />
-        <GameButton icon={<Palette className="h-5 w-5" />} color="from-pink-400 to-pink-600" tooltip="Colors" />
-        <GameButton icon={<Layers className="h-5 w-5" />} color="from-indigo-400 to-indigo-600" tooltip="Layers" />
+        {sidebarButtons.map((button, index) => (
+          <GameButton
+            key={index}
+            icon={button.icon}
+            color={button.color}
+            tooltip={button.tooltip}
+          />
+        ))}
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-900/90 to-transparent p-4">
         <div className="flex justify-between items-end">
           <div className="flex gap-2">
-            <AquariumTab
-              name="My First Aquarium"
-              active={selectedAquarium === "My First Aquarium"}
-              onClick={() => setSelectedAquarium("My First Aquarium")}
-            />
-            <AquariumTab
-              name="Second Aquarium"
-              active={selectedAquarium === "Second Aquarium"}
-              onClick={() => setSelectedAquarium("Second Aquarium")}
-            />
-            <AquariumTab
-              name="Tropical Paradise"
-              active={selectedAquarium === "Tropical Paradise"}
-              onClick={() => setSelectedAquarium("Tropical Paradise")}
-            />
+            {MOCK_AQUARIUMS.map((aquarium) => (
+              <AquariumTab
+                key={aquarium}
+                name={aquarium}
+                active={selectedAquarium === aquarium}
+                onClick={() => setSelectedAquarium(aquarium)}
+              />
+            ))}
             <AquariumTab
               name="View All"
               active={false}
@@ -358,7 +177,7 @@ export default function GamePage() {
                     </button>
                   </div>
                   <p className="text-white/90 text-sm">
-                  Feed your fish regularly to keep them healthy and happy. Well-fed fish grow faster and have more vibrant colors.  
+                    Feed your fish regularly to keep them healthy and happy. Well-fed fish grow faster and have more vibrant colors.
                   </p>
                   <div className="mt-3 flex justify-end">
                     <span className="text-xs text-white/70">Tap to close</span>
@@ -380,68 +199,6 @@ export default function GamePage() {
         </div>
       </div>
     </div>
-  )
-}
-
-function GameButton({
-  icon,
-  text,
-  color = "from-blue-400 to-blue-600",
-  tooltip,
-  onClick,
-}: {
-  icon: React.ReactNode | string
-  text?: string
-  color?: string
-  tooltip?: string
-  onClick?: () => void
-}) {
-  return (
-    <Button
-      onClick={onClick}
-      className={cn(
-        "game-button bg-gradient-to-b text-white rounded-xl relative group",
-        text ? "px-4 py-2" : "w-12 h-12",
-        color,
-      )}
-    >
-      <div className="flex items-center gap-2">
-        {typeof icon === "string" ? <span className="text-xl">{icon}</span> : icon}
-        {text && <span className="font-bold">{text}</span>}
-      </div>
-      {tooltip && (
-        <div className="absolute -right-24 top-1/2 transform -translate-y-1/2 game-container p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-          <span className="text-white text-xs">{tooltip}</span>
-        </div>
-      )}
-    </Button>
-  )
-}
-
-function AquariumTab({
-  name,
-  active,
-  icon,
-  onClick,
-}: {
-  name: string
-  active: boolean
-  icon?: React.ReactNode
-  onClick: () => void
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "game-button px-6 py-3 rounded-t-xl font-bold transition-all duration-200 flex items-center",
-        active
-          ? "bg-gradient-to-b from-blue-400 to-blue-600 text-white translate-y-0"
-          : "bg-blue-800/50 text-white/70 hover:bg-blue-700/50 translate-y-2",
-      )}
-    >
-      {icon && icon}
-      {name}
-    </button>
   )
 }
 
