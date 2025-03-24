@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { ShoppingBag, Wallet, Coins } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { FishTank } from "@/components/fish-tank"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ShoppingBag, Wallet, Coins } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FishTank } from "@/components/fish-tank";
 
 export default function LandingPage() {
-  const [bubbles, setBubbles] = useState<Array<{ id: number; size: number; left: number; animationDuration: number }>>(
-    [],
-  )
+  const [bubbles, setBubbles] = useState<
+    Array<{ id: number; size: number; left: number; animationDuration: number }>
+  >([]);
   const [backgroundBubbles, setBackgroundBubbles] = useState<
     Array<{
-      id: number
-      size: number
-      left: number
-      duration: number
-      delay: number
-      drift: number
+      id: number;
+      size: number;
+      left: number;
+      duration: number;
+      delay: number;
+      drift: number;
     }>
-  >([])
+  >([]);
   const [particles, setParticles] = useState<
     Array<{
-      id: number
-      size: number
-      top: number
-      left: number
-      duration: number
-      delay: number
-      floatX: number
-      floatY: number
+      id: number;
+      size: number;
+      top: number;
+      left: number;
+      duration: number;
+      delay: number;
+      floatX: number;
+      floatY: number;
     }>
-  >([])
+  >([]);
 
   useEffect(() => {
     const newBubbles = Array.from({ length: 20 }, (_, i) => ({
@@ -40,18 +40,18 @@ export default function LandingPage() {
       size: Math.random() * 30 + 10,
       left: Math.random() * 100,
       animationDuration: Math.random() * 15 + 5,
-    }))
-    setBubbles(newBubbles)
+    }));
+    setBubbles(newBubbles);
 
     const newBackgroundBubbles = Array.from({ length: 15 }, (_, i) => ({
       id: i,
-      size: Math.random() * 60 + 40, 
+      size: Math.random() * 60 + 40,
       left: Math.random() * 100,
-      duration: Math.random() * 25 + 15, 
+      duration: Math.random() * 25 + 15,
       delay: Math.random() * 10,
-      drift: (Math.random() - 0.5) * 100, 
-    }))
-    setBackgroundBubbles(newBackgroundBubbles)
+      drift: (Math.random() - 0.5) * 100,
+    }));
+    setBackgroundBubbles(newBackgroundBubbles);
 
     const newParticles = Array.from({ length: 30 }, (_, i) => ({
       id: i,
@@ -62,9 +62,9 @@ export default function LandingPage() {
       delay: Math.random() * 5,
       floatX: (Math.random() - 0.5) * 200,
       floatY: (Math.random() - 0.5) * 200,
-    }))
-    setParticles(newParticles)
-  }, [])
+    }));
+    setParticles(newParticles);
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-700 animated-background">
@@ -122,7 +122,7 @@ export default function LandingPage() {
         />
       ))}
 
-      <nav className="relative z-10 flex justify-between items-center p-4">
+      <nav className="relative z-10 flex items-center justify-between p-4">
         <div className="flex items-center">
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Aqua_Stark-removebg-preview-ubKSrqYo7jzOH5qXqxEw4CyRHXIjfq.png"
@@ -133,30 +133,33 @@ export default function LandingPage() {
           />
         </div>
         <div className="flex items-center">
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 text-lg rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-purple-400 border-b-4 border-r-4">
-            <Wallet className="mr-2 h-6 w-6" />
+          <Button className="px-6 py-3 text-lg font-bold text-white transition-all duration-200 transform bg-purple-600 border-2 border-b-4 border-r-4 border-purple-400 shadow-lg hover:bg-purple-700 rounded-xl hover:scale-105">
+            <Wallet className="w-6 h-6 mr-2" />
             Connect Wallet
           </Button>
         </div>
       </nav>
 
-      <main className="relative z-10 container mx-auto px-4 py-8 flex flex-col items-center">
-        <div className="w-full max-w-4xl mx-auto text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-6">
-            <span className="inline-block animate-float">Dive into the world of Aqua Stark!</span>
+      <main className="container relative z-10 flex flex-col items-center px-4 py-8 mx-auto">
+        <div className="w-full max-w-4xl mx-auto mb-12 text-center">
+          <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl drop-shadow-lg">
+            <span className="inline-block animate-float">
+              Dive into the world of Aqua Stark!
+            </span>
           </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Breed, feed, and collect unique fish while customizing your aquarium in this incredible aquatic adventure.
+          <p className="max-w-2xl mx-auto mb-8 text-xl text-white/90">
+            Breed, feed, and collect unique fish while customizing your aquarium
+            in this incredible aquatic adventure.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+          <div className="flex flex-col justify-center gap-4 mt-8 sm:flex-row">
             <Link to="/game">
-              <Button className="play-button text-xl font-bold py-6 px-12 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-green-300 border-b-4 border-r-4">
+              <Button className="px-12 py-6 text-xl font-bold text-white transition-all duration-200 transform border-2 border-b-4 border-r-4 border-green-300 shadow-lg play-button bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-xl hover:scale-105">
                 PLAY NOW
               </Button>
             </Link>
             <Button
               variant="outline"
-              className="text-lg font-bold py-6 px-8 bg-gradient-to-b from-blue-400/80 to-blue-600/80 hover:from-blue-500/80 hover:to-blue-700/80 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-blue-300 border-b-4 border-r-4"
+              className="px-8 py-6 text-lg font-bold text-white transition-all duration-200 transform border-2 border-b-4 border-r-4 border-blue-300 shadow-lg bg-gradient-to-b from-blue-400/80 to-blue-600/80 hover:from-blue-500/80 hover:to-blue-700/80 rounded-xl hover:scale-105"
             >
               WATCH TUTORIAL
             </Button>
@@ -164,8 +167,10 @@ export default function LandingPage() {
         </div>
 
         <div className="w-full max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-white text-center mb-8 drop-shadow-lg">Featured Fish</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <h2 className="mb-8 text-3xl font-bold text-center text-white drop-shadow-lg">
+            Featured Fish
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <FishCard
               name="REDGLOW"
               image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish3-LOteAGqWGR4lDQ8VBBAlRSUByZL2KX.png"
@@ -184,17 +189,19 @@ export default function LandingPage() {
           </div>
           <div className="flex justify-center mt-8">
             <Link to="/store">
-              <Button className="text-lg font-bold py-4 px-8 bg-gradient-to-b from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-orange-300 border-b-4 border-r-4">
-                <ShoppingBag className="mr-2 h-5 w-5" />
+              <Button className="px-8 py-4 text-lg font-bold text-white transition-all duration-200 transform border-2 border-b-4 border-r-4 border-orange-300 shadow-lg bg-gradient-to-b from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 rounded-xl hover:scale-105">
+                <ShoppingBag className="w-5 h-5 mr-2" />
                 VISIT STORE
               </Button>
             </Link>
           </div>
         </div>
 
-        <div className="w-full max-w-5xl mx-auto mb-16 bg-blue-600/50 rounded-3xl p-8 backdrop-blur-sm border-2 border-blue-400/50">
-          <h2 className="text-3xl font-bold text-white text-center mb-8 drop-shadow-lg">Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="w-full max-w-5xl p-8 mx-auto mb-16 border-2 bg-blue-600/50 rounded-3xl backdrop-blur-sm border-blue-400/50">
+          <h2 className="mb-8 text-3xl font-bold text-center text-white drop-shadow-lg">
+            Features
+          </h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <FeatureCard
               title="Collect Unique Fish"
               description="Discover and collect over 100 species of fish with different rarities and special abilities."
@@ -219,138 +226,176 @@ export default function LandingPage() {
         </div>
 
         <div className="w-full max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-white text-center mb-8 drop-shadow-lg">Game Tips</h2>
-          <div className="bg-blue-600/50 rounded-3xl p-8 backdrop-blur-sm border-2 border-blue-400/50">
-            <h3 className="text-2xl font-bold text-white mb-4">Get to know the State Bars</h3>
-            <p className="text-white/90 mb-6">
-              In Aqua Stark, each fish has three status bars that you must monitor to keep them happy and healthy:
+          <h2 className="mb-8 text-3xl font-bold text-center text-white drop-shadow-lg">
+            Game Tips
+          </h2>
+          <div className="p-8 border-2 bg-blue-600/50 rounded-3xl backdrop-blur-sm border-blue-400/50">
+            <h3 className="mb-4 text-2xl font-bold text-white">
+              Get to know the State Bars
+            </h3>
+            <p className="mb-6 text-white/90">
+              In Aqua Stark, each fish has three status bars that you must
+              monitor to keep them happy and healthy:
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+            <div className="grid grid-cols-1 gap-8 mb-6 md:grid-cols-3">
               <div className="flex flex-col items-center">
-                <div className="relative h-40 w-12 bg-white/30 rounded-full mb-2 overflow-hidden border-2 border-white/50">
+                <div className="relative w-12 h-40 mb-2 overflow-hidden border-2 rounded-full bg-white/30 border-white/50">
                   <div
-                    className="absolute bottom-0 w-full bg-green-500 transition-all duration-500"
+                    className="absolute bottom-0 w-full transition-all duration-500 bg-green-500"
                     style={{ height: "90%" }}
                   ></div>
                 </div>
-                <div className="text-center text-2xl mb-2">😃</div>
+                <div className="mb-2 text-2xl text-center">😃</div>
                 <div className="text-center">
                   <h4 className="font-bold text-white">Happiness</h4>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-sm text-white/80">
                     Keep your fish happy with decorations and regular attention.
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-col items-center">
-                <div className="relative h-40 w-12 bg-white/30 rounded-full mb-2 overflow-hidden border-2 border-white/50">
+                <div className="relative w-12 h-40 mb-2 overflow-hidden border-2 rounded-full bg-white/30 border-white/50">
                   <div
-                    className="absolute bottom-0 w-full bg-orange-500 transition-all duration-500"
+                    className="absolute bottom-0 w-full transition-all duration-500 bg-orange-500"
                     style={{ height: "50%" }}
                   ></div>
                 </div>
-                <div className="text-center text-2xl mb-2">😐</div>
+                <div className="mb-2 text-2xl text-center">😐</div>
                 <div className="text-center">
                   <h4 className="font-bold text-white">Hunger</h4>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-sm text-white/80">
                     Feed your fish regularly to keep this bar full.
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-col items-center">
-                <div className="relative h-40 w-12 bg-white/30 rounded-full mb-2 overflow-hidden border-2 border-white/50">
+                <div className="relative w-12 h-40 mb-2 overflow-hidden border-2 rounded-full bg-white/30 border-white/50">
                   <div
-                    className="absolute bottom-0 w-full bg-red-500 transition-all duration-500"
+                    className="absolute bottom-0 w-full transition-all duration-500 bg-red-500"
                     style={{ height: "20%" }}
                   ></div>
                 </div>
-                <div className="text-center text-2xl mb-2">😟</div>
+                <div className="mb-2 text-2xl text-center">😟</div>
                 <div className="text-center">
                   <h4 className="font-bold text-white">Energy</h4>
-                  <p className="text-white/80 text-sm">Let your fish rest to regain their energy.</p>
+                  <p className="text-sm text-white/80">
+                    Let your fish rest to regain their energy.
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-blue-700/50 rounded-xl p-4 border border-blue-400/30">
-              <p className="text-white/90 text-center">
-                <span className="font-bold">PRO TIP!</span> Keep all bars above 50% to unlock special behaviors in your fish.
+            <div className="p-4 border bg-blue-700/50 rounded-xl border-blue-400/30">
+              <p className="text-center text-white/90">
+                <span className="font-bold">PRO TIP!</span> Keep all bars above
+                50% to unlock special behaviors in your fish.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="w-full max-w-4xl mx-auto text-center mb-12">
-          <div className="bg-blue-600/70 rounded-3xl p-8 backdrop-blur-sm border-2 border-blue-400/50">
-            <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-lg">Ready to dive in?</h2>
-            <p className="text-xl text-white/90 mb-8">Play Aqua Stark now and begin your aquatic adventure</p>
-            <Button className="play-button text-xl font-bold py-6 px-12 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-green-300 border-b-4 border-r-4">
+        <div className="w-full max-w-4xl mx-auto mb-12 text-center">
+          <div className="p-8 border-2 bg-blue-600/70 rounded-3xl backdrop-blur-sm border-blue-400/50">
+            <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-lg">
+              Ready to dive in?
+            </h2>
+            <p className="mb-8 text-xl text-white/90">
+              Play Aqua Stark now and begin your aquatic adventure
+            </p>
+            <Button className="px-12 py-6 text-xl font-bold text-white transition-all duration-200 transform border-2 border-b-4 border-r-4 border-green-300 shadow-lg play-button bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-xl hover:scale-105">
               PLAY NOW
             </Button>
           </div>
         </div>
       </main>
 
-      <footer className="relative z-10 bg-blue-800 py-6 border-t-2 border-blue-400/50">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-white/80 mb-2">© 2025 Aqua Stark - All rights reserved</p>
+      <footer className="relative z-10 py-6 bg-blue-800 border-t-2 border-blue-400/50">
+        <div className="container px-4 mx-auto text-center">
+          <p className="mb-2 text-white/80">
+            © 2025 Aqua Stark - All rights reserved
+          </p>
           <div className="flex justify-center gap-4 mt-4">
-            <Link to="#" className="text-white hover:text-blue-200 transition-colors">
+            <Link
+              to="#"
+              className="text-white transition-colors hover:text-blue-200"
+            >
               Polity and Privacy
             </Link>
-            <Link to="#" className="text-white hover:text-blue-200 transition-colors">
+            <Link
+              to="#"
+              className="text-white transition-colors hover:text-blue-200"
+            >
               Terms of Service
             </Link>
-            <Link to="#" className="text-white hover:text-blue-200 transition-colors">
+            <Link
+              to="#"
+              className="text-white transition-colors hover:text-blue-200"
+            >
               Contact
             </Link>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-function FishCard({ name, image, price }: { name: string; image: string; price: number }) {
+function FishCard({
+  name,
+  image,
+  price,
+}: {
+  name: string;
+  image: string;
+  price: number;
+}) {
   return (
-    <div className="bg-blue-600 rounded-3xl overflow-hidden shadow-xl border-2 border-blue-400 transform hover:scale-105 transition-all duration-200">
+    <div className="overflow-hidden transition-all duration-200 transform bg-blue-600 border-2 border-blue-400 shadow-xl rounded-3xl hover:scale-105">
       <div className="p-4 text-center">
-        <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
-        <div className="relative mx-auto w-full h-48 bg-blue-400/50 rounded-2xl mb-4 flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 rounded-2xl border-2 border-blue-300/50"></div>
+        <h3 className="mb-2 text-xl font-bold text-white">{name}</h3>
+        <div className="relative flex items-center justify-center w-full h-48 mx-auto mb-4 overflow-hidden bg-blue-400/50 rounded-2xl">
+          <div className="absolute inset-0 border-2 rounded-2xl border-blue-300/50"></div>
           <FishTank>
             <img
               src={image || "/placeholder.svg"}
               alt={name}
               width={120}
               height={120}
-              className="object-contain transform hover:scale-110 transition-all duration-500"
+              className="object-contain transition-all duration-500 transform hover:scale-110"
             />
           </FishTank>
         </div>
         <div className="flex items-center justify-between mt-2">
           <div className="flex items-center">
-            <Coins className="text-yellow-400 mr-1" size={20} />
-            <span className="text-white font-bold text-xl">{price}</span>
+            <Coins className="mr-1 text-yellow-400" size={20} />
+            <span className="text-xl font-bold text-white">{price}</span>
           </div>
-          <Button className="bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg px-6 py-2 border-2 border-green-400">
+          <Button className="px-6 py-2 font-bold text-white bg-green-500 border-2 border-green-400 rounded-lg hover:bg-green-600">
             BUY
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function FeatureCard({ title, description, icon }: { title: string; description: string; icon: string }) {
+function FeatureCard({
+  title,
+  description,
+  icon,
+}: {
+  title: string;
+  description: string;
+  icon: string;
+}) {
   return (
-    <div className="bg-blue-500/50 rounded-2xl p-6 backdrop-blur-sm border-2 border-blue-400/30 shadow-lg">
-      <div className="text-4xl mb-4">{icon}</div>
-      <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+    <div className="p-6 border-2 shadow-lg bg-blue-500/50 rounded-2xl backdrop-blur-sm border-blue-400/30">
+      <div className="mb-4 text-4xl">{icon}</div>
+      <h3 className="mb-2 text-xl font-bold text-white">{title}</h3>
       <p className="text-white/90">{description}</p>
     </div>
-  )
+  );
 }
-
