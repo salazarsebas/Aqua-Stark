@@ -70,21 +70,21 @@ function GameMileStone({
       <div
         className={cn(
           "relative w-full font-sans py-4 border-2 flex-1 px-4 gap-2 text-sm font-normal rounded-lg transition-all duration-200 flex items-center justify-between milestone-card bg-[#0251A6]",
-          milestone.completed ? "border-green-400" : "border-blue-400"
+          milestone.completed ? "border-green-400/50" : "border-blue-400"
         )}
       >
         <div className="flex flex-col w-full gap-2">
-          <h4 className="font-sans text-base font-bold text-white">
-            {milestone.title}
-            <span className="block text-xs font-light text-blue-100">
-              {milestone.description}
-            </span>
+          <div className="flex items-center font-sans text-sm font-bold text-white max-h-fit">
+            <p>{milestone.title}</p>
             {milestone.completed && (
-              <span className="py-1 px-1.5 ml-1 text-[11px] font-semibold bg-green-800 rounded-xl">
+              <span className="block py-0 px-1.5 ml-1 w-fit text-[8px] max-h-fit font-normal bg-[#006AA9] rounded-xl">
                 Completed
               </span>
             )}
-          </h4>
+          </div>
+          <p className="text-xs font-light text-blue-100">
+            {milestone.description}
+          </p>
           {!milestone.completed && (
             <div className="min-w-full">
               <p className="text-xs text-blue-200">Progress</p>
@@ -113,9 +113,15 @@ function GameMileStone({
             <Gift className="mr-1 text-yellow-300" size={10} />
             Reward: {milestone.description}
           </p>
-          <Button className="px-3 py-2 text-xs font-normal text-blue-100 bg-white rounded-lg max-h-fit max-w-fit hover:text-black hover:bg-white">
-            View Details
-          </Button>
+          {milestone.completed ? (
+            <Button className="cursor-not-allowed px-3 py-2 text-xs font-normal text-blue-200 hover:bg-[#006AA9] bg-[#006AA9] rounded-lg max-h-fit max-w-fit">
+              Reward Claimed
+            </Button>
+          ) : (
+            <Button className="px-3 py-2 text-xs font-normal text-blue-100 bg-white rounded-lg max-h-fit max-w-fit hover:text-black hover:bg-white">
+              View Details
+            </Button>
+          )}
         </div>
       </div>
     </div>
