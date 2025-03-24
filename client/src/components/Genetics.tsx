@@ -1,36 +1,11 @@
-// pages/genetic-combinations.tsx
+
 import React, { useState } from 'react';
 
-import { FaCalculator, FaDna, FaFlask, FaSitemap, FaRegLightbulb } from 'react-icons/fa';
+import { FaCalculator, FaDna } from 'react-icons/fa';
 
 const GeneticCombinationsPage: React.FC = () => {
-  const [selectedPair, setSelectedPair] = useState<string | null>(null);
+  const [selectedPair, _setSelectedPair] = useState<string | null>(null);
   
-  // Sample data for the inheritance tables
-  const colorInheritance = [
-    { name: 'Red', description: 'Dominant trait' },
-    { name: 'Blue', description: 'Recessive when paired with red' },
-    { name: 'Yellow', description: 'Co-dominant with blue' },
-    { name: 'Green', description: 'Blend of blue and yellow' },
-    { name: 'Purple', description: 'Blend of red and blue' },
-    { name: 'Orange', description: 'Blend of red and yellow' },
-  ];
-  
-  const patternInheritance = [
-    { name: 'Solid', description: 'Base pattern' },
-    { name: 'Spotted', description: 'Dominant over solid' },
-    { name: 'Striped', description: 'Recessive to spotted' },
-    { name: 'Gradient', description: 'Blended pattern' },
-    { name: 'Metallic', description: 'Special pattern, rare' },
-    { name: 'Marbled', description: 'Complex pattern' },
-  ];
-  
-  const specialTraits = [
-    { name: 'Bioluminescent', description: 'Glows in dark conditions' },
-    { name: 'Fast', description: 'Increased movement speed' },
-    { name: 'Shimmering', description: 'Reflective scales or skin' },
-    { name: 'Electric', description: 'Can generate small electric fields' },
-  ];
   
   const rarityData = [
     { level: 'Common', chance: 20, color: '#8E8E8E' },
