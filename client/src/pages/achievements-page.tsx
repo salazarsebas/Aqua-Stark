@@ -12,7 +12,7 @@ import { LoginRewards } from "@/components/achievements/login-rewards";
 import { Achievements } from "@/components/achievements/achievements";
 import { Missions } from "@/components/achievements/missions";
 import { Milestones } from "@/components/achievements/milestones";
-import { mockLoginRewards } from "@/data/mock-data";
+import { mockLoginRewards, mockGameMilestones } from "@/data/mock-data";
 
 const TABS = [
   { id: "achievements", name: "Achievements", icon: Trophy },
@@ -70,7 +70,9 @@ export default function AchievementsPage() {
           {activeTab === "login_rewards" && (
             <LoginRewards data={mockLoginRewards} />
           )}
-          {activeTab === "milestones" && <Milestones />}
+          {activeTab === "milestones" && (
+            <Milestones data={mockGameMilestones} />
+          )}
         </div>
       </main>
 
