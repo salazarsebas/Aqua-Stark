@@ -1,6 +1,5 @@
 "use client";
 
-// import type React from "react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Trophy, Target, Calendar, Star } from "lucide-react";
@@ -26,7 +25,7 @@ export default function AchievementsPage() {
 
   const bubbles = useBubbles();
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-700 animated-background">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-900 animated-background">
       <nav className="relative z-10 p-4 bg-blue-700 border-b-2 border-blue-400/50">
         <div className="flex items-center justify-between mx-auto font-sans max-w-7xl">
           <Link to="/" className="flex items-center">
@@ -43,8 +42,8 @@ export default function AchievementsPage() {
           </Link>
           <div className="flex items-center gap-2">
             <div className="flex items-center px-4 py-2 border rounded-full bg-blue-700/50 border-blue-400/50">
-              <Trophy className="mr-2 text-yellow-400" size={20} />
-              <span className="font-bold text-white">2/8</span>
+              <Trophy className="mr-2 text-yellow-400" size={16} />
+              <span className="font-bold text-sm text-white">2/8</span>
             </div>
           </div>
         </div>
