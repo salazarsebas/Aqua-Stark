@@ -105,7 +105,7 @@ export function LoginRewards({ data }: { data: LoginReward[] }) {
         </div>
       </div>
 
-      <div className="px-3 py-4 my-4 bg-blue-700 rounded-lg">
+      <div className="px-3 py-4 my-4 rounded-lg bg-blue-800/50 backdrop-blur-sm">
         <h2 className="font-sans font-bold text-white text-normal">
           Reward Calendar
         </h2>
