@@ -21,7 +21,7 @@ const Tab: React.FC<TabProps> = ({ setActiveTab }) => {
 	};
 
 	return (
-		<div className="flex  p-1 px-2  bg-[#1d3050] bg-opacity-30 backdrop-blur-md rounded mt-[25px] mb-[20px]">
+		<div className="flex  p-1 px-2  bg-blue-700/60   rounded mt-[25px] mb-[20px]">
 			{tabs.map((tab) => (
 				<div
 					key={tab.value}
@@ -29,7 +29,7 @@ const Tab: React.FC<TabProps> = ({ setActiveTab }) => {
 					className={`flex items-center justify-center gap-1 px-4 py-1 cursor-pointer w-full  transition-all
             ${
 				selectedTab === tab.value
-					? "bg-blue-700/50  text-white"
+					? " bg-blue-500/30 text-white"
 					: " text-gray-200 hover:bg-blue-700"
 			}`}
 				>
