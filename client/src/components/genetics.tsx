@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FaCalculator, FaDna } from 'react-icons/fa';
-import { colorInheritance } from './geneticCombinationData';
-import Traits from './Genrtics/Traits';
-import Inheritance from './Genrtics/Inheritance';
-import Rarity from './Genrtics/Rarity';
+import { colorInheritance } from '@/data/genetic-combination-data';
+import Traits from './genetics/traits';
+import Inheritance from './genetics/traits';
+import Rarity from './genetics/traits';
 
 import { Button } from './ui/button';
-import { Card } from './ui/Card';
+import { Card } from './ui/card';
 
 const GeneticCombinationsPage: React.FC = () => {
   const [selectedPair, _setSelectedPair] = useState<string | null>(null);
@@ -19,7 +19,7 @@ const GeneticCombinationsPage: React.FC = () => {
      
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">Genetic Combinations</h1>
-          <Button>
+          <Button className='bg-purple-600'>
             <FaCalculator className="mr-2" />
             Trait Calculator
           </Button>

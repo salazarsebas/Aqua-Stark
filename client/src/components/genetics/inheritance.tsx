@@ -1,5 +1,5 @@
-import { Card } from "../ui/Card"
-import { patternInheritance } from "../geneticCombinationData"
+import { Card } from "../ui/card"
+import { patternInheritance } from "@/data/genetic-combination-data"
 const Inheritance = () => {
   return (
     <Card>

@@ -1,5 +1,5 @@
-import { Card } from "../ui/Card"
-import { rarityData } from "../geneticCombinationData"
+import { Card } from "../ui/card"
+import { rarityData } from "@/data/genetic-combination-data"
 const Rarity = () => {
   return (
     <Card>

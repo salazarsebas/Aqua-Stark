@@ -1,5 +1,5 @@
 import { FaDna, FaFlask, FaSitemap, FaRegLightbulb } from "react-icons/fa";
-import GeneticCombinationsPage from "@/components/Genetics";
+import GeneticCombinationsPage from "@/components/genetics";
 import { useState } from "react";
 interface HandleOnClick {
   (e: string): void;
