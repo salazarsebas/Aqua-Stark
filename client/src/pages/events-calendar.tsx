@@ -219,7 +219,7 @@ export default function EventsCalendar() {
       </div>
 
       {/* Tab Navigation - Mobile Dropdown */}
-      <div className="relative z-10 mb-4 px-4 xl:px-16 md:hidden">
+      <div className="relative z-20 mb-4 px-4 xl:px-16 md:hidden">
         <div ref={menuRef} className="relative">
           <button
             className="w-full bg-blue-700 rounded-lg p-3 flex items-center justify-between"
@@ -279,8 +279,9 @@ export default function EventsCalendar() {
 
       {/* Footer */}
       <div className="relative z-10 text-center text-sm text-blue-300 bg-blue-950 py-4 mt-auto">
-        © 2025 Aqua Stark - All rights reserved
-      </div>
+  © {new Date().getFullYear()} Aqua Stark - All rights reserved
+</div>
+
 
       {/* Event Details Modal */}
       {selectedEvent && <EventDetailsModal event={selectedEvent} onClose={closeModal} />}
