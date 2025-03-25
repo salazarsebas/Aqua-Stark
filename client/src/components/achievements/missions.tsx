@@ -1,90 +1,16 @@
 import { useState, useEffect } from "react";
+import { mockMissions } from "@/lib/constants/mock-data/mock-achievements";
 import {
 	Clock4,
 	Calendar,
-	Target,
-	CircleCheckBig,
 	Sparkles,
 	Coins,
 	Zap,
 	Gift,
 } from "lucide-react";
 
-// Mock data for missions
-const mockMissions = {
-	daily: [
-		{
-			id: 1,
-			icon: <Target size={16} className="text-blue-300 font-bold" />,
-			title: "Feed Your Fish",
-			description: "Feed your fish 3 times today",
-			progress: 2,
-			total: 3,
-			reward: { type: "Coins", amount: 100 },
-			reset: "Today at midnight",
-			completed: false,
-		},
-		{
-			id: 2,
-			icon: <CircleCheckBig size={16} className="text-green-500" />,
-			title: "Clean the Tank",
-			description: "Perform a water change in your aquarium",
-			progress: 1,
-			total: 1,
-			reward: { type: "XP", amount: 50 },
-			reset: "Today at midnight",
-			completed: true,
-		},
-		{
-			id: 3,
-			icon: <Target size={16} className="text-blue-300 font-bold" />,
-			title: "Visit a Friend",
-			description: "Visit another player's aquarium",
-			progress: 0,
-			total: 1,
-			reward: { type: "Coins", amount: 75 },
-			reset: "Today at midnight",
-			completed: false,
-		},
-	],
-	weekly: [
-		{
-			id: 1,
-			icon: <Target size={16} className="text-purple-300 font-bold" />,
-			title: "Breed New Fish",
-			description: "Successfully breed a new fish combination",
-			progress: 0,
-			total: 1,
-			reward: { type: "Premium Food", amount: 1 },
-			reset: "6 days remaining",
-			completed: false,
-		},
-		{
-			id: 2,
-			icon: <Target size={16} className="text-purple-300 font-bold" />,
-			title: "Collect Rare Fish",
-			description: "Add a rare legendary fish to your collection",
-			progress: 1,
-			total: 2,
-			reward: { type: "Coins", amount: 500 },
-			reset: "6 days remaining",
-			completed: false,
-		},
-	],
-	specialEvent: [
-		{
-			id: 1,
-			icon: <Sparkles size={16} className="text-yellow-300 font-bold" />,
-			title: "Spring Event Challenge",
-			description: "Decorate your aquarium with spring-themed items",
-			progress: 3,
-			total: 5,
-			reward: { name: "Spring Decoration Set", amount: 1 },
-			reset: "Event ends in 3 days",
-			completed: false,
-		},
-	],
-};
+
+
 
 export const Missions = () => {
 	// State for daily reset timer
