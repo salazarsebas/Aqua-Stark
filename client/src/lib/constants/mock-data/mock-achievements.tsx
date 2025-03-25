@@ -3,7 +3,7 @@ import { Award, Droplet, Gift, Heart, Sparkles, Trophy, Zap } from "lucide-react
 export const achievements = [
 	{
 		id: 1,
-		icon: <Trophy size={20} />,
+		icon: <Trophy size={20}  />,
 		category: "Collection",
 		title: "Fish Collector",
 		description: "Collect 30 different fish species",

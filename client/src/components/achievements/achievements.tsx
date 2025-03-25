@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Gift } from "lucide-react";
+import { Gift, Award } from "lucide-react";
 import { achievements } from "@/lib/constants/mock-data/mock-achievements";
 
 export const Achievements = () => {
@@ -40,9 +40,9 @@ export const Achievements = () => {
 	return (
 		<main className="min-h-screen mt-4">
 			<section className="">
-				<div className="flex justify-between items-center mb-6">
+				<div className="flex justify-between gap-3 flex-wrap items-center mb-6">
 					<h2 className="text-xl font-bold text-white">Your Achievement</h2>
-					<div className="flex gap-2">
+					<div className="flex flex-wrap gap-2">
 						{tabs.map((tab) => (
 							<button
 								key={tab}
@@ -61,7 +61,7 @@ export const Achievements = () => {
 
 				{/* Achievement Progress */}
 				<div className="bg-[#1A2A44] bg-opacity-20 backdrop-blur-md rounded-lg p-4 text-white mb-6">
-					<div className="flex justify-between items-center mb-2">
+					<div className="flex flex-wrap gap-3 justify-between items-center mb-2">
 						<h3 className="text-lg font-semibold">Achievement Progress</h3>
 						<span className="text-sm">2 of 8 completed</span>
 					</div>
@@ -71,7 +71,7 @@ export const Achievements = () => {
 							style={{ width: "25%" }}
 						/>
 					</div>
-					<div className="grid grid-cols-4 gap-4 text-center">
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
 						{Object.entries(progressStats).map(([category, { completed, total }]) => (
 							<div key={category} className="bg-blue-800/15 p-2 rounded">
 								<p className="text-sm font-bold text-blue-200">{category}</p>
@@ -113,13 +113,13 @@ export const Achievements = () => {
 										</p>
 									</div>
 									{achievement.completed ? (
-										<span className="text-xs font-bold text-blue-100">
-											Completed
-										</span>
+										<p className="flex items-center gap-1 text-[11px] font-bold text-blue-100 bg-green-500/25 h-max p-[6px] rounded-[10px]">
+											<Award size={12} className=" mt-[-1px]"/> Completed
+										</p>
 									) : (
-										<span className="text-xs text-blue-100 font-bold">
-											+{achievement.xp} XP
-										</span>
+										<p className="text-[11px] flex gap-1 text-blue-100 font-bold bg-blue-500/20  h-max p-[6px] rounded-[10px]">
+											+{achievement.xp} <span className=" hidden sm:flex">XP</span>
+										</p>
 									)}
 								</div>
 

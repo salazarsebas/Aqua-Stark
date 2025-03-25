@@ -26,32 +26,37 @@ export default function AchievementsPage() {
   const bubbles = useBubbles();
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-900 animated-background">
-      <nav className="relative z-10 p-4 bg-blue-700 border-b-2 border-blue-400/50">
-        <div className="flex items-center justify-between mx-auto font-sans max-w-7xl">
-          <Link to="/" className="flex items-center">
+    <nav className="relative z-10 p-4 bg-blue-700 border-b-2 border-blue-400/50">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mx-auto font-sans max-w-7xl">
+        {/* Left Section: Back Button and Title */}
+        <div className="flex flex-col sm:flex-row sm:items-center">
+          <Link to="/" className="flex items-center mb-2 sm:mb-0">
             <Button
               variant="ghost"
-              className="mr-2 text-xs text-white rounded-full hover:bg-blue-500/50"
+              className="flex items-center mr-0 sm:mr-2 text-xs text-white rounded-full hover:bg-blue-500/50 px-3 py-1 sm:px-4 sm:py-2"
             >
-              <ArrowLeft className="mr-2" width={14} />
-              Back to Game
+              <ArrowLeft className="mr-1 sm:mr-2" width={16} />
+              <span className="text-xs">Back to Game</span>
             </Button>
-            <h3 className="text-lg font-semibold text-white">
-              Achievements & Rewards
-            </h3>
           </Link>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center px-4 py-2 border rounded-full bg-blue-700/50 border-blue-400/50">
-              <Trophy className="mr-2 text-yellow-400" size={16} />
-              <span className="font-bold text-sm text-white">2/8</span>
-            </div>
+          <h3 className="text-base sm:text-lg font-semibold text-white">
+            Achievements & Rewards
+          </h3>
+        </div>
+
+        {/* Right Section: Trophy Progress */}
+        <div className="flex items-center gap-2 mt-2 sm:mt-0">
+          <div className="flex items-center px-3 py-1 sm:px-4 sm:py-2 border rounded-full bg-blue-700/50 border-blue-400/50">
+            <Trophy className="mr-1 sm:mr-2 text-yellow-400" size={14} />
+            <span className="font-bold text-xs sm:text-sm text-white">2/8</span>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
 
       <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl">
         <div className="w-full">
-          <div className="flex items-center justify-between gap-1 p-1 bg-blue-700 rounded-lg">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-1 bg-blue-700 rounded-lg">
             {TABS.map(({ id, name, icon }, i) => (
               <TabButton
                 key={i}
