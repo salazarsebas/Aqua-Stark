@@ -5,15 +5,15 @@ import { Search } from "lucide-react";
 import {
   categories,
   featuredTopics,
-} from "@/lib/constants/mock-data/mock-help-center";
-import BackToGameButton from "@/components/back-to-game-button";
+} from "@/data/help-center-data";
+import BackToGameButton from "@/components/help-center/back-to-game-button";
 import HelpCenterSidebar from "@/components/help-center/help-sidebar";
 import HelpMainContent from "@/components/help-center/help-main-content";
 import { BubblesBackground } from "@/components/bubble-background";
 import { useBubbles } from "@/hooks/useBubbles";
 import HelpFooter from "@/components/help-center/help-footer";
 
-function App() {
+function HelpCenter() {
   const [activeCategory, setActiveCategory] = useState("getting-started");
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -103,4 +103,4 @@ function App() {
   );
 }
 
-export default App;
+export default HelpCenter;

@@ -1,4 +1,19 @@
-import type { ReactNode } from "react";
+export type IconType =
+  | "info"
+  | "gamepad"
+  | "droplets"
+  | "heart"
+  | "fish"
+  | "waves"
+  | "sparkles"
+  | "utensils"
+  | "leaf"
+  | "shrimp"
+  | "thermometer"
+  | "lightbulb"
+  | "dna"
+  | "palette"
+  | "trophy";
 
 export interface ContentSection {
   type:
@@ -16,19 +31,19 @@ export interface ContentSection {
   gridItems?: {
     title: string;
     description: string;
-    icon?: ReactNode;
+    icon?: IconType;
     bgColor?: string;
   }[];
   level?: number;
   bgColor?: string;
-  iconType?: string;
+  iconType?: IconType;
 }
 
 export interface Topic {
   id: string;
   title: string;
   description: string;
-  icon: ReactNode;
+  icon: IconType;
   sections: ContentSection[];
 }
 
@@ -43,6 +58,6 @@ export interface FeaturedTopic {
   categoryId: string;
   title: string;
   description: string;
-  icon: ReactNode;
+  icon: IconType;
   bgColor: string;
 }

@@ -1,12 +1,6 @@
 import type { ContentSection, Topic } from "@/types/help-types";
-import {
-  Info,
-  Lightbulb,
-  Thermometer,
-  Dna,
-  Sparkles,
-  UtensilsCrossed,
-} from "lucide-react";
+import { UtensilsCrossed } from "lucide-react";
+import { getIcon } from "@/components/help-center/icon-mapper";
 
 export function renderTopicContent(topic: Topic) {
   return (
@@ -53,7 +47,7 @@ function renderSection(section: ContentSection) {
       return (
         <div className="bg-yellow-700/40 border border-yellow-400 text-yellow-100/90 p-4 rounded-lg">
           <div className="flex items-center gap-1 mb-2">
-            {renderIcon(section.iconType)}
+            {section.iconType && getIcon(section.iconType)}
             <div>
               <h4 className="font-bold text-lg">Pro Tip:</h4>
             </div>{" "}
@@ -73,9 +67,11 @@ function renderSection(section: ContentSection) {
             {section.gridItems?.map((item, i) => (
               <div key={i} className="bg-blue-500/20 p-3 rounded-lg">
                 <div className="flex gap-2 items-center">
-                  <span className={` ${item.bgColor} rounded-full p-2`}>
-                    {item.icon}
-                  </span>{" "}
+                  {item.icon && (
+                    <span className={` ${item.bgColor} rounded-full p-2`}>
+                      {getIcon(item.icon)}
+                    </span>
+                  )}{" "}
                   <h5 className="font-semibold">{item.title}</h5>
                 </div>
 
@@ -103,22 +99,5 @@ function renderSection(section: ContentSection) {
 
     default:
       return <p>{section.content}</p>;
-  }
-}
-
-function renderIcon(iconType?: string) {
-  switch (iconType) {
-    case "info":
-      return <Info className="h-6 w-6 mr-2 mt-1 flex-shrink-0" />;
-    case "lightbulb":
-      return <Lightbulb className="h-6 w-6 mr-2 mt-1 flex-shrink-0" />;
-    case "thermometer":
-      return <Thermometer className="h-6 w-6 mr-2 mt-1 flex-shrink-0" />;
-    case "dna":
-      return <Dna className="h-6 w-6 mr-2 mt-1 flex-shrink-0" />;
-    case "sparkles":
-      return <Sparkles className="h-6 w-6 mr-2 mt-1 flex-shrink-0" />;
-    default:
-      return <Info className="h-6 w-6 mr-2 mt-1 flex-shrink-0" />;
   }
 }

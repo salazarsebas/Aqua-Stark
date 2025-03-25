@@ -1,24 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Category, FeaturedTopic } from "@/types/help-types";
-import {
-  Info,
-  Gamepad2,
-  Droplets,
-  Heart,
-  Fish,
-  Waves,
-  Sparkles,
-  Utensils,
-  Leaf,
-  Shrimp,
-} from "lucide-react";
-
-const createIcon = (IconComponent: any) => (
-  <IconComponent className="h-6 w-6" />
-);
-const createSmallIcon = (IconComponent: any) => (
-  <IconComponent className="h-5 w-5" />
-);
 
 export const categories: Category[] = [
   {
@@ -29,7 +9,7 @@ export const categories: Category[] = [
         id: "game-basics",
         title: "Game Basics",
         description: "Learn the fundamentals of Aqua Stark",
-        icon: createIcon(Info),
+        icon: "info",
         sections: [
           {
             type: "paragraph",
@@ -62,14 +42,14 @@ export const categories: Category[] = [
         id: "game-controls",
         title: "Game Controls",
         description: "How to navigate and interact with the game",
-        icon: createIcon(Gamepad2),
+        icon: "gamepad",
         sections: [],
       },
       {
         id: "your-first-aquarium",
         title: "Your First Aquarium",
         description: "Setting up your first underwater world",
-        icon: createIcon(Waves),
+        icon: "waves",
         sections: [],
       },
     ],
@@ -82,7 +62,7 @@ export const categories: Category[] = [
         id: "feeding-your-fish",
         title: "Feeding Your Fish",
         description: "Learn about proper fish nutrition",
-        icon: createIcon(Droplets),
+        icon: "droplets",
         sections: [
           {
             type: "paragraph",
@@ -113,28 +93,28 @@ export const categories: Category[] = [
                 title: "Basic Flakes",
                 description:
                   "Standard food suitable for most fish. Provides basic nutrition and is affordable.",
-                icon: createIcon(Utensils),
+                icon: "utensils",
                 bgColor: "bg-yellow-500 opacity-80 text-white",
               },
               {
                 title: "Algae Wafers",
                 description:
                   "Perfect for herbivorous fish. Sinks to the bottom for bottom-feeders.",
-                icon: createIcon(Leaf),
+                icon: "leaf",
                 bgColor: "bg-green-500 opacity-80 text-white",
               },
               {
                 title: "Premium Pellets",
                 description:
                   "High-protein food for carnivorous fish. Enhances color and growth.",
-                icon: createIcon(Shrimp),
+                icon: "shrimp",
                 bgColor: "bg-red-500 opacity-80 text-white",
               },
               {
                 title: "Special Treats",
                 description:
                   "Boosts happiness and can trigger special behaviors or breeding.",
-                icon: createIcon(Sparkles),
+                icon: "sparkles",
                 bgColor: "bg-purple-500 opacity-80 text-yellow-400",
               },
             ],
@@ -155,14 +135,14 @@ export const categories: Category[] = [
         id: "fish-health",
         title: "Fish Health",
         description: "Keeping your aquatic friends healthy",
-        icon: createIcon(Heart),
+        icon: "heart",
         sections: [],
       },
       {
         id: "water-quality",
         title: "Water Quality",
         description: "Maintaining optimal water conditions",
-        icon: createIcon(Waves),
+        icon: "waves",
         sections: [],
       },
     ],
@@ -180,7 +160,7 @@ export const featuredTopics: FeaturedTopic[] = [
     categoryId: "getting-started",
     title: "Game Basics",
     description: "Learn the fundamentals of Aqua Stark",
-    icon: createSmallIcon(Info),
+    icon: "info",
     bgColor: "bg-blue-500 hover:bg-blue-600",
   },
   {
@@ -188,7 +168,7 @@ export const featuredTopics: FeaturedTopic[] = [
     categoryId: "fish-care",
     title: "Feeding Your Fish",
     description: "Learn about proper fish nutrition",
-    icon: createSmallIcon(Heart),
+    icon: "heart",
     bgColor: "bg-green-700 hover:bg-green-800",
   },
   {
@@ -196,7 +176,7 @@ export const featuredTopics: FeaturedTopic[] = [
     categoryId: "advanced-techniques",
     title: "Breeding Fish",
     description: "Create new generations of rare fish",
-    icon: createSmallIcon(Fish),
+    icon: "fish",
     bgColor: "bg-purple-700 hover:bg-purple-800",
   },
 ];

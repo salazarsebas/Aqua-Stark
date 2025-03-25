@@ -2,7 +2,8 @@
 
 import { ChevronRight, X } from "lucide-react";
 import type { Category, Topic } from "@/types/help-types";
-import { renderTopicContent } from "@/components/content-renderer";
+import { renderTopicContent } from "@/components/help-center/content-renderer";
+import { getIcon } from "@/components/help-center/icon-mapper";
 
 interface HelpMainContentProps {
   currentCategory: Category | undefined;
@@ -57,7 +58,7 @@ export default function HelpMainContent({
               >
                 <div className="flex items-center justify-between space-x-3">
                   <div className="flex items-start gap-3">
-                    <div className="mt-1 text-white">{topic.icon}</div>
+                    <div className="mt-1 text-white">{getIcon(topic.icon)}</div>
                     <div>
                       <h3 className="text-xl font-semibold text-white">
                         {topic.title}
