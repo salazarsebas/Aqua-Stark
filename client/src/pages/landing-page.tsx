@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useBubbles } from "@/components/landingPage/hooks/useBubbles" 
 import { Navbar } from "@/components/landingPage/navbar"
@@ -36,6 +36,5 @@ export default function LandingPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
-
