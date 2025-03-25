@@ -20,8 +20,8 @@ import { SpecialEventsView } from "@/components/events-calendar/special-events-v
 import { ListEventView } from "@/components/events-calendar/list-event-view"
 import { CalendarView } from "@/components/events-calendar/calendar-view"
 import { EventDetailsModal } from "@/components/events-calendar/event-details-modal"
-import { mockEvents } from "@/data/mock-data"
 import { AllEventsView } from "@/components/events-calendar/all-events-view"
+import { mockEvents } from "@/data/event-calendar-data"
 
 
 type TabType = "all" | "special" | "seasons" | "tournaments" | "offers"

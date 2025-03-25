@@ -12,7 +12,7 @@ function App() {
       <Route path="/game" element={<GamePage />} />
       <Route path="/store" element={<StorePage />} />
       <Route path="/achievements" element={<AchievementsPage />} />
-      <Route path="/event" element={<EventsCalendar/>} />
+      <Route path="/events" element={<EventsCalendar/>} />
     </Routes>
   );
 }
