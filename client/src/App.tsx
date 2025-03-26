@@ -9,8 +9,8 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/game" element={<GamePage />} />
-     <Route path="/store" element={<StorePage />} />
-     <Route path="/breedingLaboratory" element={<BreedingLaboratory />} />
+     <Route path="/" element={<StorePage />} />
+     <Route path="/store" element={<BreedingLaboratory />} />
       <Route path="/achievements" element={<AchievementsPage />} />
 
     </Routes>
