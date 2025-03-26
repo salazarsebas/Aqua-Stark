@@ -135,7 +135,7 @@ export function CalendarView({ events = [], onEventClick }: CalendarViewProps) {
         {days.map((day, index) => (
           <div
             key={index}
-            className={`min-h-[70px] p-1 rounded ${
+            className={`min-h-[70px] 2xl:min-h-[100px] p-1 rounded ${
               day ? "bg-blue-800/40" : ""
             }`}
           >

@@ -79,7 +79,7 @@ export function EventCard({ event, onClick, isPast = false }: EventCardProps) {
   if (isPast) {
     return (
       <div className="bg-blue-800/40 border border-blue-700/50 rounded-lg overflow-hidden cursor-default">
-        <div className="relative h-40 bg-gray-200">
+        <div className="relative h-40 2xl:h-80 bg-gray-200">
           <div className="absolute top-2 right-2">
             <span className={`${tag.bg} text-white px-2 py-0.5 flex gap-x-1 rounded-full text-xs font-medium`}>
               {tag.icon} {tag.text}
@@ -124,7 +124,7 @@ export function EventCard({ event, onClick, isPast = false }: EventCardProps) {
       className="bg-blue-800/40 border border-blue-700/50 rounded-lg overflow-hidden hover:shadow-lg transition-all cursor-pointer hover:transform hover:scale-[1.02]"
       onClick={onClick}
     >
-      <div className="relative h-40 bg-gray-200">
+      <div className="relative h-40 2xl:h-80 bg-gray-200">
         <div className="absolute top-2 right-2">
           <span className={`${tag.bg} text-white px-2 py-0.5 flex gap-x-1 rounded-full text-xs font-medium`}>
             {tag.icon} {tag.text}

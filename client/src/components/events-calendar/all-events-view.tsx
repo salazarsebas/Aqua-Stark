@@ -63,7 +63,7 @@ export function AllEventsView({
       {featuredEvent && !searchQuery && (
         <div className="bg-blue-800/50 rounded-xl overflow-hidden text-blue-200">
           <div className="flex flex-col md:flex-row">
-            <div className="relative w-full md:w-2/5 h-64 md:h-auto bg-gray-200">
+            <div className="relative w-full md:w-2/5 h-64 md:h-auto 2xl:h-96 bg-gray-200">
               <div className="absolute top-4 left-4">
                 <span className="bg-purple-500 text-white flex gap-1 items-center px-3 py-1 rounded-full text-sm font-medium">
                   <Sparkles className="w-3 h-3" /> Featured Event
