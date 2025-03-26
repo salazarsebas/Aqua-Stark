@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react";
 import {
   ArrowLeft,
   Calendar,
@@ -12,112 +12,114 @@ import {
   Sparkles,
   Tag,
   Trophy,
-} from "lucide-react"
+} from "lucide-react";
 
-import { useBubbles } from "@/hooks/useBubbles"
-import { BubblesBackground } from "@/components/bubble-background"
-import { SpecialEventsView } from "@/components/events-calendar/special-events-view"
-import { ListEventView } from "@/components/events-calendar/list-event-view"
-import { CalendarView } from "@/components/events-calendar/calendar-view"
-import { EventDetailsModal } from "@/components/events-calendar/event-details-modal"
-import { AllEventsView } from "@/components/events-calendar/all-events-view"
-import { mockEvents } from "@/data/event-calendar-data"
+import { useBubbles } from "@/hooks/useBubbles";
+import { BubblesBackground } from "@/components/bubble-background";
+import { SpecialEventsView } from "@/components/events-calendar/special-events-view";
+import { ListEventView } from "@/components/events-calendar/list-event-view";
+import { CalendarView } from "@/components/events-calendar/calendar-view";
+import { EventDetailsModal } from "@/components/events-calendar/event-details-modal";
+import { AllEventsView } from "@/components/events-calendar/all-events-view";
+import { mockEvents } from "@/data/event-calendar-data";
 
-type TabType = "all" | "special" | "seasons" | "tournaments" | "offers"
-type ViewType = "list" | "calendar"
+type TabType = "all" | "special" | "seasons" | "tournaments" | "offers";
+type ViewType = "list" | "calendar";
 
 export default function EventsCalendar() {
-  const [activeTab, setActiveTab] = useState<TabType>("all")
-  const [viewType, setViewType] = useState<ViewType>("list")
-  const [selectedEvent, setSelectedEvent] = useState<any>(null)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const [activeTab, setActiveTab] = useState<TabType>("all");
+  const [viewType, setViewType] = useState<ViewType>("list");
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleTabChange = (tab: TabType) => {
-    setActiveTab(tab)
-    setMobileMenuOpen(false)
-  }
+    setActiveTab(tab);
+    setMobileMenuOpen(false);
+  };
 
   const handleEventClick = (event: any) => {
-    setSelectedEvent(event)
-  }
+    setSelectedEvent(event);
+  };
 
   const closeModal = () => {
-    setSelectedEvent(null)
-  }
+    setSelectedEvent(null);
+  };
 
   // Close mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMobileMenuOpen(false)
+        setMobileMenuOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Get tab name for display
   const getTabName = (tab: TabType) => {
     switch (tab) {
       case "all":
-        return "All Events"
+        return "All Events";
       case "special":
-        return "Special"
+        return "Special";
       case "seasons":
-        return "Seasons"
+        return "Seasons";
       case "tournaments":
-        return "Tournaments"
+        return "Tournaments";
       case "offers":
-        return "Offers"
+        return "Offers";
       default:
-        return "All Events"
+        return "All Events";
     }
-  }
+  };
 
   // Get tab icon
   const getTabIcon = (tab: TabType) => {
     switch (tab) {
       case "all":
-        return <Calendar className="w-4 h-4" />
+        return <Calendar className="w-4 h-4" />;
       case "special":
-        return <Sparkles className="w-4 h-4" />
+        return <Sparkles className="w-4 h-4" />;
       case "seasons":
-        return <CalendarRange className="w-4 h-4" />
+        return <CalendarRange className="w-4 h-4" />;
       case "tournaments":
-        return <Trophy className="w-4 h-4" />
+        return <Trophy className="w-4 h-4" />;
       case "offers":
-        return <Tag className="w-4 h-4" />
+        return <Tag className="w-4 h-4" />;
       default:
-        return <Calendar className="w-4 h-4" />
+        return <Calendar className="w-4 h-4" />;
     }
-  }
+  };
 
   // Filter events based on active tab
   const filteredEvents = mockEvents
     ? activeTab === "all"
       ? mockEvents
       : mockEvents.filter((event) => event.category === activeTab)
-    : []
+    : [];
 
-  const bubbles = useBubbles()
+  const bubbles = useBubbles();
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-blue-500 via-blue-700 to-blue-900 text-white">
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-blue-600 via-blue-800 to-blue-900 text-white">
       <BubblesBackground bubbles={bubbles} animationName="footer-float-up" />
 
       {/* Header */}
-      <nav className="relative z-10 p-4 bg-blue-700 border-b-2 border-blue-400/50 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-48">
-        <div className="flex items-center justify-between mx-auto font-sans max-w-[1920px] w-full">
+      <nav className="relative z-10 py-4 bg-blue-700 ">
+        <div className="flex items-center justify-between  font-sans px-4 lg:px-8 xl:px-16 container mx-auto w-full ">
           <div className="flex items-center">
             <button className="mr-2 text-xs text-white rounded-full hover:bg-blue-500/50 flex items-center p-2">
               <ArrowLeft className="mr-2" width={20} />
               <span className="hidden md:flex">Back to Game</span>
             </button>
-            <h3 className="text-lg md:text-xl font-semibold text-white">Events Calendar</h3>
+            <h3 className="text-lg md:text-xl font-semibold text-white">
+              Events Calendar
+            </h3>
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center px-2 md:px-4 py-1 md:py-2 border rounded-full bg-blue-700/50 border-blue-400/50">
@@ -128,9 +130,10 @@ export default function EventsCalendar() {
         </div>
       </nav>
 
-      {/* Search and View Toggle */}
-      <div className="relative z-10 p-4 flex items-center justify-between w-full gap-x-2 md:gap-x-4 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-48">
-        <div className="max-w-[1920px] w-full mx-auto flex items-center justify-between gap-x-4">
+      <div className="flex flex-col px-4 lg:px-8 xl:px-16 container mx-auto">
+        {" "}
+        {/* Search and View Toggle */}
+        <div className="relative z-10 py-4 flex items-center justify-between w-full gap-x-2 md:gap-x-4  ">
           <div className="relative w-full max-w-3xl">
             <input
               type="text"
@@ -164,11 +167,8 @@ export default function EventsCalendar() {
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Tab Navigation - Desktop */}
-      <div className="relative z-10 mb-6 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-48 hidden md:block">
-        <div className="max-w-[1920px] mx-auto">
+        {/* Tab Navigation - Desktop */}
+        <div className="relative z-10 mb-6 hidden md:block ">
           <div className="bg-blue-700 rounded-lg p-1 flex">
             <button
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-md text-sm font-medium ${
@@ -199,7 +199,9 @@ export default function EventsCalendar() {
             </button>
             <button
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-md text-sm font-medium ${
-                activeTab === "tournaments" ? "bg-blue-600" : "hover:bg-blue-600/30"
+                activeTab === "tournaments"
+                  ? "bg-blue-600"
+                  : "hover:bg-blue-600/30"
               }`}
               onClick={() => handleTabChange("tournaments")}
             >
@@ -217,79 +219,108 @@ export default function EventsCalendar() {
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Tab Navigation - Mobile Dropdown */}
-      <div className="relative z-20 mb-6 px-4 md:hidden">
-        <div ref={menuRef} className="relative">
-          <button
-            className="w-full bg-blue-700 rounded-lg p-3 flex items-center justify-between"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <div className="flex items-center gap-2">
-              {getTabIcon(activeTab)}
-              <span className="font-medium">{getTabName(activeTab)}</span>
-            </div>
-            <ChevronDown className={`w-5 h-5 transition-transform ${mobileMenuOpen ? "rotate-180" : ""}`} />
-          </button>
-
-          {mobileMenuOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-blue-800 rounded-lg shadow-lg overflow-hidden z-50">
-              <div className="p-1">
-                {(["all", "special", "seasons", "tournaments", "offers"] as TabType[]).map((tab) => (
-                  <button
-                    key={tab}
-                    className={`w-full flex items-center gap-2 px-4 py-3 text-left rounded-md ${
-                      activeTab === tab ? "bg-blue-600" : "hover:bg-blue-700"
-                    }`}
-                    onClick={() => handleTabChange(tab)}
-                  >
-                    {getTabIcon(tab)}
-                    <span>{getTabName(tab)}</span>
-                  </button>
-                ))}
+        {/* Tab Navigation - Mobile Dropdown */}
+        <div className="relative z-20 mb-6 md:hidden">
+          <div ref={menuRef} className="relative">
+            <button
+              className="w-full bg-blue-700 rounded-lg p-3 flex items-center justify-between"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <div className="flex items-center gap-2">
+                {getTabIcon(activeTab)}
+                <span className="font-medium">{getTabName(activeTab)}</span>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
+              <ChevronDown
+                className={`w-5 h-5 transition-transform ${
+                  mobileMenuOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
 
-      {/* Content Area */}
-      <div className="relative z-10 px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-48 pb-16 flex-grow">
-        <div className="max-w-[1920px] mx-auto">
+            {mobileMenuOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-blue-800 rounded-lg shadow-lg overflow-hidden z-50">
+                <div className="p-1">
+                  {(
+                    [
+                      "all",
+                      "special",
+                      "seasons",
+                      "tournaments",
+                      "offers",
+                    ] as TabType[]
+                  ).map((tab) => (
+                    <button
+                      key={tab}
+                      className={`w-full flex items-center gap-2 px-4 py-3 text-left rounded-md ${
+                        activeTab === tab ? "bg-blue-600" : "hover:bg-blue-700"
+                      }`}
+                      onClick={() => handleTabChange(tab)}
+                    >
+                      {getTabIcon(tab)}
+                      <span>{getTabName(tab)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* Content Area */}
+        <div className="relative z-10 pb-16 flex-grow">
           {viewType === "list" && (
             <>
               {activeTab === "all" ? (
-                <AllEventsView events={filteredEvents} onEventClick={handleEventClick} searchQuery={searchQuery} />
+                <AllEventsView
+                  events={filteredEvents}
+                  onEventClick={handleEventClick}
+                  searchQuery={searchQuery}
+                />
               ) : activeTab === "special" ? (
-                <SpecialEventsView events={filteredEvents} onEventClick={handleEventClick} searchQuery={searchQuery} />
+                <SpecialEventsView
+                  events={filteredEvents}
+                  onEventClick={handleEventClick}
+                  searchQuery={searchQuery}
+                />
               ) : (
-                <ListEventView events={filteredEvents} onEventClick={handleEventClick} searchQuery={searchQuery} />
+                <ListEventView
+                  events={filteredEvents}
+                  onEventClick={handleEventClick}
+                  searchQuery={searchQuery}
+                />
               )}
             </>
           )}
 
-          {viewType === "calendar" && <CalendarView events={filteredEvents} onEventClick={handleEventClick} />}
+          {viewType === "calendar" && (
+            <CalendarView
+              events={filteredEvents}
+              onEventClick={handleEventClick}
+            />
+          )}
 
-          {(activeTab === "seasons" || activeTab === "tournaments" || activeTab === "offers") &&
+          {(activeTab === "seasons" ||
+            activeTab === "tournaments" ||
+            activeTab === "offers") &&
             filteredEvents.length === 0 && (
               <div className="flex items-center justify-center h-64 bg-blue-800/30 rounded-lg">
-                <p className="text-lg text-blue-200">This tab is under development</p>
+                <p className="text-lg text-blue-200">
+                  This tab is under development
+                </p>
               </div>
             )}
         </div>
       </div>
-
       {/* Footer */}
       <div className="relative z-10 text-center text-sm text-blue-300 bg-blue-950 py-4 mt-auto">
-        <div className="max-w-[1920px] mx-auto px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-48">
+        <div className="px-4  lg:px-8 xl:px-16 container mx-auto">
           © {new Date().getFullYear()} Aqua Stark - All rights reserved
         </div>
       </div>
 
       {/* Event Details Modal */}
-      {selectedEvent && <EventDetailsModal event={selectedEvent} onClose={closeModal} />}
+      {selectedEvent && (
+        <EventDetailsModal event={selectedEvent} onClose={closeModal} />
+      )}
     </div>
-  )
+  );
 }
-
