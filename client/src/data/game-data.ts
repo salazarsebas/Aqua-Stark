@@ -27,7 +27,7 @@ export const MOCK_FISH: FishType[] = [
   }
 ]
 
-export const MOCK_AQUARIUMS = ["Main Tank", "Breeding Tank", "Nursery"]
+export const MOCK_AQUARIUMS = ["My First Aquarium", "Second Aquarium", "Tropical Paradise"]
 
 export const INITIAL_GAME_STATE: GameState = {
   happiness: 80,

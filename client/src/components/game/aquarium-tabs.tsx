@@ -1,5 +1,6 @@
 import React from "react"
 import { Grid } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface AquariumTabProps {
   name: string
@@ -12,16 +13,14 @@ function AquariumTab({ name, active, icon, onClick }: AquariumTabProps) {
   return (
     <button
       onClick={onClick}
-      className={`
-        flex items-center px-4 py-2 rounded-t-lg text-sm font-medium
-        ${
-          active
-            ? "bg-blue-600/90 text-white"
-            : "bg-blue-800/50 text-white/70 hover:bg-blue-700/60 hover:text-white"
-        }
-      `}
+      className={cn(
+        "game-button px-6 py-3 rounded-t-xl font-bold transition-all duration-200 flex items-center",
+        active
+          ? "bg-gradient-to-b from-blue-400 to-blue-600 text-white translate-y-0"
+          : "bg-blue-800/50 text-white/70 hover:bg-blue-700/50 translate-y-2",
+      )}
     >
-      {icon}
+      {icon && icon}
       {name}
     </button>
   )
