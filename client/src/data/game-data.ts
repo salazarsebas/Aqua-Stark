@@ -10,21 +10,21 @@ export interface GameState {
 // Datos mock
 export const MOCK_FISH: FishType[] = [
   {
-    id: "1",
-    name: "Nemo",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish1-8J9X1J6jlWP2xj88XACJcaMqDLbHW.png",
-    position: { x: 20, y: 30 },
+    id: 1,
+    name: "Fish 1",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish1-ioYn5CvkJkCHPwgx1jBGoqibnAu5to.png",
     rarity: "Common",
     generation: 1,
+    position: { x: 20, y: 30 },
   },
   {
-    id: "2",
-    name: "Dory",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish2-8J9X1J6jlWP2xj88XACJcaMqDLbHW.png",
-    position: { x: 80, y: 40 },
+    id: 2,
+    name: "Fish 2",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish2-D0YdqsjY0OgI0AZg98FS0Sq7zMm2Fe.png",
     rarity: "Rare",
     generation: 2,
-  },
+    position: { x: 60, y: 50 },
+  }
 ]
 
 export const MOCK_AQUARIUMS = ["Main Tank", "Breeding Tank", "Nursery"]

@@ -6,7 +6,7 @@ interface FishDisplayProps {
 
 export function FishDisplay({ fish }: FishDisplayProps) {
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div>
       {fish.map((fish) => (
         <div
           key={fish.id}
