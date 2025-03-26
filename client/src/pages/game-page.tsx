@@ -8,12 +8,17 @@ import { TipsPopup } from "@/components/game/tips-popup"
 import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
-
+import { GameMenu } from "@/components/game/game-menu"
+import { WaterEffects } from "@/components/game/water-effects"
 export default function GamePage() {
   const { happiness, food, energy } = useFishStats(INITIAL_GAME_STATE)
   const { selectedAquarium, handleAquariumChange, aquariums } = useAquarium()
   const [showMenu, setShowMenu] = useState(false)
   const [showTips, setShowTips] = useState(false)
+
+  const handleTipsToggle = () => {
+    setShowTips(!showTips)
+  }
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#005C99]">
@@ -26,6 +31,8 @@ export default function GamePage() {
       <div className="absolute inset-0 light-rays"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-blue-900/30"></div>
       <div className="absolute inset-0 animate-water-movement"></div>
+
+      <WaterEffects />
 
       <div className="absolute inset-0 pointer-events-none">
         {MOCK_FISH.map((fish, index) => (
@@ -55,26 +62,17 @@ export default function GamePage() {
       />
 
       {showMenu && (
-        <div className="absolute top-20 right-4 w-64 bg-blue-900/90 backdrop-blur-sm rounded-xl p-4 shadow-xl z-30">
-          <h3 className="text-white font-bold mb-4">Game Menu</h3>
-          <div className="space-y-2">
-            <button className="w-full text-left text-white/80 hover:text-white px-4 py-2 rounded hover:bg-blue-800/50">
-              Save Game
-            </button>
-            <button className="w-full text-left text-white/80 hover:text-white px-4 py-2 rounded hover:bg-blue-800/50">
-              Settings
-            </button>
-            <button className="w-full text-left text-white/80 hover:text-white px-4 py-2 rounded hover:bg-blue-800/50">
-              Exit Game
-            </button>
-          </div>
-        </div>
+        <GameMenu show={showMenu} />
       )}
 
       <GameSidebarButtons />
 
       <div className="absolute bottom-0 right-4 mb-4">
-        <TipsPopup show={showTips} onClose={() => setShowTips(false)} />
+        <TipsPopup 
+          show={showTips} 
+          onClose={() => setShowTips(false)} 
+          onToggle={handleTipsToggle}
+        />
       </div>
 
       <AquariumTabs

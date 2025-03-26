@@ -1,30 +1,6 @@
-import React from "react"
 import { Fish } from "lucide-react"
+import { GameStatusBar } from "../game-status-bar"
 import { GameButton } from "./game-button"
-
-interface GameStatusBarProps {
-  icon: string
-  value: number
-  color: string
-  label: string
-}
-
-function GameStatusBar({ icon, value, color, label }: GameStatusBarProps) {
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-xl">{icon}</span>
-      <div className="w-24">
-        <div className="h-2 bg-blue-800/50 rounded-full overflow-hidden">
-          <div
-            className={`h-full bg-gradient-to-r ${color}`}
-            style={{ width: `${value}%` }}
-          />
-        </div>
-        <span className="text-xs text-white/80">{label}</span>
-      </div>
-    </div>
-  )
-}
 
 interface GameHeaderProps {
   happiness: number
@@ -34,6 +10,7 @@ interface GameHeaderProps {
 }
 
 export function GameHeader({ happiness, food, energy, onMenuToggle }: GameHeaderProps) {
+
   return (
     <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4 z-20">
       <div className="flex items-center gap-4">
@@ -47,15 +24,15 @@ export function GameHeader({ happiness, food, energy, onMenuToggle }: GameHeader
       </div>
 
       <div className="flex items-center gap-4 bg-blue-900/40 backdrop-blur-sm p-3 rounded-xl">
-        <div className="flex items-center gap-2 mr-4 bg-blue-800/50 px-3 py-1 rounded-lg">
-          <Fish className="text-blue-200 h-5 w-5" />
-          <span className="text-white font-bold">2/10</span>
-        </div>
+          <div className="flex items-center gap-2 mr-4 bg-blue-800/50 px-3 py-1 rounded-lg">
+            <Fish className="text-blue-200 h-5 w-5" />
+            <span className="text-white font-bold">2/10</span>
+          </div>
 
-        <GameStatusBar icon="🌟" value={happiness} color="from-yellow-400 to-yellow-600" label="Happiness" />
-        <GameStatusBar icon="🍖" value={food} color="from-orange-400 to-orange-600" label="Hunger" />
-        <GameStatusBar icon="⚡" value={energy} color="from-blue-400 to-blue-600" label="Energy" />
-      </div>
+          <GameStatusBar icon="🌟" value={happiness} color="from-yellow-400 to-yellow-600" label="Happiness" />
+          <GameStatusBar icon="🍖" value={food} color="from-orange-400 to-orange-600" label="Hunger" />
+          <GameStatusBar icon="⚡" value={energy} color="from-blue-400 to-blue-600" label="Energy" />
+        </div>
 
       <div className="flex items-center gap-2">
         <GameButton
