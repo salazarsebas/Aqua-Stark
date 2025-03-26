@@ -1,13 +1,6 @@
-// Tipos
-export interface FishType {
-  id: number
-  name: string
-  image: string
-  rarity: string
-  generation: number
-  position: { x: number; y: number }
-}
+import { FishType } from "@/types/game"
 
+// Tipos
 export interface GameState {
   happiness: number
   food: number
@@ -17,31 +10,27 @@ export interface GameState {
 // Datos mock
 export const MOCK_FISH: FishType[] = [
   {
-    id: 1,
-    name: "Fish 1",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish1-ioYn5CvkJkCHPwgx1jBGoqibnAu5to.png",
+    id: "1",
+    name: "Nemo",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish1-8J9X1J6jlWP2xj88XACJcaMqDLbHW.png",
+    position: { x: 20, y: 30 },
     rarity: "Common",
     generation: 1,
-    position: { x: 20, y: 30 },
   },
   {
-    id: 2,
-    name: "Fish 2",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish2-D0YdqsjY0OgI0AZg98FS0Sq7zMm2Fe.png",
+    id: "2",
+    name: "Dory",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fish2-8J9X1J6jlWP2xj88XACJcaMqDLbHW.png",
+    position: { x: 80, y: 40 },
     rarity: "Rare",
     generation: 2,
-    position: { x: 60, y: 50 },
   },
 ]
 
-export const MOCK_AQUARIUMS = [
-  "My First Aquarium",
-  "Second Aquarium",
-  "Tropical Paradise",
-]
+export const MOCK_AQUARIUMS = ["Main Tank", "Breeding Tank", "Nursery"]
 
 export const INITIAL_GAME_STATE: GameState = {
-  happiness: 75,
-  food: 60,
-  energy: 90,
+  happiness: 80,
+  food: 90,
+  energy: 75,
 } 

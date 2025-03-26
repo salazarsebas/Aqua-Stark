@@ -5,11 +5,13 @@ import { GameHeader } from "@/components/game/game-header"
 import { GameSidebarButtons } from "@/components/game/game-sidebar-buttons"
 import { AquariumTabs } from "@/components/game/aquarium-tabs"
 import { TipsPopup } from "@/components/game/tips-popup"
+import { FishDisplay } from "@/components/game/fish-display"
 import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
 import { GameMenu } from "@/components/game/game-menu"
 import { WaterEffects } from "@/components/game/water-effects"
+
 export default function GamePage() {
   const { happiness, food, energy } = useFishStats(INITIAL_GAME_STATE)
   const { selectedAquarium, handleAquariumChange, aquariums } = useAquarium()
@@ -29,30 +31,11 @@ export default function GamePage() {
       />
 
       <div className="absolute inset-0 light-rays"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-blue-900/30"></div>
       <div className="absolute inset-0 animate-water-movement"></div>
 
       <WaterEffects />
 
-      <div className="absolute inset-0 pointer-events-none">
-        {MOCK_FISH.map((fish, index) => (
-          <div
-            key={index}
-            className="absolute"
-            style={{
-              left: `${fish.position.x}%`,
-              top: `${fish.position.y}%`,
-              /* transform: `scale(${fish.direction === 'left' ? '-1' : '1'})`, */
-            }}
-          >
-            <img
-              src={fish.image}
-              alt={fish.name}
-              className="w-16 h-16 object-contain"
-            />
-          </div>
-        ))}
-      </div>
+      <FishDisplay fish={MOCK_FISH} />
 
       <GameHeader
         happiness={happiness}
