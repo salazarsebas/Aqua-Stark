@@ -4,6 +4,7 @@ import GamePage from "./pages/game-page";
 import StorePage from "./pages/storage-page";
 import AchievementsPage from "./pages/achievements-page";
 import EventsCalendar from "./pages/events-calendar";
+import TradingMarketPage from "./pages/trading-market";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/store" element={<StorePage />} />
       <Route path="/achievements" element={<AchievementsPage />} />
       <Route path="/events" element={<EventsCalendar/>} />
+      <Route path="/trading-market" element={<TradingMarketPage />} />
     </Routes>
   );
 }
