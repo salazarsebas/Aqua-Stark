@@ -42,7 +42,7 @@ export interface FishItem {
   }
   
   const mockProfileData: ProfileData = {
-    username: "AquaMaster2025",
+    username: "salazarsebas",
     level: 12,
     joinDate: "February 15, 2025",
     experience: {
@@ -70,7 +70,7 @@ export interface FishItem {
           rarity: "Legendary",
           level: 8,
           obtainedDate: "Apr 5, 2025",
-          imageUrl: "/images/fish/celestial-glowfin.png",
+          imageUrl: "/fish/fish1.png",
         },
         {
           id: "fish-002",
@@ -78,7 +78,7 @@ export interface FishItem {
           rarity: "Rare",
           level: 12,
           obtainedDate: "Mar 22, 2025",
-          imageUrl: "/images/fish/royal-crowntail.png",
+          imageUrl: "/fish/fish2.png",
         },
         {
           id: "fish-003",
@@ -86,7 +86,7 @@ export interface FishItem {
           rarity: "Special",
           level: 10,
           obtainedDate: "Apr 1, 2025",
-          imageUrl: "/images/fish/crimson-flasher.png",
+          imageUrl: "/fish/fish3.png",
         },
         {
           id: "fish-004",
@@ -94,7 +94,7 @@ export interface FishItem {
           rarity: "Common",
           level: 15,
           obtainedDate: "Feb 18, 2025",
-          imageUrl: "/images/fish/azure-drifter.png",
+          imageUrl: "/fish/fish4.png",
         },
       ],
     },
@@ -106,7 +106,6 @@ export interface FishItem {
     },
   }
   
-  export default mockProfileData
-  
+  export default mockProfileData  
 
   
