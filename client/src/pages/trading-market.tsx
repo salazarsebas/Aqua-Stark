@@ -24,6 +24,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
+import { Footer } from "@/components/footer"
+import { BubblesBackground } from "@/components/bubble-background"
+import { useBubbles } from "@/hooks/useBubbles"
 
 type FishRarity = "Common" | "Uncommon" | "Rare" | "Epic" | "Legendary"
 type ListingType = "Sale" | "Auction" | "Exchange"
@@ -752,6 +755,17 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState("browse")
   const [bidDialogOpen, setBidDialogOpen] = useState(false)
   const [selectedFish, setSelectedFish] = useState<FishListing | null>(null)
+  
+  // Initialize bubbles with custom settings
+  const bubbles = useBubbles({
+    initialCount: 50,
+    maxBubbles: 70,
+    minSize: 20,
+    maxSize: 60,
+    minDuration: 15,
+    maxDuration: 30,
+    interval: 300,
+  })
 
   const handleOpenBidDialog = (fish: FishListing) => {
     setSelectedFish(fish)
@@ -767,12 +781,27 @@ export default function Page() {
   const featuredAuction = auctionListings.find((fish) => fish.featured)
 
   return (
-    <div className="min-h-screen bg-blue-600">
+    <div className="min-h-screen bg-blue-600 relative overflow-hidden">
+      {/* Bubbles Background */}
+      <BubblesBackground
+        bubbles={bubbles}
+        className="opacity-50"
+        customStyles={{ 
+          pointerEvents: "none",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 0
+        }}
+      />
+
       {/* Header */}
       <MarketHeader />
 
       {/* Main content */}
-      <main className="max-w-7xl mx-auto p-4">
+      <main className="max-w-7xl mx-auto p-4 relative z-10">
         {/* Navigation Tabs */}
         <Tabs defaultValue="browse" value={activeTab} onValueChange={setActiveTab} className="mb-6">
           <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
@@ -813,6 +842,7 @@ export default function Page() {
         selectedFish={selectedFish}
         onPlaceBid={handlePlaceBid}
       />
+      <Footer />
     </div>
   )
 }
