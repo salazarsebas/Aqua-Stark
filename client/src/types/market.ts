@@ -1,30 +1,64 @@
-// Fish data types
-export type FishRarity = "Common" | "Uncommon" | "Rare" | "Epic" | "Legendary"
-export type ListingType = "Sale" | "Auction" | "Exchange"
+export interface Bubble {
+  id: number
+  size: number
+  left: number
+  duration: number
+  delay: number
+}
 
-export interface FishListing {
-  id: string
+export interface Fish {
+  id: number
   name: string
   image: string
-  rarity: FishRarity
-  seller: {
+  rarity: "Common" | "Uncommon" | "Rare" | "Epic" | "Legendary"
+  generation: number
+  level: number
+  traits: {
+    color: string
+    pattern: string
+    fins: string
+    size: string
+    special?: string
+  }
+  seller?: {
     name: string
-    verified?: boolean
+    avatar: string
+    rating: number
+    verified: boolean
   }
-  timeAgo: string
-  price: number
-  listingType: ListingType
-  bids?: number
-  endsIn?: string
-  lookingFor?: {
-    rarity?: FishRarity
-    colors?: string[]
-    traits?: string[]
+  price?: number
+  auction?: {
+    currentBid: number
+    minBid: number
+    endsIn: string
+    bids: number
   }
-  level?: number
-  generation?: number
-  traits?: string[]
-  minNextBid?: number
-  featured?: boolean
+  exchange?: {
+    lookingFor: string[]
+  }
+  listed: string
+}
+
+export interface MarketFilter {
+  search: string
+  rarity: string[]
+  minPrice: number
+  maxPrice: number
+  traits: string[]
+  listingType: "all" | "sale" | "auction" | "exchange"
+  sort: "newest" | "price-low" | "price-high" | "rarity" | "level"
+}
+
+export interface Transaction {
+  id: number
+  type: "purchase" | "sale" | "exchange" | "auction_win"
+  fishName: string
+  image: string
+  price?: number
+  date: string
+  seller?: string
+  buyer?: string
+  exchangedFor?: string
+  trader?: string
 }
 
