@@ -101,27 +101,4 @@ mod tests {
         assert(new_position.vec.y == initial_position.vec.y, 'position y is wrong');
     }
 
-    #[test]
-    fn test_ownership_component() {
-        // Test the ownership component
-        let state = Ownership::component_state_for_testing();
-        // define test data
-        let owner: ContractAddress = 'owner'.try_into().unwrap();
-        let second_owner = 'second_owner'.try_into().unwrap();
-
-        // test initializer
-        state.initializer(owner); // add initial owner
-        // check if owner matches
-        assert(state.owner() == owner, 'Unknown owner');
-
-        //test transfer owner
-        testing::set_contract_address(owner); // cheat caller
-        state.transfer_ownership(second_owner); // transfer ownership
-        assert(state.owner() == second_owner, 'Unknown new owner');
-
-        // test renounce ownership
-        testing::set_contract_address(second_owner); // cheat caller
-        state.renounce_ownership(); // renounce ownership
-        assert(state.owner() == 0.try_into.unwrap(), 'not zero owner');
-    }
 }

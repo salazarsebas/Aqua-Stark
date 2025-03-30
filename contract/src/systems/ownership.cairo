@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 
-#[starknet::interaface]
+#[starknet::interface]
 pub trait IOwnership<TState> {
     fn owner(self: @TState) -> ContractAddress;
     fn transfer_ownership(ref self: TState, new_owner: ContractAddress);
@@ -94,8 +94,7 @@ pub mod Ownership {
         fn _transfer_ownership(
             ref self: ComponentState<TContractState>, new_owner: ContractAddress,
         ) {
-            self.Ownable_pending_owner.write(Zero::zero());
-
+        
             let previous_owner: ContractAddress = self.Ownable_owner.read();
             self.Ownable_owner.write(new_owner);
             self.emit(OwnershipTransferred { previous_owner, new_owner });
