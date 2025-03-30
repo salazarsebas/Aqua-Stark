@@ -10,6 +10,10 @@ mod tests {
     use dojo_starter::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
     use dojo_starter::models::{Position, m_Position, Moves, m_Moves, Direction};
 
+    use crate::systems::ownership::{Ownership, Ownership::InternalTrait};
+    use starknet::ContractAddress;
+    use starknet::testing;
+
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
             namespace: "dojo_starter",
@@ -95,5 +99,29 @@ mod tests {
         let new_position: Position = world.read_model(caller);
         assert(new_position.vec.x == initial_position.vec.x + 1, 'position x is wrong');
         assert(new_position.vec.y == initial_position.vec.y, 'position y is wrong');
+    }
+
+    #[test]
+    fn test_ownership_component() {
+        // Test the ownership component
+        let state = Ownership::component_state_for_testing();
+        // define test data
+        let owner: ContractAddress = 'owner'.try_into().unwrap();
+        let second_owner = 'second_owner'.try_into().unwrap();
+
+        // test initializer
+        state.initializer(owner); // add initial owner
+        // check if owner matches
+        assert(state.owner() == owner, 'Unknown owner');
+
+        //test transfer owner
+        testing::set_contract_address(owner); // cheat caller
+        state.transfer_ownership(second_owner); // transfer ownership
+        assert(state.owner() == second_owner, 'Unknown new owner');
+
+        // test renounce ownership
+        testing::set_contract_address(second_owner); // cheat caller
+        state.renounce_ownership(); // renounce ownership
+        assert(state.owner() == 0.try_into.unwrap(), 'not zero owner');
     }
 }
