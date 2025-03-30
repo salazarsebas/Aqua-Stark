@@ -1,5 +1,6 @@
 use crate::systems::ownership::Ownership;
 use starknet::ContractAddress;
+use starknet::testing;
 
 #[starknet::contract]
 mod MockContract {
@@ -11,7 +12,7 @@ mod MockContract {
     // Ownable Mixin
     #[abi(embed_v0)]
     impl OwnableMixinImpl = Ownership::OwnableImpl<ContractState>;
-    impl InternalImpl = Ownership::InternalImpl<ContractState>;
+    impl OwnableInternalImpl = Ownership::InternalImpl<ContractState>;
 
     #[storage]
     pub struct Storage {
@@ -31,6 +32,21 @@ mod MockContract {
         self.ownable.initializer(owner);
     }
 
+    #[generate_trait]
+    pub impl PrivateImpl of PrivateTrait {
+        fn mock_initializer(ref self: ContractState, owner: ContractAddress){
+            self.ownable.initializer(owner);
+        }
+        fn mock_owner(self: @ContractState) -> ContractAddress{
+            self.ownable.owner()
+        }
+        fn mock_transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
+            self.ownable.transfer_ownership(new_owner);
+        }
+        fn mock_renounce_ownership(ref self: ContractState) {
+            self.ownable.renounce_ownership();
+        }
+    }
 
 }
 
@@ -42,6 +58,7 @@ impl TestingStateDefault of Default<TestingState> {
         Ownership::component_state_for_testing()
     }
 }
+use MockContract::PrivateTrait;
 
 #[test]
 fn test_ownership_component() {
@@ -52,17 +69,17 @@ fn test_ownership_component() {
     let second_owner = 'second_owner'.try_into().unwrap();
 
     // test initializer
-    state.ownable.initializer(owner); // add initial owner
+    state.mock_initializer(owner); // add initial owner
     // check if owner matches
-    assert(state.ownable.owner() == owner, 'Unknown owner');
+    assert(state.mock_owner() == owner, 'Unknown owner');
 
     //test transfer owner
     testing::set_contract_address(owner); // cheat caller
-    state.ownable.transfer_ownership(second_owner); // transfer ownership
-    assert(state.ownable.owner() == second_owner, 'Unknown new owner');
+    state.mock_transfer_ownership(second_owner); // transfer ownership
+    assert(state.mock_owner() == second_owner, 'Unknown new owner');
 
     // test renounce ownership
     testing::set_contract_address(second_owner); // cheat caller
-    state.ownable.renounce_ownership(); // renounce ownership
-    assert(state.ownable.owner() == 0.try_into().unwrap(), 'not zero owner');
+    state.mock_renounce_ownership(); // renounce ownership
+    assert(state.mock_owner() == 0.try_into().unwrap(), 'not zero owner');
 }
