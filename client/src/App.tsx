@@ -8,7 +8,10 @@ import HelpCenter from "./pages/help-center";
 import BreadingLaboratory from "./pages/breading-laboratory";
 import EventsCalendar from "./pages/events-calendar";
 import TradingMarketPage from "./pages/trading-market";
+import CommunityPage from "./pages/community-page";
+
 import MyProfile from "@/pages/my-profile";
+
 
 
 function App() {
@@ -22,6 +25,8 @@ function App() {
       <Route path="/help-center" element={<HelpCenter />} />
       <Route path="/events" element={<EventsCalendar/>} />
       <Route path="/trading-market" element={<TradingMarketPage />} />
+      <Route path="/community" element={<CommunityPage />} />
+
       <Route path="/my-profile" element={<MyProfile/>} />
     </Routes>
   );
