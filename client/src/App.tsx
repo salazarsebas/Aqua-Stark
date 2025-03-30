@@ -11,6 +11,7 @@ import TradingMarketPage from "./pages/trading-market";
 import CommunityPage from "./pages/community-page";
 
 import MyProfile from "@/pages/my-profile";
+import EncyclopediaPage from "./pages/encyclopledia";
 
 
 
@@ -21,6 +22,7 @@ function App() {
       <Route path="/game" element={<GamePage />} />
       <Route path="/store" element={<StorePage />} />
       <Route path="/breadingLaboratory" element={<BreadingLaboratory/>} />
+      <Route path="/encyclopedia" element={<EncyclopediaPage/>} />
       <Route path="/achievements" element={<AchievementsPage />} />
       <Route path="/help-center" element={<HelpCenter />} />
       <Route path="/events" element={<EventsCalendar/>} />
