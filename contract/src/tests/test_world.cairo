@@ -10,6 +10,10 @@ mod tests {
     use dojo_starter::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
     use dojo_starter::models::{Position, m_Position, Moves, m_Moves, Direction};
 
+    use crate::systems::ownership::{Ownership, Ownership::InternalTrait};
+    use starknet::ContractAddress;
+    use starknet::testing;
+
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
             namespace: "dojo_starter",
@@ -96,4 +100,5 @@ mod tests {
         assert(new_position.vec.x == initial_position.vec.x + 1, 'position x is wrong');
         assert(new_position.vec.y == initial_position.vec.y, 'position y is wrong');
     }
+
 }
