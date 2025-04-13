@@ -10,7 +10,7 @@ import BackToGameButton from "@/components/help-center/back-to-game-button";
 import HelpCenterSidebar from "@/components/help-center/help-sidebar";
 import HelpMainContent from "@/components/help-center/help-main-content";
 import { BubblesBackground } from "@/components/bubble-background";
-import { useBubbles } from "@/hooks/useBubbles";
+import { useBubbles } from "@/hooks/use-bubbles";
 import HelpFooter from "@/components/help-center/help-footer";
 
 function HelpCenter() {
