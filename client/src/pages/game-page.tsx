@@ -10,7 +10,8 @@ import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
 import { GameMenu } from "@/components/game/game-menu"
-import { WaterEffects } from "@/components/game/water-effects"
+import { useBubbles } from "@/hooks/use-bubbles"
+import { BubblesBackground } from "@/components/bubble-background"
 
 export default function GamePage() {
   const { happiness, food, energy } = useFishStats(INITIAL_GAME_STATE)
@@ -18,25 +19,43 @@ export default function GamePage() {
   const [showMenu, setShowMenu] = useState(false)
   const [showTips, setShowTips] = useState(false)
 
+  const bubbles = useBubbles({
+    initialCount: 10,
+    maxBubbles: 20,
+    minSize: 6,
+    maxSize: 30,
+    minDuration: 10,
+    maxDuration: 18,
+    interval: 400,
+  })
+
   const handleTipsToggle = () => {
     setShowTips(!showTips)
   }
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#005C99]">
+      {/* Background */}
       <img
-        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Bg-hbI9X1J6jlWP2xj88XACJcaMqDLbHW.png"
+        src="/backgrounds/background1.png"
         alt="Underwater Background"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
-      <div className="absolute inset-0 light-rays"></div>
-      <div className="absolute inset-0 animate-water-movement"></div>
+      {/* Bubbles */}
+      <BubblesBackground
+        bubbles={bubbles}
+        className="absolute inset-0 z-10 pointer-events-none"
+      />
 
-      <WaterEffects />
+      {/* Effects */}
+      <div className="absolute inset-0 light-rays z-20"></div>
+      <div className="absolute inset-0 animate-water-movement z-20"></div>
 
+      {/* Fish */}
       <FishDisplay fish={MOCK_FISH} />
 
+      {/* Header */}
       <GameHeader
         happiness={happiness}
         food={food}
@@ -44,20 +63,19 @@ export default function GamePage() {
         onMenuToggle={() => setShowMenu(!showMenu)}
       />
 
-      {showMenu && (
-        <GameMenu show={showMenu} />
-      )}
-
+      {showMenu && <GameMenu show={showMenu} />}
       <GameSidebarButtons />
 
-      <div className="absolute bottom-0 right-4 mb-4">
-        <TipsPopup 
-          show={showTips} 
-          onClose={() => setShowTips(false)} 
+      {/* Tips */}
+      <div className="absolute bottom-0 right-4 mb-4 z-30">
+        <TipsPopup
+          show={showTips}
+          onClose={() => setShowTips(false)}
           onToggle={handleTipsToggle}
         />
       </div>
 
+      {/* Tabs */}
       <AquariumTabs
         aquariums={aquariums}
         selectedAquarium={selectedAquarium}
@@ -66,4 +84,3 @@ export default function GamePage() {
     </div>
   )
 }
-
