@@ -14,7 +14,7 @@ import {
   Trophy,
 } from "lucide-react";
 
-import { useBubbles } from "@/hooks/useBubbles";
+import { useBubbles } from "@/hooks/use-bubbles";
 import { BubblesBackground } from "@/components/bubble-background";
 import { SpecialEventsView } from "@/components/events-calendar/special-events-view";
 import { ListEventView } from "@/components/events-calendar/list-event-view";
