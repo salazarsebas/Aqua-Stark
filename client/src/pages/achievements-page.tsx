@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Trophy, Target, Calendar, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useBubbles } from "@/hooks/useBubbles";
+import { useBubbles } from "@/hooks/use-bubbles";
 import { BubblesBackground } from "@/components/bubble-background";
 import { cn } from "@/lib/utils";
 import { LoginRewards } from "@/components/achievements/login-rewards";
