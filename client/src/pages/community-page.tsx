@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 // ^ Asumiendo que tienes un sistema de Tabs como en trading-market.tsx
 
 import { BubblesBackground } from "@/components/bubble-background";
-import { useBubbles } from "@/hooks/useBubbles";
+import { useBubbles } from "@/hooks/use-bubbles";
 
 import CommunityGallery from "@/components/community/community-gallery";
 import CommunityFriends from "@/components/community/community-friends";
