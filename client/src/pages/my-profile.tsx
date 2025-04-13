@@ -10,8 +10,9 @@ import {
   Achievements,
   PurchaseHistory,
   PlayerStatistics,
-  BackgroundBubbles
+  BubblesBackground
 } from "@/components/profile"
+import { useBubbles } from "@/hooks/use-bubbles"
 
 export default function MyProfile() {
   const [activeTab, setActiveTab] = useState("collection")
@@ -21,21 +22,40 @@ export default function MyProfile() {
     setIsLoaded(true)
   }, [])
 
-  const { username, level, joinDate, experience, currency, stats, fishCollection, playerStats } = mockProfileData
+  const bubbles = useBubbles({
+    initialCount: 15,
+    maxBubbles: 25,
+    minSize: 6,
+    maxSize: 30,
+    minDuration: 8,
+    maxDuration: 25,
+    interval: 500,
+  })
+
+  const {
+    username,
+    level,
+    joinDate,
+    experience,
+    currency,
+    stats,
+    fishCollection,
+    playerStats
+  } = mockProfileData
 
   return (
     <div className="min-h-screen bg-blue-700 text-white relative overflow-hidden">
       {/* Background bubbles */}
-      <BackgroundBubbles />
+      <BubblesBackground bubbles={bubbles} className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Content container with margins */}
+      {/* Content container */}
       <div
-        className={`max-w-4xl mx-auto px-4 py-6 transition-opacity duration-700 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        className={`relative z-10 max-w-4xl mx-auto px-4 py-6 transition-opacity duration-700 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
       >
-        {/* Header */}
         <ProfileHeader currency={currency} />
 
-        {/* Profile Card */}
         <ProfileCard 
           username={username}
           level={level}
@@ -44,16 +64,12 @@ export default function MyProfile() {
           stats={stats}
         />
 
-        {/* Tabs */}
         <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* Tab Content */}
         <div className="animate-fadeIn transition-all duration-500">
           {activeTab === "collection" && <FishCollection fishCollection={fishCollection} />}
           {activeTab === "achievements" && <Achievements stats={stats} />}
           {activeTab === "purchase" && <PurchaseHistory />}
-
-          {/* Player Statistics - Always shown */}
           <PlayerStatistics playerStats={playerStats} />
         </div>
       </div>
