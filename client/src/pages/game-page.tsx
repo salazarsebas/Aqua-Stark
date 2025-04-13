@@ -37,7 +37,7 @@ export default function GamePage() {
     <div className="relative w-full h-screen overflow-hidden bg-[#005C99]">
       {/* Background */}
       <img
-        src="/backgrounds/background1.png"
+        src="/backgrounds/background2.png"
         alt="Underwater Background"
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
