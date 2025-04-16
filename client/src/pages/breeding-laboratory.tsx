@@ -17,10 +17,10 @@ export default function LaboratoryPage() {
 
   const filteredFish = searchQuery
     ? fishCollection.filter(
-      (fish) =>
-        fish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        fish.rarity.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
+        (fish) =>
+          fish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          fish.rarity.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
     : fishCollection
 
   return (
@@ -51,7 +51,7 @@ export default function LaboratoryPage() {
         }
       />
 
-      <main className="relative z-10 container mx-auto p-4 md:p-6">
+      <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl">
         <LaboratoryTabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
