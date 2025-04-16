@@ -1,15 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { LaboratoryTabs } from "@/components/laboratory/laboratory-tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Beaker, Dna, FileText, Heart, Search, Sparkles } from "lucide-react"
+import { Beaker, Search } from "lucide-react"
 import { BubblesBackground } from "@/components/bubble-background"
-import { BreedingTab } from "@/components/laboratory/tabs/breeding-tab"
-import { GeneticsTab } from "@/components/laboratory/tabs/genetics-tab"
-import { DiscoveriesTab } from "@/components/laboratory/tabs/discoveries-tab"
-import { GenealogyTab } from "@/components/laboratory/tabs/genealogy-tab"
 import { fishCollection } from "@/data/fish-data"
 import "@/styles/laboratory.css"
 import { Footer } from "@/components/layout/footer"
@@ -21,10 +17,10 @@ export default function LaboratoryPage() {
 
   const filteredFish = searchQuery
     ? fishCollection.filter(
-        (fish) =>
-          fish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          fish.rarity.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
+      (fish) =>
+        fish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        fish.rarity.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
     : fishCollection
 
   return (
@@ -56,54 +52,11 @@ export default function LaboratoryPage() {
       />
 
       <main className="relative z-10 container mx-auto p-4 md:p-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-4 mb-6 bg-blue-800/50 border border-blue-700/50">
-            <TabsTrigger
-              value="breeding"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <Heart className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Breeding</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="genetics"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <Dna className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Genetics</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="discoveries"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <Sparkles className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Discoveries</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="genealogy"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <FileText className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Genealogy</span>
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="breeding" className="space-y-6">
-            <BreedingTab filteredFish={filteredFish} />
-          </TabsContent>
-
-          <TabsContent value="genetics" className="space-y-6">
-            <GeneticsTab setActiveTab={setActiveTab} />
-          </TabsContent>
-
-          <TabsContent value="discoveries" className="space-y-6">
-            <DiscoveriesTab />
-          </TabsContent>
-
-          <TabsContent value="genealogy" className="space-y-6">
-            <GenealogyTab />
-          </TabsContent>
-        </Tabs>
+        <LaboratoryTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          filteredFish={filteredFish}
+        />
       </main>
 
       <Footer />
