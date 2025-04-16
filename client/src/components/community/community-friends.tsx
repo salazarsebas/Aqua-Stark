@@ -113,9 +113,6 @@ export default function CommunityFriends() {
           </div>
         ))}
       </div>
-      <div className="text-center text-sm text-blue-200 mt-4">
-          © 2025 Aqua Stark - All rights reserved
-        </div>
     </div>
   );
 }
