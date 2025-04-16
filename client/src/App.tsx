@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 import LandingPage from "./pages/landing-page"
-import GamePage from "./pages/game-page"
+import GamePage from "./pages/game"
 import StorePage from "./pages/storage-page"
 import AchievementsPage from "./pages/achievements"
 import HelpCenter from "./pages/help-center"
