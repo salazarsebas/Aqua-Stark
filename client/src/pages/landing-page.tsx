@@ -20,26 +20,17 @@ export default function LandingPage() {
     interval: 500,
   });
 
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-700 animated-background">
-      {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
       <div className="water-movement"></div>
-
       <BubblesBackground bubbles={bubbles} />
-
       <Navbar />
 
       <main className="relative z-10 container mx-auto px-4 py-8 flex flex-col items-center">
-
         <HeroSection />
-
         <FeaturedFish />
-
         <FishStatusTips />
-
         <ReadyToPlay />
-
       </main>
 
       <Footer />
