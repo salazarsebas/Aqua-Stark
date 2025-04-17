@@ -1,24 +1,22 @@
 "use client"
 
 import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { LaboratoryTabs } from "@/components/laboratory/laboratory-tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, Heart, Search, Beaker, Dna, Sparkles, FileText } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Beaker, Search } from "lucide-react"
 import { BubblesBackground } from "@/components/bubble-background"
-import { BreedingTab } from "@/components/laboratory/tabs/breeding-tab"
-import { GeneticsTab } from "@/components/laboratory/tabs/genetics-tab"
-import { DiscoveriesTab } from "@/components/laboratory/tabs/discoveries-tab"
-import { GenealogyTab } from "@/components/laboratory/tabs/genealogy-tab"
 import { fishCollection } from "@/data/fish-data"
 import "@/styles/laboratory.css"
+import { Footer } from "@/components/layout/footer"
+import { PageHeader } from "@/components/layout/page-header"
+import { useBubbles } from "@/hooks/use-bubbles"
 
 export default function LaboratoryPage() {
   const [activeTab, setActiveTab] = useState("breeding")
   const [searchQuery, setSearchQuery] = useState("")
+  const bubbles = useBubbles()
 
-  // Filter fish based on search query
   const filteredFish = searchQuery
     ? fishCollection.filter(
         (fish) =>
@@ -28,105 +26,42 @@ export default function LaboratoryPage() {
     : fishCollection
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-600 to-blue-900">
-      {/* Background bubbles */}
-      <BubblesBackground bubbles={[]} />
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-900 animated-background">
+      <BubblesBackground bubbles={bubbles} />
 
-      {/* Header */}
-      <header className="relative z-10 bg-blue-800/50 backdrop-blur-sm border-b border-blue-700/50 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center">
-            <Link to="/game" className="mr-4">
-              <Button variant="ghost" className="text-white hover:bg-blue-700/50 rounded-full">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Game
-              </Button>
-            </Link>
-            <h1 className="text-2xl font-bold text-white">Breeding Laboratory</h1>
-          </div>
+      <PageHeader
+        title="Breeding Laboratory"
+        backTo="/game"
+        backText="Back to Game"
+        rightContent={
           <div className="flex items-center gap-2">
             <div className="relative w-64 hidden md:block">
               <Input
                 type="text"
                 placeholder="Search fish..."
-                className="bg-blue-700/50 border-blue-600/50 text-white placeholder:text-blue-300/70 pr-8"
+                className="pl-10 bg-blue-800 border-blue-700 text-white placeholder:text-blue-300"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-300/70" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             </div>
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold">
               <Beaker className="h-4 w-4 mr-2" />
               <span className="hidden md:inline">Lab Status</span>
             </Button>
           </div>
-        </div>
-      </header>
+        }
+      />
 
-      {/* Main content */}
-      <main className="relative z-10 container mx-auto p-4 md:p-6">
-        {/* Tabs for different sections */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-4 mb-6 bg-blue-800/50 border border-blue-700/50">
-            <TabsTrigger
-              value="breeding"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <Heart className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Breeding</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="genetics"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <Dna className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Genetics</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="discoveries"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <Sparkles className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Discoveries</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="genealogy"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-blue-200"
-            >
-              <FileText className="h-4 w-4 mr-2 md:mr-1" />
-              <span className="hidden md:inline">Genealogy</span>
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Breeding Tab */}
-          <TabsContent value="breeding" className="space-y-6">
-            <BreedingTab filteredFish={filteredFish} />
-          </TabsContent>
-
-          {/* Genetics Tab */}
-          <TabsContent value="genetics" className="space-y-6">
-            <GeneticsTab setActiveTab={setActiveTab} />
-          </TabsContent>
-
-          {/* Discoveries Tab */}
-          <TabsContent value="discoveries" className="space-y-6">
-            <DiscoveriesTab />
-          </TabsContent>
-
-          {/* Genealogy Tab */}
-          <TabsContent value="genealogy" className="space-y-6">
-            <GenealogyTab />
-          </TabsContent>
-        </Tabs>
+      <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl">
+        <LaboratoryTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          filteredFish={filteredFish}
+        />
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 bg-blue-900/50 backdrop-blur-sm border-t border-blue-800/50 p-4 mt-8">
-        <div className="container mx-auto text-center text-blue-200 text-sm">
-          <p>© 2025 Aqua Stark - All rights reserved</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
-

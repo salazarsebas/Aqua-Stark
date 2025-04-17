@@ -139,11 +139,6 @@ export default function CommunityForum() {
           </a>
         </div>
       </div>
-
-      {/* Texto de derechos de autor */}
-      <div className="text-center text-sm text-blue-200 mt-6">
-        © 2025 Aqua Stark - All rights reserved
-      </div>
     </div>
   );
 }
