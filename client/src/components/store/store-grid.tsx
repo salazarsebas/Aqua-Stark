@@ -1,4 +1,4 @@
-import StoreItem from "@/components/store-item";
+import StoreItem from "@/components/store/store-item";
 
 interface StoreGridProps {
   items: {
