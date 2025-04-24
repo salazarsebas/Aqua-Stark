@@ -1,0 +1,357 @@
+use starknet::ContractAddress;
+use super::models::fish::Fish;
+use super::models::base::{CustomErrors, FishErrors, FishCreated, FishFed, FishGrown, FishHealed, FishDamaged, FishHungerUpdated, FishAgeUpdated, Id};
+
+const FISH_ID_TARGET: felt252 = 'FISH';
+
+#[starknet::interface]
+pub trait IFishState<ContractState> {
+    fn create_fish(
+        ref self: ContractState,
+        owner: ContractAddress,
+        fish_type: u32
+    ) -> u64;
+    
+    fn feed(
+        ref self: ContractState,
+        fish_id: u64,
+        amount: u32
+    );
+    
+    fn grow(
+        ref self: ContractState,
+        fish_id: u64,
+        amount: u32
+    );
+    
+    fn heal(
+        ref self: ContractState,
+        fish_id: u64,
+        amount: u32
+    );
+    
+    fn damage(
+        ref self: ContractState,
+        fish_id: u64,
+        amount: u32
+    );
+    
+    fn update_hunger(
+        ref self: ContractState,
+        fish_id: u64,
+        hours_passed: u32
+    );
+    
+    fn update_age(
+        ref self: ContractState,
+        fish_id: u64,
+        days_passed: u32
+    );
+    
+    fn get_hunger_level(
+        self: @ContractState,
+        fish_id: u64
+    ) -> u32;
+    
+    fn get_growth_rate(
+        self: @ContractState,
+        fish_id: u64
+    ) -> u32;
+    
+    fn get_health(
+        self: @ContractState,
+        fish_id: u64
+    ) -> u32;
+}
+
+#[dojo::contract]
+pub mod FishState {
+    use super::*;
+    use starknet::get_caller_address;
+    use dojo::world::WorldStorage;
+
+    #[external(v0)]
+    impl FishStateImpl of IFishState<ContractState> {
+        fn create_fish(
+            ref self: ContractState,
+            owner: ContractAddress,
+            fish_type: u32
+        ) -> u64 {
+            let mut world = self.world_default();
+            
+            // Generate new fish ID
+            let fish_id = self.generate_fish_id();
+            
+            // Create new fish
+            let fish = Fish {
+                id: fish_id,
+                fish_type,
+                age: 0,
+                hunger_level: 100,
+                health: 100,
+                growth: 0,
+                owner,
+            };
+
+            // Write to world state
+            world.write_model(@fish);
+
+            // Emit event
+            let created_event = FishCreated { 
+                id: fish_id,
+                owner,
+                fish_type
+            };
+            world.emit_event(@created_event);
+
+            fish_id
+        }
+
+        fn feed(
+            ref self: ContractState,
+            fish_id: u64,
+            amount: u32
+        ) {
+            let mut world = self.world_default();
+            let caller = get_caller_address();
+            
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+            
+            // Check ownership
+            assert(fish.owner == caller, CustomErrors::NOT_OWNER);
+            
+            // Update hunger
+            let new_hunger = if fish.hunger_level + amount > 100 {
+                100_u32
+            } else {
+                fish.hunger_level + amount
+            };
+            
+            fish.hunger_level = new_hunger;
+            
+            // Write updated state
+            world.write_model(@fish);
+
+            // Emit event
+            let fed_event = FishFed { 
+                fish_id,
+                amount,
+                new_hunger
+            };
+            world.emit_event(@fed_event);
+        }
+
+        fn grow(
+            ref self: ContractState,
+            fish_id: u64,
+            amount: u32
+        ) {
+            let mut world = self.world_default();
+            let caller = get_caller_address();
+            
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+            
+            // Check ownership
+            assert(fish.owner == caller, CustomErrors::NOT_OWNER);
+            
+            // Update growth
+            let new_growth = if fish.growth + amount > 100 {
+                100_u32
+            } else {
+                fish.growth + amount
+            };
+            
+            fish.growth = new_growth;
+            
+            // Write updated state
+            world.write_model(@fish);
+
+            // Emit event
+            let grown_event = FishGrown { 
+                fish_id,
+                amount,
+                new_growth
+            };
+            world.emit_event(@grown_event);
+        }
+
+        fn heal(
+            ref self: ContractState,
+            fish_id: u64,
+            amount: u32
+        ) {
+            let mut world = self.world_default();
+            let caller = get_caller_address();
+            
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+            
+            // Check ownership
+            assert(fish.owner == caller, CustomErrors::NOT_OWNER);
+            
+            // Update health
+            let new_health = if fish.health + amount > 100 {
+                100_u32
+            } else {
+                fish.health + amount
+            };
+            
+            fish.health = new_health;
+            
+            // Write updated state
+            world.write_model(@fish);
+
+            // Emit event
+            let healed_event = FishHealed { 
+                fish_id,
+                amount,
+                new_health
+            };
+            world.emit_event(@healed_event);
+        }
+
+        fn damage(
+            ref self: ContractState,
+            fish_id: u64,
+            amount: u32
+        ) {
+            let mut world = self.world_default();
+            let caller = get_caller_address();
+            
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+            
+            // Check ownership
+            assert(fish.owner == caller, CustomErrors::NOT_OWNER);
+            
+            // Update health
+            let new_health = if amount >= fish.health {
+                0_u32
+            } else {
+                fish.health - amount
+            };
+            
+            fish.health = new_health;
+            
+            // Write updated state
+            world.write_model(@fish);
+
+            // Emit event
+            let damaged_event = FishDamaged { 
+                fish_id,
+                amount,
+                new_health
+            };
+            world.emit_event(@damaged_event);
+        }
+
+        fn update_hunger(
+            ref self: ContractState,
+            fish_id: u64,
+            hours_passed: u32
+        ) {
+            let mut world = self.world_default();
+            
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+            
+            // Calculate hunger decrease
+            let hunger_decrease = hours_passed * 2;
+            
+            // Update hunger
+            let new_hunger = if hunger_decrease > fish.hunger_level {
+                0_u32
+            } else {
+                fish.hunger_level - hunger_decrease
+            };
+            
+            fish.hunger_level = new_hunger;
+            
+            // Write updated state
+            world.write_model(@fish);
+
+            // Emit event
+            let updated_event = FishHungerUpdated { 
+                fish_id,
+                hours_passed,
+                new_hunger
+            };
+            world.emit_event(@updated_event);
+        }
+
+        fn update_age(
+            ref self: ContractState,
+            fish_id: u64,
+            days_passed: u32
+        ) {
+            let mut world = self.world_default();
+            
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+            
+            // Update age
+            fish.age += days_passed;
+            
+            // Write updated state
+            world.write_model(@fish);
+
+            // Emit event
+            let updated_event = FishAgeUpdated { 
+                fish_id,
+                days_passed,
+                new_age: fish.age
+            };
+            world.emit_event(@updated_event);
+        }
+
+        fn get_hunger_level(
+            self: @ContractState,
+            fish_id: u64
+        ) -> u32 {
+            let world = self.world_default();
+            let fish: Fish = world.read_model(fish_id);
+            fish.hunger_level
+        }
+
+        fn get_growth_rate(
+            self: @ContractState,
+            fish_id: u64
+        ) -> u32 {
+            let world = self.world_default();
+            let fish: Fish = world.read_model(fish_id);
+            fish.growth
+        }
+
+        fn get_health(
+            self: @ContractState,
+            fish_id: u64
+        ) -> u32 {
+            let world = self.world_default();
+            let fish: Fish = world.read_model(fish_id);
+            fish.health
+        }
+    }
+
+    // trait InternalTrait {
+    //     fn world_default(self: @ContractState) -> WorldStorage;
+    //     fn generate_fish_id(self: @ContractState) -> u64;
+    // }
+
+    #[generate_trait]
+    impl InternalImpl of InternalTrait {
+        fn world_default(self: @ContractState) -> WorldStorage {
+            self.world(@'aquastark')
+        }
+
+        fn generate_fish_id(self: @ContractState) -> u64 {
+            let mut world = self.world_default();
+            let mut fish_id: Id = world.read_model(FISH_ID_TARGET);
+            let new_id = fish_id.nonce + 1;
+            fish_id.nonce = new_id;
+            world.write_model(@fish_id);
+            new_id
+        }
+    }
+}
