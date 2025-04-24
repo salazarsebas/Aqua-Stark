@@ -2,8 +2,8 @@ use starknet::ContractAddress;
 use array::ArrayTrait;
 use super::models::aquarium::Aquarium;
 use super::models::base::{
-    CustomErrors, AquariumErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded, FishRemoved,
-    FishDamaged, Id,
+    CustomErrors, AquariumErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded,
+    FishRemoved, FishDamaged, Id,
 };
 
 const AQUARIUM_ID_TARGET: felt252 = 'AQUARIUM';

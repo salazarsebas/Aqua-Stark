@@ -15,7 +15,7 @@ pub struct Id {
 pub struct AquariumCreated {
     pub id: u64,
     pub owner: ContractAddress,
-    pub max_capacity: u32
+    pub max_capacity: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -23,7 +23,7 @@ pub struct AquariumCreated {
 pub struct AquariumCleaned {
     pub aquarium_id: u64,
     pub amount: u32,
-    pub new_cleanliness: u32
+    pub new_cleanliness: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -31,14 +31,14 @@ pub struct AquariumCleaned {
 pub struct CleanlinessUpdated {
     pub aquarium_id: u64,
     pub hours_passed: u32,
-    pub new_cleanliness: u32
+    pub new_cleanliness: u32,
 }
 
 #[derive(Drop, Serde)]
 #[dojo::event]
 pub struct FishAdded {
     pub aquarium_id: u64,
-    pub fish_id: u64
+    pub fish_id: u64,
 }
 
 #[derive(Drop, Serde)]
@@ -46,14 +46,14 @@ pub struct FishAdded {
 pub struct FishDamaged {
     pub aquarium_id: u64,
     pub fish_id: u64,
-    pub damage_amount: u32
+    pub damage_amount: u32,
 }
 
 #[derive(Drop, Serde)]
 #[dojo::event]
 pub struct FishRemoved {
     pub aquarium_id: u64,
-    pub fish_id: u64
+    pub fish_id: u64,
 }
 
 // Fish Events
@@ -62,7 +62,7 @@ pub struct FishRemoved {
 pub struct FishCreated {
     pub id: u64,
     pub owner: ContractAddress,
-    pub fish_type: u32
+    pub fish_type: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -70,7 +70,7 @@ pub struct FishCreated {
 pub struct FishFed {
     pub fish_id: u64,
     pub amount: u32,
-    pub new_hunger: u32
+    pub new_hunger: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -78,7 +78,7 @@ pub struct FishFed {
 pub struct FishGrown {
     pub fish_id: u64,
     pub amount: u32,
-    pub new_growth: u32
+    pub new_growth: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -86,7 +86,7 @@ pub struct FishGrown {
 pub struct FishHealed {
     pub fish_id: u64,
     pub amount: u32,
-    pub new_health: u32
+    pub new_health: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -94,7 +94,7 @@ pub struct FishHealed {
 pub struct FishHungerUpdated {
     pub fish_id: u64,
     pub hours_passed: u32,
-    pub new_hunger: u32
+    pub new_hunger: u32,
 }
 
 #[derive(Drop, Serde)]
@@ -102,7 +102,7 @@ pub struct FishHungerUpdated {
 pub struct FishAgeUpdated {
     pub fish_id: u64,
     pub days_passed: u32,
-    pub new_age: u32
+    pub new_age: u32,
 }
 
 // Custom Errors
