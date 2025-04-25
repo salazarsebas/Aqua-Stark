@@ -100,5 +100,4 @@ mod tests {
         assert(new_position.vec.x == initial_position.vec.x + 1, 'position x is wrong');
         assert(new_position.vec.y == initial_position.vec.y, 'position y is wrong');
     }
-
 }
