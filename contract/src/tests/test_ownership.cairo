@@ -17,14 +17,14 @@ mod MockContract {
     #[storage]
     pub struct Storage {
         #[substorage(v0)]
-        pub ownable: Ownership::Storage
+        pub ownable: Ownership::Storage,
     }
 
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        OwnableEvent: Ownership::Event
+        OwnableEvent: Ownership::Event,
     }
 
     #[constructor]
@@ -34,10 +34,10 @@ mod MockContract {
 
     #[generate_trait]
     pub impl PrivateImpl of PrivateTrait {
-        fn mock_initializer(ref self: ContractState, owner: ContractAddress){
+        fn mock_initializer(ref self: ContractState, owner: ContractAddress) {
             self.ownable.initializer(owner);
         }
-        fn mock_owner(self: @ContractState) -> ContractAddress{
+        fn mock_owner(self: @ContractState) -> ContractAddress {
             self.ownable.owner()
         }
         fn mock_transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
@@ -47,9 +47,7 @@ mod MockContract {
             self.ownable.renounce_ownership();
         }
     }
-
 }
-
 
 type TestingState = Ownership::ComponentState<MockContract::ContractState>;
 
