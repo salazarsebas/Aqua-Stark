@@ -9,6 +9,7 @@ pub trait IFishState<ContractState> {
     fn grow(ref self: ContractState, fish_id: u64, amount: u32);
     fn heal(ref self: ContractState, fish_id: u64, amount: u32);
     fn damage(ref self: ContractState, fish_id: u64, amount: u32);
+    fn regenerate_health(ref self: ContractState, fish_id: u64, aquarium_cleanliness: u32);
     fn update_hunger(ref self: ContractState, fish_id: u64, hours_passed: u32);
     fn update_age(ref self: ContractState, fish_id: u64, days_passed: u32);
     fn get_hunger_level(self: @ContractState, fish_id: u64) -> u32;
@@ -21,8 +22,8 @@ pub mod FishState {
     use super::*;
     use dojo_starter::models::fish::Fish;
     use dojo_starter::models::base::{
-        CustomErrors, FishCreated, FishFed, FishGrown, FishHealed,
-        FishHungerUpdated, FishAgeUpdated, Id,
+        FishAgeUpdated, FishCreated, FishDamaged, FishFed, FishGrown, FishHealed, FishHungerUpdated,
+        CustomErrors, Id,
     };
     use starknet::get_caller_address;
     use dojo::event::EventStorage;
@@ -63,10 +64,10 @@ pub mod FishState {
             assert(fish.owner == caller, CustomErrors::NOT_OWNER);
 
             // Update hunger
-            let new_hunger = if fish.hunger_level + amount > 100 {
-                100_u32
+            let new_hunger = if fish.hunger_level - amount < 0 {
+                0_u32
             } else {
-                fish.hunger_level + amount
+                fish.hunger_level - amount
             };
 
             fish.hunger_level = new_hunger;
@@ -154,6 +155,43 @@ pub mod FishState {
 
             // Write updated state
             world.write_model(@fish);
+
+            // Emit event
+            let damaged_event = FishDamaged { fish_id, damage_amount: amount, new_health };
+            world.emit_event(@damaged_event);
+        }
+
+        fn regenerate_health(ref self: ContractState, fish_id: u64, aquarium_cleanliness: u32) {
+            let mut world = self.world_default();
+            let caller = get_caller_address();
+
+            // Read current fish state
+            let mut fish: Fish = world.read_model(fish_id);
+
+            // Check ownership
+            assert(fish.owner == caller, CustomErrors::NOT_OWNER);
+
+            // Only regenerate if fish is not dead and aquarium is clean enough
+            if fish.health > 0_u32 && aquarium_cleanliness >= 80_u32 {
+                // Calculate regeneration amount based on cleanliness
+                let regen_amount = (aquarium_cleanliness - 80_u32) / 4_u32;
+
+                // Update health
+                let new_health = if fish.health + regen_amount > 100_u32 {
+                    100_u32
+                } else {
+                    fish.health + regen_amount
+                };
+
+                fish.health = new_health;
+
+                // Write updated state
+                world.write_model(@fish);
+
+                // Emit event
+                let healed_event = FishHealed { fish_id, amount: regen_amount, new_health };
+                world.emit_event(@healed_event);
+            }
         }
 
         fn update_hunger(ref self: ContractState, fish_id: u64, hours_passed: u32) {

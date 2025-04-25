@@ -7,14 +7,12 @@ pub trait IAquariumState<TContractState> {
     fn create_aquarium(ref self: TContractState, owner: ContractAddress, max_capacity: u32) -> u64;
     fn add_fish(ref self: TContractState, aquarium_id: u64, fish_id: u64) -> bool;
     fn remove_fish(ref self: TContractState, aquarium_id: u64, fish_id: u64) -> bool;
-    fn damage_fish_in_dirty_water(ref self: TContractState, aquarium_id: u64, fish_id: u64, hours_passed: u32);
     fn clean(ref self: TContractState, aquarium_id: u64, amount: u32);
     fn update_cleanliness(ref self: TContractState, aquarium_id: u64, hours_passed: u32);
     fn get_cleanliness(self: @TContractState, aquarium_id: u64) -> u32;
     fn get_capacity(self: @TContractState, aquarium_id: u64) -> u32;
     fn get_fish_count(self: @TContractState, aquarium_id: u64) -> u32;
     fn is_full(self: @TContractState, aquarium_id: u64) -> bool;
-
 }
 
 #[dojo::contract]
@@ -22,8 +20,8 @@ pub mod AquariumState {
     use super::*;
     use dojo_starter::models::aquarium::Aquarium;
     use dojo_starter::models::base::{
-        CustomErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded,
-        FishRemoved, FishDamaged, Id,
+        CustomErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded, FishRemoved,
+        Id,
     };
     use starknet::get_caller_address;
     use core::array::ArrayTrait;
@@ -35,7 +33,7 @@ pub mod AquariumState {
     #[abi(embed_v0)]
     impl AquariumStateImpl of IAquariumState<ContractState> {
         fn create_aquarium(
-            ref self: ContractState, owner: ContractAddress, max_capacity: u32
+            ref self: ContractState, owner: ContractAddress, max_capacity: u32,
         ) -> u64 {
             let mut world = self.world_default();
 
@@ -71,15 +69,6 @@ pub mod AquariumState {
             // Check ownership
             assert(aquarium.owner == caller, CustomErrors::NOT_OWNER);
 
-            // let current_contract_selector = world.contract_selector(
-            //     @self.dojo_name()
-            // );
-
-            // world.dispatcher.is_owner(
-            //     current_contract_selector, 
-            //     get_caller_address()
-            // );
-
             assert(!self.is_full(aquarium_id), CustomErrors::AQUARIUM_FULL);
 
             // Add fish
@@ -104,15 +93,6 @@ pub mod AquariumState {
 
             // Check ownership
             assert(aquarium.owner == caller, CustomErrors::NOT_OWNER);
-
-            // let current_contract_selector = world.contract_selector(
-            //     self.dojo_name()
-            // );
-
-            // world.dispatcher.is_owner(
-            //     current_contract_selector, 
-            //     get_caller_address()
-            // );
 
             assert(aquarium.housed_fish.len() > 0, CustomErrors::AQUARIUM_EMPTY);
 
@@ -154,15 +134,6 @@ pub mod AquariumState {
             // Check ownership
             assert(aquarium.owner == caller, CustomErrors::NOT_OWNER);
 
-            // let current_contract_selector = world.contract_selector(
-            //     @self.dojo_name()
-            // );
-
-            // world.dispatcher.is_owner(
-            //     current_contract_selector, 
-            //     get_caller_address()
-            // );
-
             // Update cleanliness
             let new_cleanliness = if aquarium.cleanliness + amount > 100 {
                 100_u32
@@ -203,24 +174,6 @@ pub mod AquariumState {
             world.emit_event(@updated_event);
         }
 
-        fn damage_fish_in_dirty_water(
-            ref self: ContractState, aquarium_id: u64, fish_id: u64, hours_passed: u32,
-        ) {
-            let mut world = self.world_default();
-
-            // Read current aquarium state
-            let aquarium: Aquarium = world.read_model(aquarium_id);
-
-            // Check if aquarium is dirty enough to damage fish
-            if aquarium.cleanliness < 30 {
-                let damage_amount = hours_passed * 2;
-
-                // Emit event
-                let damaged_event = FishDamaged { aquarium_id, fish_id, damage_amount };
-                world.emit_event(@damaged_event);
-            }
-        }
-
         fn get_cleanliness(self: @ContractState, aquarium_id: u64) -> u32 {
             let mut world = self.world_default();
             let aquarium: Aquarium = world.read_model(aquarium_id);
@@ -238,7 +191,7 @@ pub mod AquariumState {
             let aquarium: Aquarium = world.read_model(aquarium_id);
             aquarium.housed_fish.len()
         }
-        
+
         fn is_full(self: @ContractState, aquarium_id: u64) -> bool {
             let mut world = self.world_default();
             let aquarium: Aquarium = world.read_model(aquarium_id);
