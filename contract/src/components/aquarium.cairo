@@ -18,8 +18,8 @@ pub trait IAquariumState<TContractState> {
 #[dojo::contract]
 pub mod AquariumState {
     use super::*;
-    use dojo_starter::models::aquarium::Aquarium;
-    use dojo_starter::models::base::{
+    use dojo_starter::entities::aquarium::Aquarium;
+    use dojo_starter::entities::base::{
         CustomErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded, FishRemoved,
         Id,
     };

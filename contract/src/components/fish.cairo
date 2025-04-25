@@ -20,8 +20,8 @@ pub trait IFishState<ContractState> {
 #[dojo::contract]
 pub mod FishState {
     use super::*;
-    use dojo_starter::models::fish::Fish;
-    use dojo_starter::models::base::{
+    use dojo_starter::entities::fish::Fish;
+    use dojo_starter::entities::base::{
         FishAgeUpdated, FishCreated, FishDamaged, FishFed, FishGrown, FishHealed, FishHungerUpdated,
         CustomErrors, Id,
     };
