@@ -20,9 +20,7 @@ mod tests {
 
     #[test]
     fn test_decoration_creation() {
-        let decoration = Decoration {
-            id: 1_u64, decoration_type: 1, owner: zero_address(),
-        };
+        let decoration = Decoration { id: 1_u64, decoration_type: 1, owner: zero_address() };
         assert(decoration.decoration_type == 1, 'Decoration type should match');
     }
 }

@@ -20,11 +20,7 @@ mod tests {
 
     #[test]
     fn test_player_creation() {
-        let player = Player {
-            id: 1_u64,
-            wallet: zero_address(),
-            inventory_ref: zero_address(),
-        };
+        let player = Player { id: 1_u64, wallet: zero_address(), inventory_ref: zero_address() };
         assert(player.id == 1, 'Player ID should match');
     }
 }

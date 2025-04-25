@@ -47,15 +47,6 @@ pub struct FishAdded {
 
 #[derive(Drop, Serde)]
 #[dojo::event]
-pub struct FishDamaged {
-    #[key]
-    pub aquarium_id: u64,
-    pub fish_id: u64,
-    pub damage_amount: u32,
-}
-
-#[derive(Drop, Serde)]
-#[dojo::event]
 pub struct FishRemoved {
     #[key]
     pub aquarium_id: u64,
@@ -92,6 +83,15 @@ pub struct FishGrown {
 
 #[derive(Drop, Serde)]
 #[dojo::event]
+pub struct FishDamaged {
+    #[key]
+    pub fish_id: u64,
+    pub damage_amount: u32,
+    pub new_health: u32,
+}
+
+#[derive(Drop, Serde)]
+#[dojo::event]
 pub struct FishHealed {
     #[key]
     pub fish_id: u64,
@@ -119,7 +119,7 @@ pub struct FishAgeUpdated {
 
 // Custom Errors
 pub mod CustomErrors {
-    pub const NOT_OWNER: felt252 = 'CALLER NOT ONWER';
+    pub const NOT_OWNER: felt252 = 'CALLER NOT OWNER';
     pub const AQUARIUM_EMPTY: felt252 = 'AQUARIUM IS EMPTY';
     pub const AQUARIUM_FULL: felt252 = 'AQUARIUM IS FULL';
     pub const INVALID_AQUARIUM_ID: felt252 = 'AQUARIUM WITH ID NOT FOUND';
