@@ -1,4 +1,4 @@
-import { X, Plus, Minus, Trash2, Coins } from "lucide-react";
+import { X, Plus, Minus, Trash2, Coins, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/use-cart-store";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,10 @@ export function CartSidebar() {
           >
             <div className="p-4 flex flex-col h-full">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-white">Shopping Cart</h2>
+                <div className="flex items-center space-x-2 text-white">
+                  <ShoppingCart />
+                  <h2 className="text-xl font-bold text-white">Your Cart</h2>
+                </div>
                 <Button
                   variant="ghost"
                   onClick={toggleCart}
@@ -79,7 +82,7 @@ export function CartSidebar() {
 
                       <div className="flex items-center space-x-3">
                         <div>
-                          <p className="text-blue-200 flex items-center space-x-1">
+                          <p className="text-white font-semibold flex items-center justify-end space-x-1">
                             <Coins className="text-yellow-400 mr-1" size={20} />
                             <span>{item.price}</span>
                           </p>
