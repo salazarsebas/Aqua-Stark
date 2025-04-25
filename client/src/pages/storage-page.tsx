@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { fishData } from "@/data/mock-game";
 import { StoreHeader } from "@/components/store/store-header";
@@ -10,10 +11,13 @@ import { StoreTabs } from "@/components/store/store-tabs";
 import { StoreCategories } from "@/components/store/store-categories";
 import { StoreGrid } from "@/components/store/store-grid";
 import { PaginationControls } from "@/components/store/pagination-controls";
+import { CartSidebar } from "@/components/store/cart-sidebar";
+import { CheckoutModal } from "@/components/store/checkout-modal";
+import { useCartStore } from "@/store/use-cart-store";
 
 export default function StorePage() {
   const [activeTab, setActiveTab] = useState("fish");
-  const [activeCategory, setActiveCategory] = useState("specials");
+  const [activeCategory, setActiveCategory] = useState("all");
   const [bubbles, setBubbles] = useState<
     Array<{
       id: number;
@@ -23,6 +27,8 @@ export default function StorePage() {
     }>
   >([]);
   const footerRef = useRef<HTMLDivElement>(null);
+
+  const { recentlyViewed } = useCartStore();
 
   useEffect(() => {
     const createBubbles = () => {
@@ -54,10 +60,17 @@ export default function StorePage() {
     return () => clearInterval(intervalId);
   }, []);
 
+  const filteredItems = fishData.filter(
+    (item) =>
+      activeCategory === "all" ||
+      item.rarity.toLowerCase() === activeCategory.toLowerCase()
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-700 relative overflow-hidden">
-      {/* Header */}
       <StoreHeader />
+      <CartSidebar />
+      <CheckoutModal />
 
       <main className="container mx-auto px-4 py-8 relative z-10">
         <h1 className="text-4xl font-bold text-white text-center mb-8 drop-shadow-lg">
@@ -76,12 +89,45 @@ export default function StorePage() {
 
           {/* Content */}
           <div className="p-6">
+            <AnimatePresence>
+              {recentlyViewed.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mb-6"
+                >
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Recently Viewed
+                  </h3>
+                  <div className="grid grid-cols-8 gap-2">
+                    {recentlyViewed.map((item) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        whileHover={{ scale: 1.05 }}
+                        className="bg-blue-400/25 rounded p-2"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-auto"
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <StoreCategories
               activeCategory={activeCategory}
               onCategoryChange={setActiveCategory}
             />
 
-            <StoreGrid items={fishData} />
+            <StoreGrid items={filteredItems} />
 
             <PaginationControls />
           </div>
