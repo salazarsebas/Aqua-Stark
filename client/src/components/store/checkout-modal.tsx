@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Loader2, CheckCircle, ArrowRight } from "lucide-react";
+import { Loader2, CheckCircle, ArrowRight, Coins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/use-cart-store";
 
@@ -44,23 +44,32 @@ export function CheckoutModal() {
                     <span>
                       {item.name} x{item.quantity}
                     </span>
-                    <span>{item.price * item.quantity} coins</span>
+                    <span className="flex items-center">
+                      <Coins className="text-yellow-400 mr-1" size={20} />
+                      {item.price * item.quantity}
+                    </span>
                   </div>
                 ))}
               </div>
               <div className="border-t border-blue-600 pt-3 space-y-2">
                 <div className="flex justify-between text-white/70">
                   <span>Service Fee (1%):</span>
-                  <span>{serviceFee} coins</span>
+                  <span className="flex items-center">
+                    <Coins className="text-yellow-400 mr-1" size={20} />
+                    {serviceFee}
+                  </span>
                 </div>
                 <div className="flex justify-between text-white font-bold">
                   <span>Total:</span>
-                  <span>{total} coins</span>
+                  <span className="flex items-center">
+                    <Coins className="text-yellow-400 mr-1" size={20} />
+                    {total}
+                  </span>
                 </div>
               </div>
             </div>
             <Button
-              className="w-full bg-green-500 hover:bg-green-600 text-white h-12"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white h-12"
               onClick={processCheckout}
             >
               Confirm Purchase
@@ -68,7 +77,7 @@ export function CheckoutModal() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full text-white/70 hover:text-white"
+              className="w-full text-white/70 hover:text-black"
               onClick={() => setCheckoutStep("cart")}
             >
               Back to Cart

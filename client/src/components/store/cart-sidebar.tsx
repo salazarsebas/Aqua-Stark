@@ -1,4 +1,4 @@
-import { X, Plus, Minus, Trash2 } from "lucide-react";
+import { X, Plus, Minus, Trash2, Coins } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/use-cart-store";
 import { Button } from "@/components/ui/button";
@@ -61,57 +61,70 @@ export function CartSidebar() {
                       exit={{ opacity: 0, x: -100 }}
                       className="bg-blue-600 rounded-lg p-4 mb-4 flex items-center"
                     >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover rounded mr-4"
-                      />
+                      <div className="bg-blue-500/50 rounded-lg overflow-hidden w-16 h-16 mx-auto flex items-center justify-center mr-3">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      </div>
                       <div className="flex-1">
                         <h3 className="text-white font-semibold">
                           {item.name}
                         </h3>
-                        <p className="text-blue-200">{item.price} coins</p>
-                        <div className="flex items-center mt-2">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="text-white p-1 hover:bg-blue-500/50 rounded"
-                            onClick={() =>
-                              updateQuantity(
-                                item.id,
-                                Math.max(0, item.quantity - 1)
-                              )
-                            }
-                          >
-                            <Minus size={16} />
-                          </motion.button>
-                          <motion.span
-                            key={item.quantity}
-                            initial={{ scale: 1.2 }}
-                            animate={{ scale: 1 }}
-                            className="mx-2 text-white"
-                          >
-                            {item.quantity}
-                          </motion.span>
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="text-white p-1 hover:bg-blue-500/50 rounded"
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
-                          >
-                            <Plus size={16} />
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.1, color: "#ef4444" }}
-                            whileTap={{ scale: 0.9 }}
-                            className="text-red-400 ml-auto p-1 hover:bg-red-500/10 rounded"
-                            onClick={() => removeItem(item.id)}
-                          >
-                            <Trash2 size={16} />
-                          </motion.button>
+                        <p className="text-gray-200 text-sm">
+                          Rarity: {item.rarity}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center space-x-3">
+                        <div>
+                          <p className="text-blue-200 flex items-center space-x-1">
+                            <Coins className="text-yellow-400 mr-1" size={20} />
+                            <span>{item.price}</span>
+                          </p>
+                          <div className="flex items-center mt-2 bg-blue-800/20 rounded-lg border border-white/50 px-2 py-1">
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                              className="text-white p-1 hover:bg-blue-500/50 rounded"
+                              onClick={() =>
+                                updateQuantity(
+                                  item.id,
+                                  Math.max(0, item.quantity - 1)
+                                )
+                              }
+                            >
+                              <Minus size={16} />
+                            </motion.button>
+                            <motion.span
+                              key={item.quantity}
+                              initial={{ scale: 1.2 }}
+                              animate={{ scale: 1 }}
+                              className="mx-2 text-white"
+                            >
+                              {item.quantity}
+                            </motion.span>
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                              className="text-white p-1 hover:bg-blue-500/50 rounded"
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
+                            >
+                              <Plus size={16} />
+                            </motion.button>
+                          </div>
                         </div>
+                        <motion.button
+                          whileHover={{ scale: 1.1, color: "#ef4444" }}
+                          whileTap={{ scale: 0.9 }}
+                          className="text-red-400 ml-auto p-1 hover:bg-red-500/10 rounded"
+                          onClick={() => removeItem(item.id)}
+                        >
+                          <Trash2 size={16} />
+                        </motion.button>
                       </div>
                     </motion.div>
                   ))}
@@ -122,22 +135,31 @@ export function CartSidebar() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="border-t border-blue-500 mt-4 pt-4"
+                className="border border-white/20 mt-4 p-4 rounded-lg"
               >
                 <div className="flex justify-between text-white mb-2">
                   <span>Subtotal:</span>
-                  <span>{subtotal} coins</span>
+                  <span className="flex items-center">
+                    <Coins className="text-yellow-400 mr-1" size={20} />
+                    {subtotal}
+                  </span>
                 </div>
                 <div className="flex justify-between text-white mb-2">
                   <span>Transaction Fee (1%):</span>
-                  <span>{fee} coins</span>
+                  <span className="flex items-center">
+                    <Coins className="text-yellow-400 mr-1" size={20} />
+                    {fee}
+                  </span>
                 </div>
-                <div className="flex justify-between text-white font-bold mb-4">
+                <div className="flex justify-between text-white font-bold mb-4 border-t border-t-white/20 pt-2">
                   <span>Total:</span>
-                  <span>{total} coins</span>
+                  <span className="flex items-center">
+                    <Coins className="text-yellow-400 mr-1" size={20} />
+                    {total}
+                  </span>
                 </div>
                 <Button
-                  className="w-full bg-green-500 hover:bg-green-600 text-white"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white"
                   onClick={() => setCheckoutStep("confirm")}
                   disabled={items.length === 0}
                 >
