@@ -1,42 +1,35 @@
 use starknet::ContractAddress;
-use super::models::fish::Fish;
-use super::models::base::{
-    CustomErrors, FishErrors, FishCreated, FishFed, FishGrown, FishHealed, FishDamaged,
-    FishHungerUpdated, FishAgeUpdated, Id,
-};
 
 const FISH_ID_TARGET: felt252 = 'FISH';
 
 #[starknet::interface]
 pub trait IFishState<ContractState> {
     fn create_fish(ref self: ContractState, owner: ContractAddress, fish_type: u32) -> u64;
-
     fn feed(ref self: ContractState, fish_id: u64, amount: u32);
-
     fn grow(ref self: ContractState, fish_id: u64, amount: u32);
-
     fn heal(ref self: ContractState, fish_id: u64, amount: u32);
-
     fn damage(ref self: ContractState, fish_id: u64, amount: u32);
-
     fn update_hunger(ref self: ContractState, fish_id: u64, hours_passed: u32);
-
     fn update_age(ref self: ContractState, fish_id: u64, days_passed: u32);
-
     fn get_hunger_level(self: @ContractState, fish_id: u64) -> u32;
-
     fn get_growth_rate(self: @ContractState, fish_id: u64) -> u32;
-
     fn get_health(self: @ContractState, fish_id: u64) -> u32;
 }
 
 #[dojo::contract]
 pub mod FishState {
     use super::*;
+    use dojo_starter::models::fish::Fish;
+    use dojo_starter::models::base::{
+        CustomErrors, FishCreated, FishFed, FishGrown, FishHealed,
+        FishHungerUpdated, FishAgeUpdated, Id,
+    };
     use starknet::get_caller_address;
-    use dojo::world::WorldStorage;
+    use dojo::event::EventStorage;
+    use dojo::model::ModelStorage;
+    // use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl FishStateImpl of IFishState<ContractState> {
         fn create_fish(ref self: ContractState, owner: ContractAddress, fish_type: u32) -> u64 {
             let mut world = self.world_default();
@@ -161,10 +154,6 @@ pub mod FishState {
 
             // Write updated state
             world.write_model(@fish);
-
-            // Emit event
-            let damaged_event = FishDamaged { fish_id, amount, new_health };
-            world.emit_event(@damaged_event);
         }
 
         fn update_hunger(ref self: ContractState, fish_id: u64, hours_passed: u32) {
@@ -211,33 +200,29 @@ pub mod FishState {
         }
 
         fn get_hunger_level(self: @ContractState, fish_id: u64) -> u32 {
-            let world = self.world_default();
+            let mut world = self.world_default();
             let fish: Fish = world.read_model(fish_id);
             fish.hunger_level
         }
 
         fn get_growth_rate(self: @ContractState, fish_id: u64) -> u32 {
-            let world = self.world_default();
+            let mut world = self.world_default();
             let fish: Fish = world.read_model(fish_id);
             fish.growth
         }
 
         fn get_health(self: @ContractState, fish_id: u64) -> u32 {
-            let world = self.world_default();
+            let mut world = self.world_default();
             let fish: Fish = world.read_model(fish_id);
             fish.health
         }
     }
 
-    // trait InternalTrait {
-    //     fn world_default(self: @ContractState) -> WorldStorage;
-    //     fn generate_fish_id(self: @ContractState) -> u64;
-    // }
-
     #[generate_trait]
     impl InternalImpl of InternalTrait {
-        fn world_default(self: @ContractState) -> WorldStorage {
-            self.world(@'aquastark')
+        fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
+            // self.world(@"aquastark")
+            self.world(@"dojo_starter")
         }
 
         fn generate_fish_id(self: @ContractState) -> u64 {

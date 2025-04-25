@@ -1,6 +1,4 @@
-use starknet::ContractAddress;
-use array::ArrayTrait;
-use traits::Into;
+use starknet::{ContractAddress, contract_address_const};
 
 #[derive(Copy, Drop, Serde, Debug)]
 #[dojo::model]
@@ -11,17 +9,22 @@ pub struct Player {
     pub inventory_ref: ContractAddress,
 }
 
+#[cfg(test)]
 mod tests {
-    use super::player::Player;
+    use super::Player;
     use super::*;
+
+    fn zero_address() -> ContractAddress {
+        contract_address_const::<0>()
+    }
 
     #[test]
     fn test_player_creation() {
         let player = Player {
             id: 1_u64,
-            wallet: ContractAddress::default(),
-            inventory_ref: ContractAddress::default(),
+            wallet: zero_address(),
+            inventory_ref: zero_address(),
         };
-        assert(player.id == 1_u64, 'Player ID should match');
+        assert(player.id == 1, 'Player ID should match');
     }
 }

@@ -1,6 +1,4 @@
-use starknet::ContractAddress;
-use array::ArrayTrait;
-use traits::Into;
+use starknet::{ContractAddress, contract_address_const};
 
 #[derive(Copy, Drop, Serde, Debug)]
 #[dojo::model]
@@ -18,26 +16,30 @@ pub struct Fish {
 #[generate_trait]
 impl FishImpl of FishTrait {
     fn is_dead(self: @Fish) -> bool {
-        self.health == 0
+        self.health == @0_u32
     }
 
     fn is_hungry(self: @Fish) -> bool {
-        self.hunger_level < 20
+        self.hunger_level < @20_u32
     }
 
     fn is_fully_grown(self: @Fish) -> bool {
-        self.growth >= 100
+        self.growth >= @100_u32
     }
 
     fn can_eat(self: @Fish) -> bool {
-        self.hunger_level < 100
+        self.hunger_level < @100_u32
     }
 }
 
-
+#[cfg(test)]
 mod tests {
-    use super::fish::Fish;
+    use super::Fish;
     use super::*;
+
+    fn zero_address() -> ContractAddress {
+        contract_address_const::<0>()
+    }
 
     #[test]
     fn test_fish_creation() {
@@ -48,7 +50,7 @@ mod tests {
             hunger_level: 0,
             health: 100,
             growth: 0,
-            owner: ContractAddress::default(),
+            owner: zero_address(),
         };
         assert(fish.fish_type == 1, 'Fish type should match');
     }

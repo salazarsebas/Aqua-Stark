@@ -1,46 +1,42 @@
 use starknet::ContractAddress;
-use array::ArrayTrait;
-use super::models::aquarium::Aquarium;
-use super::models::base::{
-    CustomErrors, AquariumErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded,
-    FishRemoved, FishDamaged, Id,
-};
 
 const AQUARIUM_ID_TARGET: felt252 = 'AQUARIUM';
 
 #[starknet::interface]
-pub trait IAquariumState<ContractState> {
-    fn create_aquarium(ref self: ContractState, owner: ContractAddress, max_capacity: u32) -> u64;
+pub trait IAquariumState<TContractState> {
+    fn create_aquarium(ref self: TContractState, owner: ContractAddress, max_capacity: u32) -> u64;
+    fn add_fish(ref self: TContractState, aquarium_id: u64, fish_id: u64) -> bool;
+    fn remove_fish(ref self: TContractState, aquarium_id: u64, fish_id: u64) -> bool;
+    fn damage_fish_in_dirty_water(ref self: TContractState, aquarium_id: u64, fish_id: u64, hours_passed: u32);
+    fn clean(ref self: TContractState, aquarium_id: u64, amount: u32);
+    fn update_cleanliness(ref self: TContractState, aquarium_id: u64, hours_passed: u32);
+    fn get_cleanliness(self: @TContractState, aquarium_id: u64) -> u32;
+    fn get_capacity(self: @TContractState, aquarium_id: u64) -> u32;
+    fn get_fish_count(self: @TContractState, aquarium_id: u64) -> u32;
+    fn is_full(self: @TContractState, aquarium_id: u64) -> bool;
 
-    fn add_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool;
-
-    fn remove_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool;
-
-    fn clean(ref self: ContractState, aquarium_id: u64, amount: u32);
-
-    fn update_cleanliness(ref self: ContractState, aquarium_id: u64, hours_passed: u32);
-
-    fn damage_fish_in_dirty_water(
-        ref self: ContractState, aquarium_id: u64, fish_id: u64, hours_passed: u32,
-    );
-
-    fn get_cleanliness(self: @ContractState, aquarium_id: u64) -> u32;
-
-    fn get_capacity(self: @ContractState, aquarium_id: u64) -> u32;
-
-    fn get_fish_count(self: @ContractState, aquarium_id: u64) -> u32;
 }
 
 #[dojo::contract]
 pub mod AquariumState {
     use super::*;
+    use dojo_starter::models::aquarium::Aquarium;
+    use dojo_starter::models::base::{
+        CustomErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded,
+        FishRemoved, FishDamaged, Id,
+    };
     use starknet::get_caller_address;
+    use core::array::ArrayTrait;
+    use dojo::event::EventStorage;
+    use dojo::model::ModelStorage;
+    // use dojo::model::{ModelStorage, ModelValueStorage};
+    // use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl AquariumStateImpl of IAquariumState<ContractState> {
         fn create_aquarium(
-            ref self: ContractState, owner: ContractAddress, max_capacity: u32,
-        ) -> ContractAddress {
+            ref self: ContractState, owner: ContractAddress, max_capacity: u32
+        ) -> u64 {
             let mut world = self.world_default();
 
             // Generate new aquarium ID
@@ -62,7 +58,7 @@ pub mod AquariumState {
             let created_event = AquariumCreated { id: aquarium.id, owner, max_capacity };
             world.emit_event(@created_event);
 
-            aquarium.id
+            aquarium_id
         }
 
         fn add_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
@@ -75,10 +71,16 @@ pub mod AquariumState {
             // Check ownership
             assert(aquarium.owner == caller, CustomErrors::NOT_OWNER);
 
-            // Check capacity
-            if aquarium.is_full {
-                return false;
-            }
+            // let current_contract_selector = world.contract_selector(
+            //     @self.dojo_name()
+            // );
+
+            // world.dispatcher.is_owner(
+            //     current_contract_selector, 
+            //     get_caller_address()
+            // );
+
+            assert(!self.is_full(aquarium_id), CustomErrors::AQUARIUM_FULL);
 
             // Add fish
             aquarium.housed_fish.append(fish_id);
@@ -103,29 +105,43 @@ pub mod AquariumState {
             // Check ownership
             assert(aquarium.owner == caller, CustomErrors::NOT_OWNER);
 
+            // let current_contract_selector = world.contract_selector(
+            //     self.dojo_name()
+            // );
+
+            // world.dispatcher.is_owner(
+            //     current_contract_selector, 
+            //     get_caller_address()
+            // );
+
+            assert(aquarium.housed_fish.len() > 0, CustomErrors::AQUARIUM_EMPTY);
+
             // Find and remove fish
             let mut found = false;
             let mut i = 0;
             let len = aquarium.housed_fish.len();
+            let mut new_fish_array = ArrayTrait::new();
+
             while i < len {
-                if aquarium.housed_fish.at(i) == fish_id {
-                    aquarium.housed_fish.remove(i);
+                let current_fish = aquarium.housed_fish.at(i);
+                if current_fish != @fish_id {
+                    new_fish_array.append(*current_fish);
+                } else {
                     found = true;
-                    break;
                 }
                 i += 1;
-            }
+            };
 
             if found {
+                aquarium.housed_fish = new_fish_array;
                 // Write updated state
                 world.write_model(@aquarium);
-
-                // Emit event
-                let fish_removed_event = FishRemoved { aquarium_id, fish_id };
-                world.emit_event(@fish_removed_event);
             }
 
-            found
+            let removed_event = FishRemoved { aquarium_id, fish_id };
+            world.emit_event(@removed_event);
+
+            true
         }
 
         fn clean(ref self: ContractState, aquarium_id: u64, amount: u32) {
@@ -137,6 +153,15 @@ pub mod AquariumState {
 
             // Check ownership
             assert(aquarium.owner == caller, CustomErrors::NOT_OWNER);
+
+            // let current_contract_selector = world.contract_selector(
+            //     @self.dojo_name()
+            // );
+
+            // world.dispatcher.is_owner(
+            //     current_contract_selector, 
+            //     get_caller_address()
+            // );
 
             // Update cleanliness
             let new_cleanliness = if aquarium.cleanliness + amount > 100 {
@@ -172,11 +197,8 @@ pub mod AquariumState {
             };
 
             aquarium.cleanliness = new_cleanliness;
-
-            // Write updated state
             world.write_model(@aquarium);
 
-            // Emit event
             let updated_event = CleanlinessUpdated { aquarium_id, hours_passed, new_cleanliness };
             world.emit_event(@updated_event);
         }
@@ -200,28 +222,35 @@ pub mod AquariumState {
         }
 
         fn get_cleanliness(self: @ContractState, aquarium_id: u64) -> u32 {
-            let world = self.world_default();
+            let mut world = self.world_default();
             let aquarium: Aquarium = world.read_model(aquarium_id);
             aquarium.cleanliness
         }
 
         fn get_capacity(self: @ContractState, aquarium_id: u64) -> u32 {
-            let world = self.world_default();
+            let mut world = self.world_default();
             let aquarium: Aquarium = world.read_model(aquarium_id);
             aquarium.max_capacity
         }
 
         fn get_fish_count(self: @ContractState, aquarium_id: u64) -> u32 {
-            let world = self.world_default();
+            let mut world = self.world_default();
             let aquarium: Aquarium = world.read_model(aquarium_id);
             aquarium.housed_fish.len()
+        }
+        
+        fn is_full(self: @ContractState, aquarium_id: u64) -> bool {
+            let mut world = self.world_default();
+            let aquarium: Aquarium = world.read_model(aquarium_id);
+            aquarium.housed_fish.len() >= aquarium.max_capacity
         }
     }
 
     #[generate_trait]
     impl InternalImpl of InternalTrait {
-        fn world_default(self: @ContractState) -> WorldStorage {
-            self.world(@"aquastark")
+        fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
+            // self.world(@"aquastark")
+            self.world(@"dojo_starter")
         }
 
         fn generate_aquarium_id(self: @ContractState) -> u64 {
