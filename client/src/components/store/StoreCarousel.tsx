@@ -62,15 +62,26 @@ export const StoreCarousel = () => {
 
                 {/* Right Side: Banner Image */}
                 <div className="flex-[0.3] flex justify-start items-center">
-                  <FishTank shadow={false}>
-                    <img
-                      src={banner.bannerImage || "/placeholder.svg"}
-                      alt={`${banner.title}`}
-                      width={120}
-                      height={120}
-                      className="object-contain transform hover:scale-110 transition-all duration-500"
+                  {banner.bannerVideo ? (
+                    <video
+                      src={banner.bannerVideo}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-[120px] h-[120px] object-contain"
                     />
-                  </FishTank>
+                  ) : (
+                    <FishTank shadow={false}>
+                      <img
+                        src={banner.bannerImage || "/placeholder.svg"}
+                        alt={`${banner.title}`}
+                        width={120}
+                        height={120}
+                        className="object-contain transform hover:scale-110 transition-all duration-500"
+                      />
+                    </FishTank>
+                  )}
                 </div>
               </div>
             </SwiperSlide>
