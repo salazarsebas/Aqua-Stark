@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { CountdownTimer } from "./countdownTimer";
+import { FishTank } from "../fish-tank";
 
 export const StoreCarousel = () => {
   return (
@@ -60,12 +61,16 @@ export const StoreCarousel = () => {
                 </div>
 
                 {/* Right Side: Banner Image */}
-                <div className="flex-1 mt-8 md:mt-0 flex justify-center">
-                  <img
-                    src={banner.bannerImage}
-                    alt={banner.title}
-                    className="w-48 h-48 object-contain"
-                  />
+                <div className="flex-[0.3] flex justify-start items-center">
+                  <FishTank shadow={false}>
+                    <img
+                      src={banner.bannerImage || "/placeholder.svg"}
+                      alt={`${banner.title}`}
+                      width={120}
+                      height={120}
+                      className="object-contain transform hover:scale-110 transition-all duration-500"
+                    />
+                  </FishTank>
                 </div>
               </div>
             </SwiperSlide>
