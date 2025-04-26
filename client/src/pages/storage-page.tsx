@@ -10,6 +10,7 @@ import { StoreTabs } from "@/components/store/store-tabs";
 import { StoreCategories } from "@/components/store/store-categories";
 import { StoreGrid } from "@/components/store/store-grid";
 import { PaginationControls } from "@/components/store/pagination-controls";
+import { StoreCarousel } from "@/components/store/StoreCarousel";
 
 export default function StorePage() {
   const [activeTab, setActiveTab] = useState("fish");
@@ -64,6 +65,9 @@ export default function StorePage() {
           Aqua Stark Store
         </h1>
 
+        <div>
+          <StoreCarousel />
+        </div>
         <div className="bg-blue-600 rounded-t-3xl overflow-hidden border-2 border-blue-400/50 max-w-5xl mx-auto">
           {/* Tabs */}
           <div className="flex">
