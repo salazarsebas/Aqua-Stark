@@ -61,7 +61,7 @@ export const StoreCarousel = () => {
                 </div>
 
                 {/* Right Side: Banner Image */}
-                <div className="flex-[0.3] flex justify-start items-center">
+                <div className="flex-[0.3] flex justify-start items-center w-full">
                   {banner.bannerVideo ? (
                     <video
                       src={banner.bannerVideo}
