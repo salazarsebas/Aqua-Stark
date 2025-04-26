@@ -13,21 +13,34 @@ export const StoreCarousel = () => {
       <div className="relative">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
+          pagination={{
+            clickable: true,
+            renderBullet: (index, className) =>
+              `<span class="${className} w-3 h-3 bg-white/80 rounded-full mx-1 transition-all z"></span>`,
+          }}
           spaceBetween={30}
           slidesPerView={1}
-          pagination={{ clickable: true }}
           navigation={{
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           }}
-          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
           loop={true}
         >
           {banners.map((banner, index) => (
             <SwiperSlide key={index}>
               <div
-                className={`rounded-xl p-8 flex flex-col md:flex-row items-center justify-between ${banner.background} text-white`}
+                className={`relative rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between ${banner.background} text-white`}
               >
+                {/* OFFER Badge */}
+                <div className="absolute top-0 right-0 bg-yellow-400 text-white text-xs font-bold px-4 py-1 rounded-bl-2xl">
+                  OFFER
+                </div>
+
                 {/* Left Side: Text */}
                 <div className="flex-1">
                   <h2 className="text-3xl font-bold mb-4 flex items-center gap-2">

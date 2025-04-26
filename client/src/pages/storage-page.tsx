@@ -68,6 +68,7 @@ export default function StorePage() {
         <div>
           <StoreCarousel />
         </div>
+
         <div className="bg-blue-600 rounded-t-3xl overflow-hidden border-2 border-blue-400/50 max-w-5xl mx-auto">
           {/* Tabs */}
           <div className="flex">
