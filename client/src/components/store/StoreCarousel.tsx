@@ -15,7 +15,7 @@ export const StoreCarousel = () => {
           modules={[Navigation, Pagination, Autoplay]}
           pagination={{
             clickable: true,
-            renderBullet: (index, className) =>
+            renderBullet: (className) =>
               `<span class="${className} w-3 h-3 bg-white/80 rounded-full mx-1 transition-all z"></span>`,
           }}
           spaceBetween={30}
@@ -38,7 +38,10 @@ export const StoreCarousel = () => {
                 style={{ backgroundImage: `${banner.background}` }}
               >
                 {/* OFFER Badge */}
-                <div className="absolute top-0 right-0 bg-yellow-400 text-white text-xs font-bold px-4 py-1 rounded-bl-2xl">
+                <div
+                  className="absolute top-0 right-0 text-white text-md font-bold px-4 py-1 rounded-bl-xl rounded-tr-3xl"
+                  style={{ backgroundColor: "#f1c841" }}
+                >
                   OFFER
                 </div>
 
