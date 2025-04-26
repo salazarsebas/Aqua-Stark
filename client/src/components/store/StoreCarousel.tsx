@@ -16,7 +16,7 @@ export const StoreCarousel = () => {
           modules={[Navigation, Pagination, Autoplay]}
           pagination={{
             clickable: true,
-            renderBullet: (className) =>
+            renderBullet: (index, className) =>
               `<span class="${className} w-3 h-3 bg-white/80 rounded-full mx-1 transition-all z"></span>`,
           }}
           spaceBetween={30}
