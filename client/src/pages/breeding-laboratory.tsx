@@ -26,7 +26,7 @@ export default function LaboratoryPage() {
     : fishCollection
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-900 animated-background">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-900 animated-background flex flex-col">
       <BubblesBackground bubbles={bubbles} />
 
       <PageHeader
@@ -53,7 +53,7 @@ export default function LaboratoryPage() {
         }
       />
 
-      <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl">
+      <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl flex-grow">
         <LaboratoryTabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -61,7 +61,9 @@ export default function LaboratoryPage() {
         />
       </main>
 
-      <Footer />
+      <div className="relative z-10 mt-auto">
+        <Footer />
+      </div>
     </div>
   )
 }

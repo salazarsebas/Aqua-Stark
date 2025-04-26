@@ -229,7 +229,7 @@ export function GeneticsTab({ setActiveTab }: GeneticsTabProps) {
             </p>
             <Button
               variant="outline"
-              className="border-blue-600 text-blue-200"
+              className="border-blue-600 bg-blue-600 hover:bg-blue-700 hover:text-white text-white"
               onClick={() => setActiveTab("breeding")}
             >
               Go to Breeding Tab

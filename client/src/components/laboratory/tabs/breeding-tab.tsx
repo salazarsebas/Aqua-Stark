@@ -43,11 +43,11 @@ export function BreedingTab({ filteredFish }: BreedingTabProps) {
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold text-white">Breeding Laboratory</h2>
         <div className="flex gap-2">
-          <Button variant="outline" className="bg-blue-800/50 border-blue-700/50 text-white hover:bg-blue-700/70">
+          <Button variant="outline" className="bg-blue-800/50 border-blue-700/50 text-white hover:bg-blue-700/70 hover:text-white">
             <Filter className="h-4 w-4 mr-2" />
             Filter
           </Button>
-          <Button className="bg-green-500 hover:bg-green-600 text-white">
+          <Button className="bg-green-500 hover:bg-green-600 text-blue-900">
             <Plus className="h-4 w-4 mr-2" />
             New Tank
           </Button>
