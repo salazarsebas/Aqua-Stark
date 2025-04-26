@@ -34,7 +34,8 @@ export const StoreCarousel = () => {
           {banners.map((banner, index) => (
             <SwiperSlide key={index}>
               <div
-                className={`relative rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between ${banner.background} text-white`}
+                className={`relative rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between  text-white`}
+                style={{ backgroundImage: `${banner.background}` }}
               >
                 {/* OFFER Badge */}
                 <div className="absolute top-0 right-0 bg-yellow-400 text-white text-xs font-bold px-4 py-1 rounded-bl-2xl">
@@ -43,12 +44,12 @@ export const StoreCarousel = () => {
 
                 {/* Left Side: Text */}
                 <div className="flex-1">
-                  <h2 className="text-3xl font-bold mb-4 flex items-center gap-2">
-                    <span>✨</span> {banner.title}
+                  <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    {banner.title}
                   </h2>
                   <p className="mb-6">{banner.description}</p>
                   <div className="flex items-center gap-4">
-                    <button className="bg-white text-blue-600 font-semibold px-6 py-2 rounded shadow hover:bg-gray-100 transition">
+                    <button className="bg-white text-blue-600 text-s font-semibold px-3 py-2 rounded-md shadow hover:bg-gray-100 transition">
                       {banner.buttonText}
                     </button>
                     <CountdownTimer countdown={banner.countdown} />
