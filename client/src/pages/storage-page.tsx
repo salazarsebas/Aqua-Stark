@@ -14,6 +14,7 @@ import { PaginationControls } from "@/components/store/pagination-controls";
 import { CartSidebar } from "@/components/store/cart-sidebar";
 import { CheckoutModal } from "@/components/store/checkout-modal";
 import { useCartStore } from "@/store/use-cart-store";
+import { StoreCarousel } from "@/components/store/store-carousel";
 
 export default function StorePage() {
   const [activeTab, setActiveTab] = useState("fish");
@@ -76,6 +77,10 @@ export default function StorePage() {
         <h1 className="text-4xl font-bold text-white text-center mb-8 drop-shadow-lg">
           Aqua Stark Store
         </h1>
+
+        <div>
+          <StoreCarousel />
+        </div>
 
         <div className="bg-blue-600 rounded-t-3xl overflow-hidden border-2 border-blue-400/50 max-w-5xl mx-auto">
           {/* Tabs */}

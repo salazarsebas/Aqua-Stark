@@ -16,7 +16,7 @@ pub mod Ownership {
 
     #[storage]
     pub struct Storage {
-        pub Ownable_owner: ContractAddress
+        pub Ownable_owner: ContractAddress,
     }
 
     #[event]
@@ -94,7 +94,6 @@ pub mod Ownership {
         fn _transfer_ownership(
             ref self: ComponentState<TContractState>, new_owner: ContractAddress,
         ) {
-        
             let previous_owner: ContractAddress = self.Ownable_owner.read();
             self.Ownable_owner.write(new_owner);
             self.emit(OwnershipTransferred { previous_owner, new_owner });
