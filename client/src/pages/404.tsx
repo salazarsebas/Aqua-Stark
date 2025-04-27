@@ -9,15 +9,14 @@ export default function Error404Page() {
     <div className="h-screen relative text-white ">
       <div className="flex flex-col items-center justify-center font-404 h-screen bg-gradient-to-b from-blue-600 to-blue-900">
         <h1
-          className="text-[180px] font-medium text-white drop-shadow-[0_0_1px_rgba(86,167,255,1)] leading-none"
+          className="text-9xl lg:text-[180px] font-medium text-white drop-shadow-[0_0_1px_rgba(86,167,255,1)] leading-none"
           style={{
             textShadow: `
-      0 0 24px rgba(208,231,255,1),
-      0 0 20px rgba(59,130,246,0.9),
-      0 0 40px rgba(59,130,246,0.8),
-      0 0 80px rgba(59,130,246,0.6),
-      0 0 120px rgba(59,130,246,0.5)
-    `,
+                    0 0 24px rgba(208,231,255,1),
+                    0 0 40px rgba(59,130,246,0.8),
+                    0 0 80px rgba(59,130,246,0.6),
+                    0 0 120px rgba(59,130,246,0.5)
+                    `,
           }}
         >
           404
