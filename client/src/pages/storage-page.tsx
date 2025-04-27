@@ -10,7 +10,7 @@ import { StoreTabs } from "@/components/store/store-tabs";
 import { StoreCategories } from "@/components/store/store-categories";
 import { StoreGrid } from "@/components/store/store-grid";
 import { PaginationControls } from "@/components/store/pagination-controls";
-import { StoreCarousel } from "@/components/store/StoreCarousel";
+import { StoreCarousel } from "@/components/store/store-carousel";
 
 export default function StorePage() {
   const [activeTab, setActiveTab] = useState("fish");

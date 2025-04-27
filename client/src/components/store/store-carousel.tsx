@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { CountdownTimer } from "./countdownTimer";
+import { CountdownTimer } from "./countdown-timer";
 import { FishTank } from "../fish-tank";
 
 export const StoreCarousel = () => {
