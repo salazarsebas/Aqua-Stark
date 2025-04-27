@@ -1,9 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Coins, Heart, Plus, Star, Check } from "lucide-react"
 import { FishTank } from "@/components/fish-tank"
+import { useCartStore } from "@/store/use-cart-store"
 
 interface StoreItemProps {
   name: string
@@ -16,7 +18,6 @@ interface StoreItemProps {
   isNew?: boolean
   stock?: number
   isLimited?: boolean
-  onAddToCart?: (itemName: string) => void
   onAddToWishlist?: (itemName: string, isFavorite: boolean) => void
 }
 
@@ -31,12 +32,12 @@ export default function StoreItem({
   isNew = false,
   stock,
   isLimited = false,
-  onAddToCart,
   onAddToWishlist,
 }: StoreItemProps) {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isInCart, setIsInCart] = useState(false)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const { addItem, addToRecentlyViewed } = useCartStore()
 
   const getRarityColor = () => {
     switch (rarity.toLowerCase()) {
@@ -60,44 +61,29 @@ export default function StoreItem({
     const newFavoriteState = !isFavorite
     setIsFavorite(newFavoriteState)
     
-    // Si se proporcionó la función de callback para la lista de deseos, llamarla
     if (onAddToWishlist) {
       onAddToWishlist(name, newFavoriteState)
     }
   }
 
-  const handleAddToCartQuick = () => {
+  const handleAddToCart = () => {
     setIsAddingToCart(true)
     
-    // Simular un breve retraso para la animación
+    // Create item object for cart
+    const item = { name, image, price, rarity, description }
+    
     setTimeout(() => {
       setIsInCart(true)
       setIsAddingToCart(false)
       
-      // Si se proporcionó la función de callback para añadir al carrito, llamarla
-      if (onAddToCart) {
-        onAddToCart(name)
-      }
+      // Agregar al carrito usando useCartStore
+      addItem(item)
+      addToRecentlyViewed(item)
       
-      // Restablecer el estado después de un momento para permitir añadir más unidades
       setTimeout(() => {
         setIsInCart(false)
       }, 2000)
     }, 300)
-  }
-
-  const handleMainAddToCart = () => {
-    setIsInCart(true)
-    
-    // Si se proporcionó la función de callback para añadir al carrito, llamarla
-    if (onAddToCart) {
-      onAddToCart(name)
-    }
-    
-    // Restablecer el estado después de un momento para permitir añadir más unidades
-    setTimeout(() => {
-      setIsInCart(false)
-    }, 2000)
   }
 
   const renderStars = () => {
@@ -131,11 +117,17 @@ export default function StoreItem({
   }
 
   return (
-    <div className="bg-blue-600 rounded-3xl overflow-hidden shadow-xl border-2 border-blue-400 transform hover:scale-105 transition-all duration-200">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      className="bg-blue-600 rounded-3xl overflow-hidden shadow-xl border-2 border-blue-400 transform hover:scale-105 transition-all duration-200"
+    >
       <div className="relative">
         {/* Top controls */}
         <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9 }}
             onClick={handleFavoriteClick}
             className="w-10 h-10 rounded-full bg-blue-700/70 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-blue-700"
             aria-label={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
@@ -146,9 +138,10 @@ export default function StoreItem({
               }`}
               fill={isFavorite ? "red" : "none"}
             />
-          </button>
-          <button
-            onClick={handleAddToCartQuick}
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={handleAddToCart}
             disabled={isInCart || isAddingToCart}
             className={`w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-all ${
               isInCart 
@@ -164,7 +157,7 @@ export default function StoreItem({
             ) : (
               <Plus className="w-5 h-5 text-white" />
             )}
-          </button>
+          </motion.button>
         </div>
 
         {/* Discount tag */}
@@ -184,12 +177,13 @@ export default function StoreItem({
         {/* Fish tank container */}
         <div className="relative mx-auto w-full h-56 bg-blue-400/50 flex items-center justify-center overflow-hidden">
           <FishTank>
-            <img
+            <motion.img
+              whileHover={{ scale: 1.1 }}
               src={image || "/placeholder.svg"}
               alt={name}
               width={120}
               height={120}
-              className="object-contain transform hover:scale-110 transition-all duration-500 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+              className="object-contain transition-all duration-500 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
             />
           </FishTank>
         </div>
@@ -229,19 +223,21 @@ export default function StoreItem({
               <span className="text-white font-bold text-xl">{price}</span>
             </div>
           </div>
-          <Button 
-            onClick={handleMainAddToCart}
-            disabled={isInCart}
-            className={`font-bold rounded-lg px-6 py-2 border-2 transition-all ${
-              isInCart 
-                ? "bg-green-500 hover:bg-green-600 border-green-400 text-white" 
-                : "bg-orange-500 hover:bg-orange-600 border-orange-400 text-white"
-            }`}
-          >
-            {isInCart ? "Added" : "Add to Cart"}
-          </Button>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }}>
+            <Button 
+              onClick={handleAddToCart}
+              disabled={isInCart}
+              className={`font-bold rounded-lg px-6 py-2 border-2 transition-all ${
+                isInCart 
+                  ? "bg-green-500 hover:bg-green-600 border-green-400 text-white" 
+                  : "bg-orange-500 hover:bg-orange-600 border-orange-400 text-white"
+              }`}
+            >
+              {isInCart ? "Added" : "Add to Cart"}
+            </Button>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
