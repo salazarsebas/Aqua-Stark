@@ -2,6 +2,7 @@ import StoreItem from "@/components/store/store-item";
 
 interface StoreGridProps {
   items: {
+    id?: string;
     name: string;
     image: string;
     price: number;
@@ -14,7 +15,8 @@ export function StoreGrid({ items }: StoreGridProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
       {items.map((item, index) => (
         <StoreItem
-          key={index}
+          key={item.id || `item-${index}`}
+          id={item.id}
           name={item.name}
           image={item.image}
           price={item.price}

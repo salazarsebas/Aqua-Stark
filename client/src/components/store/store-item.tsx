@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { useCartStore } from "@/store/use-cart-store";
 import { Coins, ShoppingCart } from "lucide-react";
 import { FishTank } from "@/components/fish-tank";
+import { v4 as uuidv4 } from "uuid";
 
 interface StoreItemProps {
+  id?: string;
   name: string;
   image: string;
   price: number;
@@ -11,15 +13,17 @@ interface StoreItemProps {
 }
 
 export default function StoreItem({
+  id,
   name,
   image,
   price,
   rarity,
 }: StoreItemProps) {
   const { addItem, addToRecentlyViewed } = useCartStore();
+  const itemId = id || `item_${name.toLowerCase().replace(/\s+/g, '_')}_${uuidv4().slice(0, 8)}`;
 
   const handleAddToCart = () => {
-    const item = { name, image, price, rarity };
+    const item = { id: itemId, name, image, price, rarity };
     addItem(item);
     addToRecentlyViewed(item);
   };
