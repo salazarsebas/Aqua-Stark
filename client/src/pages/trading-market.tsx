@@ -97,7 +97,7 @@ export default function MarketPage() {
           <div className="flex items-center gap-2 w-full md:w-auto">
             <Button
               variant="outline"
-              className="border-blue-600/50 text-blue-100 hover:bg-blue-700/50"
+              className="border-blue-600/50 !text-blue-100 bg-blue-600 hover:bg-blue-700/50"
               onClick={() => setShowFilters(!showFilters)}
             >
               {showFilters ? (
@@ -113,7 +113,9 @@ export default function MarketPage() {
               )}
             </Button>
 
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => setShowListingModal(true)}>
+            <Button
+              className="border border-blue-600/50 bg-blue-600 hover:bg-blue-700/50 text-white"
+              onClick={() => setShowListingModal(true)}>
               <Plus className="mr-2 h-4 w-4" />
               List Fish
             </Button>
