@@ -1,6 +1,10 @@
+import { BubblesBackground } from "@/components/bubble-background";
 import BackToHomeButton from "@/components/ui/back-to-home-button";
+import { useBubbles } from "@/hooks/use-bubbles";
 
 export default function Error404Page() {
+  const bubbles = useBubbles({ maxBubbles: 20 });
+
   return (
     <div className="h-screen relative text-white ">
       <div className="flex flex-col items-center justify-center font-404 h-screen bg-gradient-to-b from-blue-600 to-blue-900">
@@ -28,6 +32,7 @@ export default function Error404Page() {
         <BackToHomeButton />
       </div>
 
+      <BubblesBackground bubbles={bubbles} />
       <img
         src="/background-decorations/wave-decoration.svg"
         className="fixed bottom-0 left-0 opacity-20 pointer-events-none"
