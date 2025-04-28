@@ -114,17 +114,19 @@ export default function StorePage() {
             </button>
           </div>
 
-          {/* Search and Filters */}
-          <StoreSearchFilters
-            rarityOptions={rarityOptions}
-            sortOptions={sortOptions}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            selectedRarity={selectedRarity}
-            setSelectedRarity={setSelectedRarity}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-          />
+          {/* Search and Filters (only for decorations tab) */}
+          {activeTab === "decorations" && storeBundles.length > 0 && (
+            <StoreSearchFilters
+              rarityOptions={rarityOptions}
+              sortOptions={sortOptions}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedRarity={selectedRarity}
+              setSelectedRarity={setSelectedRarity}
+              sortOption={sortOption}
+              setSortOption={setSortOption}
+            />
+          )}
 
           {/* Content */}
           <div className="p-6">
