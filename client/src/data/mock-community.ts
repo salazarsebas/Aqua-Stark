@@ -1,41 +1,44 @@
 export const mockAquariums = [
   {
     id: 1,
-    name: 'Tropical Paradise',
-    owner: 'CoralQueen',
-    timePosted: '3 days ago',
+    name: "Tropical Paradise",
+    owner: "CoralQueen",
+    timePosted: "3 days ago",
+    timeStamp: "2025-04-24T12:00:00Z",
     likes: 120,
     comments: 45,
     featured: true,
-    imageUrl: '/textures/backgrounds/Bg2.svg',
+    imageUrl: "/textures/backgrounds/Bg2.svg",
   },
   {
     id: 2,
-    name: 'Deep Blue Mystery',
-    owner: 'ReefMaster',
+    name: "Deep Blue Mystery",
+    owner: "ReefMaster",
     likes: 89,
     comments: 12,
-    imageUrl: '/textures/backgrounds/Bg2.svg',
+    imageUrl: "/textures/backgrounds/Bg2.svg",
   },
   {
     id: 3,
-    name: 'Neon Reef Collection',
-    owner: 'AquaLover',
+    name: "Neon Reef Collection",
+    owner: "AquaLover",
     likes: 50,
     comments: 8,
-    imageUrl: '/textures/backgrounds/Bg2.svg',
+    imageUrl: "/textures/backgrounds/Bg2.svg",
+    timeStamp: "2025-04-22T12:00:00Z",
   },
   {
     id: 4,
-    name: 'Ancient Sunken Aquarium',
-    owner: 'TreasureHunter',
+    name: "Ancient Sunken Aquarium",
+    owner: "TreasureHunter",
     likes: 78,
     comments: 14,
-    imageUrl: '/textures/backgrounds/Bg2.svg',
+    imageUrl: "/textures/backgrounds/Bg2.svg",
+    timeStamp: "2025-04-20T12:00:00Z",
   },
   // ... más acuarios
 ];
-  
+
 export const mockFriends = [
   { username: "CoralQueen", level: 20, isOnline: true },
   { username: "FishMaster99", level: 15, isOnline: false },
@@ -47,7 +50,7 @@ export const mockSuggestions = [
   { username: "AquaFriend2", level: 7, isOnline: true },
   { username: "AquaFriend3", level: 9, isOnline: false },
 ];
-  
+
 export const popularCategories = [
   "Breeding",
   "Decorations",
@@ -104,14 +107,14 @@ export const recentDiscussions = [
     timestamp: "3 days ago",
   },
 ];
-  
+
 export const mockEvents = [
   {
     id: 1,
     name: "Spring Aquarium Contest",
     description:
       "Celebrate spring! Showcase your best-themed aquarium with exclusive decorations and rare fish.",
-    startDate: "Apr 20",
+    startDate: "Apr 20, 2025",
     endDate: "May 5, 2025",
     participants: 25,
     rewards: "Legendary Spring Fish Collection + 5,000 Coins",
@@ -122,8 +125,8 @@ export const mockEvents = [
     name: "Deep Sea Expedition",
     description:
       "Join the expedition to explore the darkest depths of the ocean. Complete challenges to earn unique treasures.",
-    startDate: "Apr 20",
-    endDate: "May 5, 2025",
+    startDate: "Jun 20, 2025",
+    endDate: "Jul 5, 2025",
     participants: 12,
     rewards: "Exclusive Deep Sea Decorations",
     status: "upcoming", // Future event
@@ -133,8 +136,8 @@ export const mockEvents = [
     name: "Breeding Bonanza Weekend",
     description:
       "Special weekend event focusing on breeding new fish species. Earn rare fish genes and boost your collection.",
-    startDate: "Apr 20",
-    endDate: "May 5, 2025",
+    startDate: "Aug 20, 2025",
+    endDate: "Sept 5, 2025",
     participants: 18,
     rewards: "Rare Fish Genes + 2,000 Coins",
     status: "upcoming", // Another future event
@@ -144,8 +147,8 @@ export const mockEvents = [
     name: "Winter Wonderland Challenge",
     description:
       "Compete in this winter-themed aquarium contest for frosty decorations and exclusive fish. Event has ended.",
-    startDate: "Apr 20",
-    endDate: "May 5, 2025",
+    startDate: "Feb 20, 2025",
+    endDate: "Mar 5, 2025",
     participants: 30,
     rewards: "Snowflake Decorations + 1,500 Coins",
     status: "past", // Completed event
