@@ -130,7 +130,8 @@ export default function MarketPage() {
 
         {showFilters && <FilterPanel />}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 w-full">
+        {/* if tab is browse */}
+        {activeTab === "browse" && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 w-full">
           {sortedFish.map((fish) => (
             <FishCard key={fish.id} fish={fish} />
           ))}
@@ -141,7 +142,49 @@ export default function MarketPage() {
               <p className="text-blue-300">Try adjusting your filters or search criteria</p>
             </div>
           )}
-        </div>
+        </div>}
+
+        {/* if tab is auctions */}
+        {activeTab === "auctions" && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 w-full">
+          {sortedFish.filter(fish => fish.auction).map((fish) => (
+            <FishCard key={fish.id} fish={fish} />
+          ))}
+
+          {sortedFish.filter(fish => fish.auction).length === 0 && (
+            <div className="col-span-full text-center py-12">
+              <h3 className="text-xl text-white mb-2">No auctions found</h3>
+              <p className="text-blue-300">Try adjusting your filters or search criteria</p>
+            </div>
+          )}
+        </div>}
+
+        {/* if tab is my listings */}
+        {activeTab === "my listings" && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 w-full">
+          {sortedFish.filter(fish => fish.listed).map((fish) => (
+            <FishCard key={fish.id} fish={fish} />
+          ))}
+
+          {sortedFish.filter(fish => fish.listed).length === 0 && (
+            <div className="col-span-full text-center py-12">
+              <h3 className="text-xl text-white mb-2">No listings found</h3>
+              <p className="text-blue-300">Try adjusting your filters or search criteria</p>
+            </div>
+          )}
+        </div>}
+
+        {/* if tab is history */}
+        {activeTab === "history" && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 w-full">
+          {sortedFish.filter(fish => fish.exchange).map((fish) => (
+            <FishCard key={fish.id} fish={fish} />
+          ))}
+
+          {sortedFish.filter(fish => fish.exchange).length === 0 && (
+            <div className="col-span-full text-center py-12">
+              <h3 className="text-xl text-white mb-2">No history found</h3>
+              <p className="text-blue-300">Try adjusting your filters or search criteria</p>
+            </div>
+          )}
+        </div>}
       </main>
 
       <Footer />
