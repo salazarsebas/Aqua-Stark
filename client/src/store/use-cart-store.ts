@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface CartItem {
+export interface CartItem {
   id: string;
   name: string;
   image: string;
   price: number;
-  rarity: string;
+  rarity?: string;
   quantity: number;
 }
 

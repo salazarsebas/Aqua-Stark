@@ -10,7 +10,7 @@ export function StoreCategories({
   onCategoryChange,
 }: StoreCategoriesProps) {
   return (
-    <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+    <div className="flex gap-2 pb-2 mb-6 overflow-x-auto">
       <CategoryButton
         active={activeCategory === "all"}
         onClick={() => onCategoryChange("all")}
@@ -18,8 +18,8 @@ export function StoreCategories({
         ALL
       </CategoryButton>
       <CategoryButton
-        active={activeCategory === "specials"}
-        onClick={() => onCategoryChange("specials")}
+        active={activeCategory === "special"}
+        onClick={() => onCategoryChange("special")}
       >
         SPECIAL
       </CategoryButton>
@@ -40,6 +40,13 @@ export function StoreCategories({
         onClick={() => onCategoryChange("carnivory")}
       >
         CARNIVOROUS
+      </CategoryButton>
+
+      <CategoryButton
+        active={activeCategory === "onsale"}
+        onClick={() => onCategoryChange("onsale")}
+      >
+        % ON SALE
       </CategoryButton>
     </div>
   );

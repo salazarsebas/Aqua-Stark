@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Clock, Coins, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { fishData } from "@/data/mock-game";
+import { fishData, ItemType, Rarity, storeBundles } from "@/data/mock-game";
 import { StoreHeader } from "@/components/store/store-header";
 import { StoreTabs } from "@/components/store/store-tabs";
 import { StoreCategories } from "@/components/store/store-categories";
@@ -15,10 +15,12 @@ import { CartSidebar } from "@/components/store/cart-sidebar";
 import { CheckoutModal } from "@/components/store/checkout-modal";
 import { useCartStore } from "@/store/use-cart-store";
 import { StoreCarousel } from "@/components/store/store-carousel";
+import { SortOption, useStoreFilters } from "@/hooks/use-store-filters";
+import { StoreSearchFilters } from "@/components/store/store-search-filters";
+import { SpecialBundles } from "@/components/store/special-bundles";
 
 export default function StorePage() {
-  const [activeTab, setActiveTab] = useState("fish");
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeTab, setActiveTab] = useState<ItemType>("fish");
   const [bubbles, setBubbles] = useState<
     Array<{
       id: number;
@@ -28,8 +30,34 @@ export default function StorePage() {
     }>
   >([]);
   const footerRef = useRef<HTMLDivElement>(null);
-
   const { recentlyViewed } = useCartStore();
+
+  const {
+    filteredItems,
+    searchQuery,
+    setSearchQuery,
+    selectedRarity,
+    setSelectedRarity,
+    sortOption,
+    setSortOption,
+  } = useStoreFilters({
+    items: fishData,
+    initialType: activeTab,
+  });
+
+  const rarityOptions: { value: Rarity | "all"; label: string }[] = [
+    { value: "all", label: "ALL" },
+    { value: "Special", label: "SPECIAL" },
+    { value: "Legendary", label: "LEGENDARY" },
+    { value: "Rare", label: "RARE" },
+  ];
+
+  const sortOptions: { value: SortOption; label: string }[] = [
+    { value: "price-asc", label: "Price: Low to High" },
+    { value: "price-desc", label: "Price: High to Low" },
+    { value: "name-asc", label: "Name: A to Z" },
+    { value: "name-desc", label: "Name: Z to A" },
+  ];
 
   useEffect(() => {
     const createBubbles = () => {
@@ -61,20 +89,14 @@ export default function StorePage() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const filteredItems = fishData.filter(
-    (item) =>
-      activeCategory === "all" ||
-      item.rarity.toLowerCase() === activeCategory.toLowerCase()
-  );
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-700 relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-500 to-blue-700">
       <StoreHeader />
       <CartSidebar />
       <CheckoutModal />
 
-      <main className="container mx-auto px-4 py-8 relative z-10">
-        <h1 className="text-4xl font-bold text-white text-center mb-8 drop-shadow-lg">
+      <main className="container relative z-10 px-4 py-8 mx-auto">
+        <h1 className="mb-8 text-4xl font-bold text-center text-white drop-shadow-lg">
           Aqua Stark Store
         </h1>
 
@@ -82,15 +104,27 @@ export default function StorePage() {
           <StoreCarousel />
         </div>
 
-        <div className="bg-blue-600 rounded-t-3xl overflow-hidden border-2 border-blue-400/50 max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto overflow-hidden bg-blue-600 border-2 rounded-t-3xl border-blue-400/50">
           {/* Tabs */}
           <div className="flex">
             <StoreTabs activeTab={activeTab} onTabChange={setActiveTab} />
             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button className="p-2 text-white bg-red-500 hover:bg-red-600 rounded-full ml-auto mr-2 mt-2">
+            <button className="p-2 mt-2 ml-auto mr-2 text-white bg-red-500 rounded-full hover:bg-red-600">
               <X size={20} />
             </button>
           </div>
+
+          {/* Search and Filters */}
+          <StoreSearchFilters
+            rarityOptions={rarityOptions}
+            sortOptions={sortOptions}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedRarity={selectedRarity}
+            setSelectedRarity={setSelectedRarity}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+          />
 
           {/* Content */}
           <div className="p-6">
@@ -102,7 +136,7 @@ export default function StorePage() {
                   exit={{ opacity: 0, height: 0 }}
                   className="mb-6"
                 >
-                  <h3 className="text-lg font-semibold text-white mb-2 flex items-center space-x-2">
+                  <h3 className="flex items-center mb-2 space-x-2 text-lg font-semibold text-white">
                     <Clock />
                     <span> Recently Viewed</span>
                   </h3>
@@ -114,23 +148,23 @@ export default function StorePage() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         whileHover={{ scale: 1.05 }}
-                        className="bg-blue-400/25 rounded-lg p-2 flex flex-col border border-white/20 shadow-lg"
+                        className="flex flex-col p-2 border rounded-lg shadow-lg bg-blue-400/25 border-white/20"
                       >
                         <div className="">
-                          <div className="bg-blue-500/50 rounded-lg overflow-hidden w-20 h-20 p-1 mx-auto flex items-center justify-center">
+                          <div className="flex items-center justify-center w-20 h-20 p-1 mx-auto overflow-hidden rounded-lg bg-blue-500/50">
                             <img
                               src={item.image}
                               alt={item.name}
-                              className="w-20 mx-auto h-auto"
+                              className="w-20 h-auto mx-auto"
                             />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-white mt-2 text-center">
+                            <h4 className="mt-2 font-semibold text-center text-white">
                               {item.name}
                             </h4>
-                            <p className="text-xs py-2 text-gray-200 text-center flex items-center justify-center">
+                            <p className="flex items-center justify-center py-2 text-xs text-center text-gray-200">
                               <Coins
-                                className="text-yellow-400 mr-1"
+                                className="mr-1 text-yellow-400"
                                 size={20}
                               />
                               <span>{item.price}</span>
@@ -145,9 +179,14 @@ export default function StorePage() {
             </AnimatePresence>
 
             <StoreCategories
-              activeCategory={activeCategory}
-              onCategoryChange={setActiveCategory}
+              activeCategory={selectedRarity.toLowerCase()}
+              onCategoryChange={(v) => setSelectedRarity(v as Rarity)}
             />
+
+            {/* Special Bundles (only for decorations tab) */}
+            {activeTab === "decorations" && storeBundles.length > 0 && (
+              <SpecialBundles bundles={storeBundles} />
+            )}
 
             <StoreGrid items={filteredItems} />
 
@@ -158,28 +197,28 @@ export default function StorePage() {
 
       <footer
         ref={footerRef}
-        className="bg-blue-800 py-6 border-t-2 border-blue-400/50 mt-12 relative"
+        className="relative py-6 mt-12 bg-blue-800 border-t-2 border-blue-400/50"
       >
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-white/80 mb-2">
+        <div className="container px-4 mx-auto text-center">
+          <p className="mb-2 text-white/80">
             © 2025 Aqua Stark - All rights reserved
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <Link
               to="#"
-              className="text-white hover:text-blue-200 transition-colors"
+              className="text-white transition-colors hover:text-blue-200"
             >
               Privacy Policy
             </Link>
             <Link
               to="#"
-              className="text-white hover:text-blue-200 transition-colors"
+              className="text-white transition-colors hover:text-blue-200"
             >
               Terms of Service
             </Link>
             <Link
               to="#"
-              className="text-white hover:text-blue-200 transition-colors"
+              className="text-white transition-colors hover:text-blue-200"
             >
               Contact
             </Link>

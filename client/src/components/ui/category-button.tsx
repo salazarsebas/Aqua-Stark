@@ -7,18 +7,22 @@ interface CategoryButtonProps {
   onClick?: () => void;
 }
 
-export function CategoryButton({ children, active, onClick }: CategoryButtonProps) {
+export function CategoryButton({
+  children,
+  active,
+  onClick,
+}: CategoryButtonProps) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "px-4 py-2 rounded-lg whitespace-nowrap shadow-md border",
+        "px-3 py-1.5 pb-0.5 rounded-full whitespace-nowrap text-xs font-bold border",
         active
-          ? "bg-blue-900 text-white border-blue-600"
-          : "bg-blue-800 hover:bg-blue-900 text-white border-blue-700"
+          ? "bg-orange-500 text-white border-blue-600"
+          : "bg-blue-700 hover:bg-blue-900 text-white border-blue-400/50"
       )}
     >
-      {children}
+      <span className="p-1">{children}</span>
     </button>
   );
 }
