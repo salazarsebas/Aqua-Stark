@@ -107,6 +107,22 @@ export default function StorePage() {
   // Check if we should show bundles (only in Others tab)
   const shouldShowBundles = activeTab === "others";
 
+  // Get the title for the current tab
+  const getTabTitle = () => {
+    switch (activeTab) {
+      case "fish":
+        return "Fish Collection";
+      case "food":
+        return "Fish Food";
+      case "decorations":
+        return "Aquarium Decorations";
+      case "others":
+        return "Aquarium Accessories";
+      default:
+        return "Products";
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-700 relative overflow-hidden">
       <StoreHeader />
@@ -183,6 +199,9 @@ export default function StorePage() {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {/* Tab Title */}
+            <h2 className="text-2xl font-bold text-white mb-4">{getTabTitle()}</h2>
 
             {/* Search and Filter Row */}
             <div className="flex items-center gap-4 mb-6">
