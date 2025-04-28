@@ -10,7 +10,7 @@ export function FilterPanel() {
   const { filters, setFilters, resetFilters } = useMarketStore()
 
   return (
-    <div className="bg-blue-800/50 backdrop-blur-sm rounded-xl border border-blue-700/50 p-4 animate-in fade-in-50 duration-200">
+    <div className="w-full bg-blue-800/50 backdrop-blur-sm rounded-xl border border-blue-700/50 p-4 animate-in fade-in-50 duration-200">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Rarity filter */}
         <div>
