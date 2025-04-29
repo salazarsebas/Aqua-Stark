@@ -120,14 +120,14 @@ export function FishSelection({ filteredFish, onSelectFish }: FishSelectionProps
   }, [])
 
   return (
-    <div className="bg-blue-800/50 backdrop-blur-sm rounded-xl border border-blue-700/50 overflow-hidden flex flex-col lg:h-full">
-      <div className="p-4 border-b border-blue-700/50 flex justify-between items-center">
-        <div className="flex justify-between items-center grow">
-          <h3 className="font-bold text-white">Select Fish for Breeding</h3>
-          <span className="text-sm text-blue-300">{filteredFish.length} fish available</span>
+    <div className="bg-blue-800/50 backdrop-blur-sm rounded-xl border border-blue-700/50 overflow-hidden flex flex-col h-[500px] lg:h-full w-full max-w-full">
+      <div className="p-4 border-b border-blue-700/50 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+        <div className="flex justify-between items-center w-full">
+          <h3 className="font-bold text-white text-sm sm:text-base truncate max-w-[140px] sm:max-w-none">Select Fish for Breeding</h3>
+          <span className="text-xs sm:text-sm text-blue-300 ml-2 whitespace-nowrap">{filteredFish.length} fish available</span>
         </div>
         
-        <div className="flex items-center ml-4">
+        <div className="flex items-center justify-end">
           <div className="hidden lg:flex border border-blue-700/50 rounded-md overflow-hidden">
             <Button 
               variant="ghost"
@@ -155,12 +155,12 @@ export function FishSelection({ filteredFish, onSelectFish }: FishSelectionProps
         </div>
       </div>
       
-      <div className="relative p-4 flex-1 overflow-hidden flex flex-col">
+      <div className="relative p-4 flex-1 overflow-hidden flex flex-col w-full">
         {/* Scroll View for Mobile/Tablet */}
         {viewMode === 'scroll' && (
-          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar w-full">
             {filteredFish.length > 0 ? (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 w-full">
                 {filteredFish.map((fish) => (
                   <FishCard 
                     key={fish.id} 
@@ -171,7 +171,7 @@ export function FishSelection({ filteredFish, onSelectFish }: FishSelectionProps
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 flex-1 flex items-center justify-center">
+              <div className="text-center py-8 flex-1 flex items-center justify-center w-full">
                 <div>
                   <p className="text-blue-300">No fish match your filter criteria</p>
                   <p className="text-blue-400 text-sm mt-2">Try adjusting your filters to see more fish</p>
@@ -183,19 +183,20 @@ export function FishSelection({ filteredFish, onSelectFish }: FishSelectionProps
 
         {/* Grid View for Desktop */}
         {viewMode === 'grid' && (
-          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar w-full">
             {filteredFish.length > 0 ? (
-              <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
+              <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 content-start w-full">
                 {filteredFish.map((fish) => (
                   <FishCard 
                     key={fish.id} 
                     fish={fish} 
                     onSelectFish={onSelectFish}
+                    className="w-full"
                   />
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 flex-1 flex items-center justify-center">
+              <div className="text-center py-8 flex-1 flex items-center justify-center w-full">
                 <div>
                   <p className="text-blue-300">No fish match your filter criteria</p>
                   <p className="text-blue-400 text-sm mt-2">Try adjusting your filters to see more fish</p>
@@ -219,7 +220,7 @@ function FishCard({ fish, onSelectFish, className }: FishCardProps) {
   return (
     <motion.div
       className={cn(
-        "fish-card bg-blue-700/30 rounded-lg p-4 flex flex-col items-center cursor-pointer hover:bg-blue-700/50 transition-colors",
+        "fish-card bg-blue-700/30 rounded-lg p-4 flex flex-col items-center cursor-pointer hover:bg-blue-700/50 transition-colors w-full min-w-0 max-w-full",
         className
       )}
       whileHover={{ scale: 1.03 }}
@@ -232,12 +233,12 @@ function FishCard({ fish, onSelectFish, className }: FishCardProps) {
           className="w-full h-full object-contain"
         />
       </div>
-      <div className="w-full text-center">
-        <h4 className="font-bold text-white text-sm sm:text-base truncate">{fish.name}</h4>
+      <div className="w-full text-center min-w-0 max-w-full">
+        <h4 className="font-bold text-white text-sm sm:text-base truncate max-w-full">{fish.name}</h4>
         <div className="flex items-center justify-center mt-1.5 flex-wrap gap-1">
           <span
             className={cn(
-              "text-xs px-2 py-0.5 rounded-full",
+              "text-xs px-2 py-0.5 rounded-full whitespace-nowrap",
               fish.rarity === "Common"
                 ? "bg-gray-500/50 text-gray-100"
                 : fish.rarity === "Uncommon"
@@ -251,14 +252,14 @@ function FishCard({ fish, onSelectFish, className }: FishCardProps) {
           >
             {fish.rarity}
           </span>
-          <span className="text-blue-200 text-xs">Gen {fish.generation}</span>
-          <span className="text-blue-200 text-xs">Lvl {fish.level}</span>
+          <span className="text-blue-200 text-xs whitespace-nowrap">Gen {fish.generation}</span>
+          <span className="text-blue-200 text-xs whitespace-nowrap">Lvl {fish.level}</span>
         </div>
         
         {fish.breedingCooldown && (
           <div
             className={cn(
-              "text-xs px-2 py-1 rounded-full mt-2 inline-block",
+              "text-xs px-2 py-1 rounded-full mt-2 inline-block whitespace-nowrap",
               fish.breedingCooldown === "Ready"
                 ? "bg-green-500/30 text-green-100"
                 : "bg-orange-500/30 text-orange-100",
