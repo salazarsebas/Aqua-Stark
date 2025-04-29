@@ -8,6 +8,7 @@ import { FishTank } from "@/components/fish-tank"
 import { useCartStore } from "@/store/use-cart-store"
 
 interface StoreItemProps {
+  id?: string
   name: string
   image: string
   price: number
@@ -22,6 +23,7 @@ interface StoreItemProps {
 }
 
 export default function StoreItem({
+  id,
   name,
   image,
   price,
@@ -70,13 +72,13 @@ export default function StoreItem({
     setIsAddingToCart(true)
     
     // Create item object for cart
-    const item = { name, image, price, rarity, description }
+    const item = { id, name, image, price, rarity, description }
     
     setTimeout(() => {
       setIsInCart(true)
       setIsAddingToCart(false)
       
-      // Agregar al carrito usando useCartStore
+      // Add to cart using useCartStore
       addItem(item)
       addToRecentlyViewed(item)
       
