@@ -158,68 +158,17 @@ export function FishSelection({ filteredFish, onSelectFish }: FishSelectionProps
       <div className="relative p-4 flex-1 overflow-hidden flex flex-col">
         {/* Scroll View for Mobile/Tablet */}
         {viewMode === 'scroll' && (
-          <>
-            {/* Scroll shadows */}
-            <div className={cn(
-              "absolute inset-y-0 left-0 w-16 pointer-events-none z-10 bg-gradient-to-r from-blue-800/90 to-transparent transition-opacity duration-300",
-              showLeftArrow ? "opacity-100" : "opacity-0"
-            )} />
-            
-            <div className={cn(
-              "absolute inset-y-0 right-0 w-16 pointer-events-none z-10 bg-gradient-to-l from-blue-800/90 to-transparent transition-opacity duration-300",
-              showRightArrow ? "opacity-100" : "opacity-0"
-            )} />
-            
-            {/* Navigation buttons - always rendered but conditionally visible */}
-            {filteredFish.length > 1 && (
-              <>
-                <button 
-                  className={cn(
-                    "absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-blue-700/80 hover:bg-blue-600/80 rounded-full p-2 text-white shadow-lg border border-blue-500/50 transition-all duration-200",
-                    showLeftArrow ? "opacity-100 translate-x-0 pointer-events-auto" : "opacity-0 -translate-x-4 pointer-events-none"
-                  )}
-                  onClick={() => scroll('left')}
-                  aria-label="Scroll left"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                
-                <button 
-                  className={cn(
-                    "absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-blue-700/80 hover:bg-blue-600/80 rounded-full p-2 text-white shadow-lg border border-blue-500/50 transition-all duration-200",
-                    showRightArrow ? "opacity-100 translate-x-0 pointer-events-auto" : "opacity-0 translate-x-4 pointer-events-none"
-                  )}
-                  onClick={() => scroll('right')}
-                  aria-label="Scroll right"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </>
-            )}
-            
-            {/* Horizontal scrolling container */}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
             {filteredFish.length > 0 ? (
-              <div className="flex-1 flex min-h-0">
-                <div 
-                  ref={scrollContainerRef}
-                  className="flex overflow-x-auto py-4 px-2 scrollbar-hide snap-x snap-mandatory scroll-smooth w-full"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  onScroll={handleScroll}
-                >
-                  <div className={cn(
-                    "inline-flex",
-                    filteredFish.length <= 3 ? "justify-center" : ""
-                  )}>
-                    {filteredFish.map((fish) => (
-                      <FishCard 
-                        key={fish.id} 
-                        fish={fish} 
-                        onSelectFish={onSelectFish}
-                        className="mr-5 min-w-[180px] sm:min-w-[200px] flex-shrink-0 snap-center"
-                      />
-                    ))}
-                  </div>
-                </div>
+              <div className="flex flex-col gap-3">
+                {filteredFish.map((fish) => (
+                  <FishCard 
+                    key={fish.id} 
+                    fish={fish} 
+                    onSelectFish={onSelectFish}
+                    className="w-full"
+                  />
+                ))}
               </div>
             ) : (
               <div className="text-center py-8 flex-1 flex items-center justify-center">
@@ -229,12 +178,12 @@ export function FishSelection({ filteredFish, onSelectFish }: FishSelectionProps
                 </div>
               </div>
             )}
-          </>
+          </div>
         )}
 
         {/* Grid View for Desktop */}
         {viewMode === 'grid' && (
-          <div className="flex-1 overflow-y-auto py-2 px-1 h-full">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
             {filteredFish.length > 0 ? (
               <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
                 {filteredFish.map((fish) => (
@@ -323,23 +272,40 @@ function FishCard({ fish, onSelectFish, className }: FishCardProps) {
   )
 }
 
-// Helper styles for hiding scrollbars while keeping functionality
-const scrollbarHideStyles = `
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+// Replace the scrollbar-hide styles with custom scrollbar styles
+const customScrollbarStyles = `
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.5) rgba(0, 0, 0, 0.1);
 }
 `;
 
 // Inject styles into the document if not already present
 if (typeof document !== 'undefined') {
-  if (!document.getElementById('scrollbar-hide-styles')) {
+  if (!document.getElementById('custom-scrollbar-styles')) {
     const styleTag = document.createElement('style');
-    styleTag.id = 'scrollbar-hide-styles';
-    styleTag.textContent = scrollbarHideStyles;
+    styleTag.id = 'custom-scrollbar-styles';
+    styleTag.textContent = customScrollbarStyles;
     document.head.appendChild(styleTag);
   }
 }
