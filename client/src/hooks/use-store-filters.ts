@@ -18,22 +18,16 @@ export function useStoreFilters({ items, initialType }: UseStoreFiltersProps) {
   const [selectedRarity, setSelectedRarity] = useState<Rarity | "all">("all");
   const [sortOption, setSortOption] = useState<SortOption>("price-asc");
 
-  // Filter items by type
-  const itemsByType = useMemo(() => {
-    if (!selectedType) return items;
-    return items.filter((item) => item.type === selectedType);
-  }, [items, selectedType]);
-
   // Apply search filter
   const searchedItems = useMemo(() => {
-    if (!searchQuery.trim()) return itemsByType;
+    if (!searchQuery.trim()) return items;
     const query = searchQuery.toLowerCase();
-    return itemsByType.filter(
+    return items.filter(
       (item) =>
         item.name.toLowerCase().includes(query) ||
         item.description.toLowerCase().includes(query)
     );
-  }, [itemsByType, searchQuery]);
+  }, [items, searchQuery]);
 
   // Apply rarity filter
   const filteredItems = useMemo(() => {

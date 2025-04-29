@@ -7,7 +7,6 @@ export interface FishData {
   rarity: Rarity;
   rating: number;
   description: string;
-  type: ItemType;
   originalPrice?: number;
 }
 
@@ -33,7 +32,6 @@ export const fishData: FishData[] = [
     rarity: "Rare",
     description: "A bright red fish that glows under light in the aquarium.",
     rating: 4.5,
-    type: "fish",
   },
   {
     name: "BLUESHINE",
@@ -44,7 +42,6 @@ export const fishData: FishData[] = [
     description:
       "A stunning blue fish with a shiny appearance in the aquarium.",
     rating: 4.8,
-    type: "fish",
   },
   {
     name: "TROPICORAL",
@@ -55,7 +52,6 @@ export const fishData: FishData[] = [
     description:
       "A colorful tropical fish perfect for any tank in the aquarium.",
     rating: 4.6,
-    type: "fish",
   },
   {
     name: "REDGLOW PLUS",
@@ -66,7 +62,6 @@ export const fishData: FishData[] = [
     description:
       "An enhanced REDGLOW with even more vibrant colors in the aquarium.",
     rating: 4.7,
-    type: "fish",
   },
   {
     name: "BLUESHINE PLUS",
@@ -77,7 +72,6 @@ export const fishData: FishData[] = [
     description:
       "A legendary version of BLUESHINE with extra shine in the aquarium.",
     rating: 4.9,
-    type: "decorations",
   },
   {
     name: "TROPICORAL PLUS",
@@ -88,7 +82,6 @@ export const fishData: FishData[] = [
     description:
       "An exotic TROPICORAL with mesmerizing patterns in the aquarium.",
     rating: 5.0,
-    type: "decorations",
   },
 ];
 
