@@ -53,12 +53,14 @@ export default function LaboratoryPage() {
         }
       />
 
-      <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl flex-grow">
-        <LaboratoryTabs
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          filteredFish={filteredFish}
-        />
+      <main className="relative z-20 flex flex-col items-center px-4 py-8 mx-auto max-w-7xl flex-grow w-full">
+        <div className="w-full max-w-4xl mx-auto lg:max-w-7xl">
+          <LaboratoryTabs
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            filteredFish={filteredFish}
+          />
+        </div>
       </main>
 
       <div className="relative z-10 mt-auto">
