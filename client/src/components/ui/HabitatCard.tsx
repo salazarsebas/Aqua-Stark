@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 export default function HabitatCard({ habitat }: { habitat: Habitat }) {
   return (
     <div className="bg-[#014eaa] backdrop-blur-sm rounded-lg text-white shadow-md">
-      <div className="flex items-start justify-end flex-col h-40 bg-gradient-to-t from-blue-900 to-white rounded-t-lg p-4">
+      <div style={{backgroundImage: `url(${habitat.image})`}} className="bg-cover bg-center flex items-start justify-end flex-col h-56 bg-gradient-to-t from-blue-900 to-white rounded-t-lg p-4">
         <h3 className="text-base font-bold">{habitat.name}</h3>
         <p className="text-blue-100">{habitat.description}</p>
       </div>
