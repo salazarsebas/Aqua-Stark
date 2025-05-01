@@ -37,7 +37,7 @@ export function StoreSearchFilters({
         <input
           type="text"
           placeholder="Search products..."
-          className="w-full py-1.5 pb-1 pr-4 text-sm text-blue-100 bg-blue-700 border rounded-md pl-8 placeholder:text-blue-100 border-blue-400/50"
+          className="w-full py-2.5 pb-2 pr-4 text-sm text-blue-100 bg-blue-700 border rounded-md pl-8 placeholder:text-blue-100 border-blue-400/50"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -46,7 +46,7 @@ export function StoreSearchFilters({
       <div className="flex gap-2">
         <div className="relative">
           <button
-            className="flex items-center gap-2 px-3 py-1.5 pb-1 text-sm font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
+            className="flex items-center gap-2 px-3 py-2.5 pb-2 text-sm font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
             onClick={() => {
               setShowSort(false);
               setShowFilters(!showFilters);
@@ -83,7 +83,7 @@ export function StoreSearchFilters({
 
         <div className="relative">
           <button
-            className="flex items-center gap-2 px-3 py-1.5 pb-1 text-sm font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
+            className="flex items-center gap-2 px-3 py-2.5 pb-2 text-sm font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
             onClick={() => {
               setShowFilters(false);
               setShowSort(!showSort);

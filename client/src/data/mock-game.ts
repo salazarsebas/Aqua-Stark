@@ -10,18 +10,7 @@ export interface FishData {
   originalPrice?: number;
 }
 
-export interface Bundle {
-  id: string;
-  name: string;
-  description: string;
-  items: string[];
-  itemsDescription: string;
-  originalPrice: number;
-  price: number;
-  image: string;
-  type: ItemType;
-  savingsPercentage: number;
-}
+
 
 export const fishData: FishData[] = [
   {
@@ -85,29 +74,4 @@ export const fishData: FishData[] = [
   },
 ];
 
-export const storeBundles: Bundle[] = [
-  {
-    id: "bundle-1",
-    name: "Nature Pack",
-    description: "A natural themed decoration set",
-    items: ["deco-1", "deco-2", "deco-3"],
-    itemsDescription: "BASIC PLANT, TREASURE CHEST, ANCIENT COLUMN",
-    originalPrice: 2500,
-    price: 2000,
-    image: "/items/basic-plant.png",
-    type: "decorations",
-    savingsPercentage: 20,
-  },
-  {
-    id: "bundle-2",
-    name: "Treasure Collection",
-    description: "A collection of treasure-themed decorations",
-    items: ["deco-2", "deco-3", "deco-4"],
-    itemsDescription: "TREASURE CHEST, ANCIENT COLUMN, ATLANTIS CITY",
-    originalPrice: 5300,
-    price: 4200,
-    image: "/items/chest.png",
-    type: "decorations",
-    savingsPercentage: 21,
-  },
-];
+

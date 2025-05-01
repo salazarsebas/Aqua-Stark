@@ -1,33 +1,50 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { FishData, type Rarity, type ItemType } from "@/data/mock-game";
+import { type Rarity, type ItemType } from "@/data/mock-game";
+import { fishData } from "@/data/mock-game";
+import { decorationItems, miscItems } from "@/data/mock-store";
 
 export type SortOption = "price-asc" | "price-desc" | "name-asc" | "name-desc";
 
 interface UseStoreFiltersProps {
-  items: FishData[];
-  initialType?: ItemType;
+  initialTab?: ItemType;
 }
 
-export function useStoreFilters({ items, initialType }: UseStoreFiltersProps) {
-  const [selectedType, setSelectedType] = useState<ItemType | null>(
-    initialType || null
+export function useStoreFilters({ initialTab }: UseStoreFiltersProps) {
+  const [selectedTab, setSelectedTab] = useState<ItemType>(
+    initialTab || "fish"
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRarity, setSelectedRarity] = useState<Rarity | "all">("all");
   const [sortOption, setSortOption] = useState<SortOption>("price-asc");
 
+  const selectedData = useMemo(() => {
+    switch (selectedTab) {
+      case "fish":
+        return fishData;
+      case "food":
+        // In a real implementation, these would come from their own data files
+        return [];
+      case "decorations":
+        return decorationItems;
+      case "others":
+        return miscItems;
+      default:
+        return fishData;
+    }
+  }, [selectedTab]);
+
   // Apply search filter
   const searchedItems = useMemo(() => {
-    if (!searchQuery.trim()) return items;
+    if (!searchQuery.trim()) return selectedData;
     const query = searchQuery.toLowerCase();
-    return items.filter(
+    return selectedData.filter(
       (item) =>
         item.name.toLowerCase().includes(query) ||
         item.description.toLowerCase().includes(query)
     );
-  }, [items, searchQuery]);
+  }, [selectedData, searchQuery]);
 
   // Apply rarity filter
   const filteredItems = useMemo(() => {
@@ -60,8 +77,8 @@ export function useStoreFilters({ items, initialType }: UseStoreFiltersProps) {
 
   return {
     filteredItems: sortedItems,
-    selectedType,
-    setSelectedType,
+    selectedTab,
+    setSelectedTab,
     searchQuery,
     setSearchQuery,
     selectedRarity,

@@ -16,10 +16,10 @@ export function CategoryButton({
     <button
       onClick={onClick}
       className={cn(
-        "px-3 py-1.5 pb-0.5 rounded-full whitespace-nowrap text-xs font-bold border",
+        "px-4 py-2 rounded-full whitespace-nowrap text-sm font-semibold transition-all duration-200 flex items-center justify-center",
         active
-          ? "bg-orange-500 text-white border-blue-600"
-          : "bg-blue-700 hover:bg-blue-900 text-white border-blue-400/50"
+          ? "bg-orange-500 text-white"
+          : "bg-blue-700/60 hover:bg-blue-700 text-white"
       )}
     >
       <span className="p-1">{children}</span>

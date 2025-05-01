@@ -1,5 +1,4 @@
 import { CategoryButton } from "@/components/ui/category-button";
-import { Percent } from "lucide-react";
 
 interface StoreCategoriesProps {
   activeCategory: string;
@@ -39,13 +38,6 @@ export function StoreCategories({
       <CategoryButton
         active={activeCategory === "on-sale"}
         onClick={() => onCategoryChange("on-sale")}
-      >
-        <Percent size={14} className="mr-1" /> ON SALE
-      </CategoryButton>
-
-      <CategoryButton
-        active={activeCategory === "onsale"}
-        onClick={() => onCategoryChange("onsale")}
       >
         % ON SALE
       </CategoryButton>
