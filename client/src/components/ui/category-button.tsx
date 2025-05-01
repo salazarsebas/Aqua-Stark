@@ -7,7 +7,11 @@ interface CategoryButtonProps {
   onClick?: () => void;
 }
 
-export function CategoryButton({ children, active, onClick }: CategoryButtonProps) {
+export function CategoryButton({
+  children,
+  active,
+  onClick,
+}: CategoryButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -18,7 +22,7 @@ export function CategoryButton({ children, active, onClick }: CategoryButtonProp
           : "bg-blue-700/60 hover:bg-blue-700 text-white"
       )}
     >
-      {children}
+      <span className="p-1">{children}</span>
     </button>
   );
 }
