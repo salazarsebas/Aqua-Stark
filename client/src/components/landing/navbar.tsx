@@ -13,9 +13,7 @@ export function Navbar() {
   const connectors = [
     new InjectedConnector({ options: { id: 'argentX', name: 'Argent X' } }),
     new InjectedConnector({ options: { id: 'braavos', name: 'Braavos' } }),
-    // Cartridge requires additional setup
     new InjectedConnector({ options: { id: 'cartridge', name: 'Cartridge' } }),
-    // RhinoFi and Kass connectors (custom connectors may be needed)
     new InjectedConnector({ options: { id: 'rhinoFi', name: 'RhinoFi' } }),
     new InjectedConnector({ options: { id: 'kass', name: 'Kass' } }),
   ];
@@ -24,13 +22,13 @@ export function Navbar() {
     setIsModalOpen(false);
 
     try {
-      // Connect to the wallet using the connectors array and preselect the wallet
+      
       const connection = await connect({
-        connectors, // Pass the connectors array
+        connectors, 
         dappName: "Aqua Stark",
         modalTheme: "dark",
-        modalMode: "alwaysAsk", // Ensure the modal is shown if needed (we'll handle this with our custom modal)
-        preselectedId: walletId, // Preselect the wallet based on the ID from the modal
+        modalMode: "alwaysAsk", 
+        preselectedId: walletId, 
       });
 
       if (connection && connection.isConnected) {

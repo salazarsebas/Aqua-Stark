@@ -5,7 +5,7 @@ export interface Wallet {
   name: string;
   icon: JSX.Element;
   description: string;
-  bgColor: string; // Tailwind background color for styling
+  bgColor: string; 
 }
 
 export const wallets: Wallet[] = [
@@ -45,3 +45,11 @@ export const wallets: Wallet[] = [
     bgColor: 'bg-red-500/20',
   },
 ];
+
+
+
+export const WALLET_ERRORS = {
+  NOT_INSTALLED: 'Wallet extension not installed',
+  CONNECTION_REFUSED: 'Connection refused by user',
+  UNKNOWN_ERROR: 'Unknown connection error'
+};

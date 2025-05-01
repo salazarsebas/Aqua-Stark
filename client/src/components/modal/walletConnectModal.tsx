@@ -1,25 +1,36 @@
-// components/WalletModal.tsx
+// components/modal/walletConnectModal.jsx
 import React from 'react';
-import { Wallet, wallets } from '@/constants/wallets'; // Import the wallets array
+import { wallets } from '@/constants/wallets';
 
-interface WalletModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSelectWallet: (walletId: string) => void;
-}
-
-const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose, onSelectWallet }) => {
+const WalletModal = ({ isOpen, onClose, onSelectWallet }) => {
   if (!isOpen) return null;
 
+  // Handle keyboard events (Escape key to close modal)
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-[#1C1D1F] rounded-lg p-6 w-full max-w-md mx-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
+      <div className="bg-[#1C1D1F] rounded-lg p-6 w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-white text-xl font-bold">Connect Wallet</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <button 
+            onClick={onClose} 
+            className="text-gray-400 hover:text-white"
+            aria-label="Close modal"
+          >
             ✕
           </button>
         </div>
+        
         <div className="space-y-3">
           {wallets.map((wallet) => (
             <button
@@ -34,6 +45,10 @@ const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose, onSelectWall
               </div>
             </button>
           ))}
+        </div>
+        
+        <div className="mt-4 text-center text-sm text-gray-400">
+          <p>Don't have a wallet? <a href="https://starknet.io/ecosystem/wallets/" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">Get one here</a></p>
         </div>
       </div>
     </div>
