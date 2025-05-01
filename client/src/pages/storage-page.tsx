@@ -6,7 +6,12 @@ import { Clock, Coins, Filter, Search, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { fishData } from "@/data/mock-game";
-import { miscItems, bundles, decorationBundles } from "@/data/mock-store";
+import {
+  miscItems,
+  bundles,
+  decorationBundles,
+  decorationItems,
+} from "@/data/mock-store";
 import { StoreTabs } from "@/components/store/store-tabs";
 import { StoreCategories } from "@/components/store/store-categories";
 import { StoreGrid } from "@/components/store/store-grid";
@@ -146,7 +151,7 @@ export default function StorePage() {
         return [] as StoreItem[];
       case "decorations":
         // In a real implementation, these would come from their own data files
-        return [] as StoreItem[];
+        return decorationItems;
       case "others":
         return miscItems as unknown as StoreItem[];
       default:
