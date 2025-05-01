@@ -1,52 +1,46 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
-import { connect, disconnect, useStarknetkitConnectModal } from 'starknetkit';
-import { InjectedConnector } from 'starknetkit/injected';
+import { useState, useEffect } from "react";
+import { useConnect, useDisconnect, useAccount, Connector } from "@starknet-react/core";
 import WalletModal from "../modal/walletConnectModal";
-
 
 export function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAccount();
 
-  const connectors = [
-    new InjectedConnector({ options: { id: 'argentX', name: 'Argent X' } }),
-    new InjectedConnector({ options: { id: 'braavos', name: 'Braavos' } }),
-    new InjectedConnector({ options: { id: 'cartridge', name: 'Cartridge' } }),
-    new InjectedConnector({ options: { id: 'rhinoFi', name: 'RhinoFi' } }),
-    new InjectedConnector({ options: { id: 'kass', name: 'Kass' } }),
-  ];
+  
+  useEffect(() => {
+    if (isConnected && address) {
+      console.log("Connected to wallet:", address);
+    }
+  }, [isConnected, address]);
 
-  const handleConnectWallet = async (walletId: string) => {
-    setIsModalOpen(false);
-
+  const handleConnectWallet = async (connector: Connector) => {
     try {
-      
-      const connection = await connect({
-        connectors, 
-        dappName: "Aqua Stark",
-        modalTheme: "dark",
-        modalMode: "alwaysAsk", 
-        preselectedId: walletId, 
-      });
-
-      if (connection && connection.isConnected) {
-        setConnectedAddress(connection.selectedAddress);
-        console.log("Connected to wallet:", connection.selectedAddress);
-      } else {
-        console.error("Failed to connect to wallet");
-      }
+      await connect({ connector });
+      setIsModalOpen(false); 
     } catch (error) {
       console.error("Error connecting wallet:", error);
+      if (error instanceof Error) {
+        if (error.message.includes("User rejected the request")) {
+          alert("Connection was cancelled by user");
+        } else {
+          alert("Failed to connect: " + error.message);
+        }
+      }
     }
   };
 
-
   const handleDisconnectWallet = async () => {
-    await disconnect();
-    setConnectedAddress(null);
+    try {
+      await disconnect();
+    } catch (error) {
+      console.error("Error disconnecting:", error);
+    }
   };
+
   return (
     <nav className="relative z-10 flex justify-between items-center p-4">
       <div className="flex items-center">
@@ -58,41 +52,35 @@ export function Navbar() {
           className="drop-shadow-lg"
         />
       </div>
-      {/* <div className="flex items-center">
-        <Button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 text-lg rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-purple-400 border-b-4 border-r-4">
-          <Wallet className="mr-2 h-6 w-6" />
-          Connect Wallet
-        </Button>
-      </div> */}
 
-<div>
-      {connectedAddress ? (
-        <div className="flex items-center gap-2">
-          <span className="text-white text-sm">
-            {`${connectedAddress.slice(0, 6)}...${connectedAddress.slice(-4)}`}
-          </span>
+      <div>
+        {isConnected ? (
+          <div className="flex items-center gap-2">
+            <span className="text-white text-sm">
+              {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "Connected"}
+            </span>
+            <button
+              onClick={handleDisconnectWallet}
+              className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600"
+            >
+              Disconnect
+            </button>
+          </div>
+        ) : (
           <button
-            onClick={handleDisconnectWallet}
-            className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600"
+            onClick={() => setIsModalOpen(true)}
+            className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors"
           >
-            Disconnect
+            Connect Wallet
           </button>
-        </div>
-      ) : (
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors"
-        >
-          Connect Wallet
-        </button>
-      )}
+        )}
 
-      <WalletModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSelectWallet={handleConnectWallet}
-      />
-    </div>
+        <WalletModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSelectWallet={handleConnectWallet}
+        />
+      </div>
     </nav>
-  )
+  );
 }
