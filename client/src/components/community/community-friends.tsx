@@ -1,16 +1,36 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
-import { mockFriends, mockSuggestions } from '@/data/mock-community';
-
+import { Search, UserPlus } from "lucide-react";
+import { mockFriends, mockSuggestions } from "@/data/mock-community";
+import { Input } from "../ui/input";
+import { useState } from "react";
 
 export default function CommunityFriends() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredUsers = mockFriends.filter((user) => {
+    if (!user.username.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <div>
       {/* Encabezado */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 gap-2">
         <h2 className="text-2xl font-bold">My Friends</h2>
+        <div className="flex-grow" />
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search users..."
+            className="pl-10 bg-blue-800 border-blue-700 text-white placeholder:text-blue-300"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
         <Button className="bg-green-500 hover:bg-green-600 text-white font-semibold flex items-center gap-2">
           <UserPlus className="w-4 h-4" />
           Add Friend
@@ -19,7 +39,7 @@ export default function CommunityFriends() {
 
       {/* Lista de amigos en dos columnas */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {mockFriends.map((friend) => (
+        {filteredUsers.map((friend) => (
           <div
             key={friend.username}
             className="
@@ -30,6 +50,11 @@ export default function CommunityFriends() {
           >
             {/* Avatar / Indicador de estado */}
             <div className="relative w-12 h-12 rounded-full bg-white flex-shrink-0">
+              <img
+                src={friend.imageUrl}
+                alt={friend.username}
+                className="w-full h-full rounded-full object-cover"
+              />
               {/* Indicador de online/offline */}
               {friend.isOnline && (
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
@@ -87,6 +112,11 @@ export default function CommunityFriends() {
           >
             {/* Avatar / Indicador de estado */}
             <div className="relative w-12 h-12 rounded-full bg-white flex-shrink-0">
+              <img
+                src={suggestion.imageUrl}
+                alt={suggestion.username}
+                className="w-full h-full rounded-full object-cover"
+              />
               {suggestion.isOnline && (
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
               )}
