@@ -20,7 +20,7 @@ export default function CommunityFriends() {
       {/* Encabezado */}
       <div className="flex items-center justify-between mb-4 gap-2">
         <h2 className="text-2xl font-bold">My Friends</h2>
-        <div className="flex-grow"></div>
+        <div className="flex-grow" />
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <Input
@@ -50,6 +50,11 @@ export default function CommunityFriends() {
           >
             {/* Avatar / Indicador de estado */}
             <div className="relative w-12 h-12 rounded-full bg-white flex-shrink-0">
+              <img
+                src={friend.imageUrl}
+                alt={friend.username}
+                className="w-full h-full rounded-full object-cover"
+              />
               {/* Indicador de online/offline */}
               {friend.isOnline && (
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
@@ -107,6 +112,11 @@ export default function CommunityFriends() {
           >
             {/* Avatar / Indicador de estado */}
             <div className="relative w-12 h-12 rounded-full bg-white flex-shrink-0">
+              <img
+                src={suggestion.imageUrl}
+                alt={suggestion.username}
+                className="w-full h-full rounded-full object-cover"
+              />
               {suggestion.isOnline && (
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
               )}

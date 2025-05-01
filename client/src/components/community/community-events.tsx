@@ -65,8 +65,12 @@ export default function CommunityEvents() {
             </span>
 
             {/* Imagen a la izquierda */}
-            <div className="w-full md:w-2/5 h-40 bg-white/10 rounded flex items-center justify-center">
-              <p className="text-gray-400">[ Event Image ]</p>
+            <div className="w-full md:w-2/5 h-52 bg-white/10 rounded flex items-center justify-center">
+              <img
+                src={activeEvent.imageUrl}
+                alt={activeEvent.name}
+                className="w-full h-full object-cover rounded-md object-center"
+              />
             </div>
 
             {/* Información a la derecha */}
@@ -151,8 +155,12 @@ export default function CommunityEvents() {
                 </span>
 
                 {/* Imagen grande arriba */}
-                <div className="w-full h-40 bg-white/10 rounded flex items-center justify-center mb-3">
-                  <p className="text-gray-400">[ Event Image ]</p>
+                <div className="w-full h-52 bg-white/10 rounded flex items-center justify-center mb-3">
+                  <img
+                    src={event.imageUrl}
+                    alt={event.name}
+                    className="w-full h-full object-cover rounded-md object-center"
+                  />
                 </div>
 
                 {/* Título */}
@@ -214,8 +222,12 @@ export default function CommunityEvents() {
                   Ended
                 </span>
 
-                <div className="w-full md:w-2/5 h-40 bg-white/10 rounded flex items-center justify-center">
-                  <p className="text-gray-400">[ Event Image ]</p>
+                <div className="w-full md:w-2/5 h-52 bg-white/10 rounded flex items-center justify-center">
+                  <img
+                    src={event.imageUrl}
+                    alt={event.name}
+                    className="w-full h-full object-cover rounded-md object-center"
+                  />
                 </div>
 
                 <div className="flex-1 flex flex-col justify-center">
@@ -245,10 +257,8 @@ export default function CommunityEvents() {
           {/* Botón en el centro, fuera del contenedor al 50% */}
           <div className="flex justify-center mt-2">
             <button
-              className="
-          text-blue-200 font-semibold hover:underline
-          transition-colors
-        "
+              type="button"
+              className="text-blue-200 font-semibold hover:underline transition-colors"
             >
               View All Past Events &gt;
             </button>

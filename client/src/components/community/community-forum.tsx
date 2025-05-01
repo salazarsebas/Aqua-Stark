@@ -74,6 +74,7 @@ export default function CommunityForum() {
           {popularCategories.map((cat) => (
             <button
               key={cat}
+              type="button"
               value={cat}
               className="
                 w-full
@@ -105,7 +106,13 @@ export default function CommunityForum() {
               "
             >
               {/* Avatar (placeholder) */}
-              <div className="w-12 h-12 bg-white rounded-full flex-shrink-0" />
+              <div className="w-12 h-12 bg-white rounded-full flex-shrink-0">
+                <img
+                  src={disc.imageUrl}
+                  alt={disc.author}
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
 
               {/* Bloque de texto */}
               <div className="flex-1 space-y-1">
