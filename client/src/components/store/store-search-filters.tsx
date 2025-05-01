@@ -32,12 +32,12 @@ export function StoreSearchFilters({
       <div className="relative flex items-center flex-1">
         <Search
           className="absolute text-white transform -translate-y-1/2 left-3 top-1/2"
-          size={14}
+          size={16}
         />
         <input
           type="text"
           placeholder="Search products..."
-          className="w-full py-2.5 pb-2 pr-4 text-sm text-blue-100 bg-blue-700 border rounded-md pl-8 placeholder:text-blue-100 border-blue-400/50"
+          className="w-full py-2.5 pb-2 pr-4 text-base text-blue-100 bg-blue-700 border rounded-md pl-8 placeholder:text-blue-100 border-blue-400/50"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -46,13 +46,13 @@ export function StoreSearchFilters({
       <div className="flex gap-2">
         <div className="relative">
           <button
-            className="flex items-center gap-2 px-3 py-2.5 pb-2 text-sm font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
+            className="flex items-center gap-2 px-3 py-2.5 pb-2 text-base font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
             onClick={() => {
               setShowSort(false);
               setShowFilters(!showFilters);
             }}
           >
-            <Filter size={14} />
+            <Filter size={16} />
             <span>Filters</span>
           </button>
 
@@ -83,13 +83,13 @@ export function StoreSearchFilters({
 
         <div className="relative">
           <button
-            className="flex items-center gap-2 px-3 py-2.5 pb-2 text-sm font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
+            className="flex items-center gap-2 px-3 py-2.5 pb-2 text-base font-light text-blue-100 bg-blue-700 border rounded-md border-blue-400/50"
             onClick={() => {
               setShowFilters(false);
               setShowSort(!showSort);
             }}
           >
-            <Tag size={14} />
+            <Tag size={16} />
             <span>Sort</span>
           </button>
 
