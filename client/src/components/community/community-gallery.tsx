@@ -1,35 +1,50 @@
-import { mockAquariums } from '@/data/mock-community';
-import { Filter, Sparkles, ThumbsUp, MessageSquare, ShareIcon } from "lucide-react";
+import {
+  Filter,
+  Sparkles,
+  ThumbsUp,
+  MessageSquare,
+  ShareIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { useCommunity } from "@/hooks/use-community";
+import { FilterPanel } from "./filter-panels/gallery";
 
 function CommunityGallery() {
-    const featured = mockAquariums.find((aq) => aq.featured);
-    const others = mockAquariums.filter((aq) => !aq.featured);
-  
-    return (
-      <div>
-        {/* Encabezado de la sección */}
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">Community Aquariums</h2>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              className="bg-blue-800 border-blue-700 text-white hover:bg-blue-700 hover:text-white 
+  const { sortedAquariums, filters, showFilters, setShowFilters } =
+    useCommunity();
+
+  const featured = sortedAquariums.find((aq) => aq.featured);
+  const others = sortedAquariums.filter((aq) => !aq.featured);
+
+  return (
+    <div>
+      {/* Encabezado de la sección */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">Community Aquariums</h2>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="bg-blue-800 border-blue-700 text-white hover:bg-blue-700 hover:text-white 
                          transition-all duration-300 hover:scale-105 hover:shadow-md hover:shadow-blue-900/50"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
-            </Button>
-            <button className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded px-4 py-2 font-semibold">
-              <Sparkles className="h-4 w-4" />
-              Share Mine
-            </button>
-          </div>
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <Filter className="h-4 w-4 mr-2" />
+            Filter
+          </Button>
+          <button className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded px-4 py-2 font-semibold">
+            <Sparkles className="h-4 w-4" />
+            Share Mine
+          </button>
         </div>
-  
-        
-        {featured && (
+      </div>
+
+      {showFilters && (
+        <div className="my-4">
+          <FilterPanel key={filters.key} />
+        </div>
+      )}
+
+      {featured && (
         <div className="mb-6 bg-white/10 rounded overflow-hidden">
           <div className="relative w-full h-60 overflow-hidden">
             <img
@@ -47,7 +62,11 @@ function CommunityGallery() {
             <h3 className="text-xl font-semibold mb-2">{featured.name}</h3>
             <div className="flex items-center justify-between text-sm text-gray-300">
               <p>
-                By <span className="text-white font-semibold">{featured.owner}</span> • {featured.timePosted}
+                By{" "}
+                <span className="text-white font-semibold">
+                  {featured.owner}
+                </span>{" "}
+                • {featured.timePosted}
               </p>
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1">
@@ -116,7 +135,6 @@ function CommunityGallery() {
         >
           Load More
         </button>
-
       </div>
     </div>
   );

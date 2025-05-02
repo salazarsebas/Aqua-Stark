@@ -14,25 +14,25 @@ interface FishDisplayProps {
 const sampleFishData: Partial<FishType>[] = [
   {
     name: "Blue Striped Fish",
-    image: "/fish/fish1.png",
+    image: "/fish/fish1.png", // Make sure this file exists
     rarity: "Rare",
     generation: 1
   },
   {
     name: "Tropical Coral Fish",
-    image: "/fish/fish2.png",
+    image: "/fish/fish2.png", // Make sure this file exists
     rarity: "Uncommon",
     generation: 2
   },
   {
     name: "Orange Tropical Fish",
-    image: "/fish/fish3.png",
+    image: "/fish/fish3.png", // Make sure this file exists
     rarity: "Epic",
     generation: 1
   },
   {
     name: "Scarlet Fin",
-    image: "/fish/fish4.png",
+    image: "/fish/fish4.png", // Make sure this file exists
     rarity: "Legendary",
     generation: 1
   },
@@ -40,7 +40,7 @@ const sampleFishData: Partial<FishType>[] = [
 
 // Fallback to these guaranteed paths if the fish images don't load
 const fallbackImages = [
-  "/fish/fish1.png"
+  "/fish/fish1.png" // This is our guaranteed file
 ];
 
 export function FishDisplay({ 

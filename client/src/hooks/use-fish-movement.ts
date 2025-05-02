@@ -24,11 +24,12 @@ interface FishMovementState {
   position: { x: number; y: number };
   velocity: { x: number; y: number };
   targetPosition: { x: number; y: number };
-  behaviorState: 'idle' | 'darting' | 'hovering';
+  behaviorState: 'idle' | 'darting' | 'hovering' | 'turning';
   behaviorTimer: number;
   facingLeft: boolean;
   lastDirectionChangeTime: number; // Track when we last changed direction
   stuckTimer: number; // Track how long a fish has been "stuck" in the same position
+  turningProgress?: number; // Track turning animation progress
 }
 
 interface UseFishMovementOptions {
@@ -193,6 +194,15 @@ export function useFishMovement(
       // Clone the state to avoid mutations
       const newState = { ...fishState };
       
+      // Update behavior state timer
+      newState.behaviorTimer -= deltaTime;
+      
+      // IMPORTANT: Always set facingLeft based on velocity BEFORE applying any other logic
+      // This ensures visual direction always matches actual movement
+      if (Math.abs(newState.velocity.x) > 5) {
+        newState.facingLeft = newState.velocity.x < 0;
+      }
+      
       // Check if fish is stuck (not moving much)
       const velocityMagnitude = Math.sqrt(
         newState.velocity.x * newState.velocity.x + 
@@ -207,27 +217,30 @@ export function useFishMovement(
           newState.stuckTimer = 0;
           newState.targetPosition = getSafeTargetPosition(params);
           
-          // Give a strong push in a random direction
-          const angle = Math.random() * Math.PI * 2;
-          newState.velocity = {
-            x: Math.cos(angle) * params.speed * 2,
-            y: Math.sin(angle) * params.speed * 2
-          };
+          // Calculate direction to target
+          const dx = newState.targetPosition.x - newState.position.x;
+          const dy = newState.targetPosition.y - newState.position.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
           
-          // Update facing based on new velocity
-          newState.facingLeft = newState.velocity.x < 0;
+          if (distance > 0) {
+            // Set new velocity toward target
+            newState.velocity = {
+              x: (dx / distance) * params.speed * 2,
+              y: (dy / distance) * params.speed * 2
+            };
+            
+            // Update facing direction based on new velocity
+            newState.facingLeft = newState.velocity.x < 0;
+          }
+          
           newState.lastDirectionChangeTime = currentTime;
-                    
         }
       } else {
         // Reset stuck timer if moving
         newState.stuckTimer = 0;
       }
       
-      // Update behavior state
-      newState.behaviorTimer -= deltaTime;
-      
-      // Check if behavior state should change
+      // Handle behavior state changes
       if (newState.behaviorTimer <= 0) {
         // Reset timer and potentially change behavior
         if (newState.behaviorState !== 'idle') {
@@ -245,9 +258,29 @@ export function useFishMovement(
             
             // Set a new target when darting
             newState.targetPosition = getSafeTargetPosition(params);
+            
+            // Calculate direction to target
+            const dx = newState.targetPosition.x - newState.position.x;
+            const dy = newState.targetPosition.y - newState.position.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 0) {
+              // Set new velocity toward target with darting boost
+              newState.velocity = {
+                x: (dx / distance) * params.speed * params.darting.speedMultiplier,
+                y: (dy / distance) * params.speed * params.darting.speedMultiplier
+              };
+              
+              // Update facing direction based on new velocity
+              newState.facingLeft = newState.velocity.x < 0;
+            }
+            
           } else if (hoverRoll < params.hovering.probability) {
             newState.behaviorState = 'hovering';
             newState.behaviorTimer = params.hovering.duration;
+            // Slow down when entering hovering state
+            newState.velocity.x *= 0.3;
+            newState.velocity.y *= 0.3;
           } else {
             // Stay in idle
             newState.behaviorTimer = 1 + Math.random() * 3;
@@ -263,29 +296,25 @@ export function useFishMovement(
       // Calculate desired velocity based on behavior state
       let desiredVelocity = calculateDesiredVelocity(newState, params);
       
-      // Only update facing direction if the X velocity is significant and some time has passed
-      // This avoids rapid flipping or "jittering" of the fish orientation
-      const velocityMagnitudeX = Math.abs(desiredVelocity.x);
-      const timeSinceLastDirectionChange = currentTime - newState.lastDirectionChangeTime;
-      
-      if (velocityMagnitudeX > 8 && timeSinceLastDirectionChange > 500) {
-        // Fix: Fish should face in the direction they're moving
-        // If velocity is negative (moving left), face left. If positive (moving right), face right.
-        const newFacingLeft = desiredVelocity.x < 0;
-        
-        // Only update if direction actually changed
-        if (newFacingLeft !== newState.facingLeft) {
-          newState.facingLeft = newFacingLeft;
-          newState.lastDirectionChangeTime = currentTime;
-        }
-      }
-      
       // Update velocity with easing for smooth transitions
-      // More aggressive smoothing to avoid erratic movements
       newState.velocity = {
         x: newState.velocity.x + (desiredVelocity.x - newState.velocity.x) * params.turnRate * deltaTime,
         y: newState.velocity.y + (desiredVelocity.y - newState.velocity.y) * params.turnRate * deltaTime
       };
+      
+      // MOST IMPORTANT PART: Update facing direction based on actual velocity
+      // Must be done after velocity update to ensure it matches current movement
+      if (Math.abs(newState.velocity.x) > 5) {
+        newState.facingLeft = newState.velocity.x < 0;
+      }
+      
+      // Prevent extremely slow movement that causes pauses
+      if (Math.abs(newState.velocity.x) < 5 && newState.behaviorState !== 'hovering') {
+        newState.velocity.x = Math.sign(newState.velocity.x || 1) * 5;
+      }
+      if (Math.abs(newState.velocity.y) < 3 && newState.behaviorState !== 'hovering') {
+        newState.velocity.y = Math.sign(newState.velocity.y || 1) * 3;
+      }
       
       // Update position based on velocity
       newState.position = {
@@ -294,7 +323,13 @@ export function useFishMovement(
       };
       
       // Apply boundary constraints
-      applyBoundaryConstraints(newState, params);
+      const directionChanged = applyBoundaryConstraints(newState, params);
+      
+      // If direction changed due to boundary, make sure velocity and facing direction are consistent
+      if (directionChanged) {
+        // Direction has changed due to boundary collision, make sure we update lastDirectionChangeTime
+        newState.lastDirectionChangeTime = currentTime;
+      }
       
       return newState;
     });
@@ -374,8 +409,11 @@ export function useFishMovement(
         
       case 'hovering':
         // When hovering, move very little and make random small adjustments
+        // But preserve facing direction by ensuring x velocity has correct sign
+        const xVelocity = (Math.random() - 0.5) * params.hovering.intensity * 15;
         return {
-          x: (Math.random() - 0.5) * params.hovering.intensity * 15, // Increased
+          // Ensure hovering fish maintain their facing direction by keeping velocity sign consistent
+          x: state.facingLeft ? -Math.abs(xVelocity) : Math.abs(xVelocity),
           y: (Math.random() - 0.5) * params.hovering.intensity * 15  // Increased
         };
         
@@ -407,38 +445,55 @@ export function useFishMovement(
   // Apply constraints to keep fish within boundaries
   function applyBoundaryConstraints(state: FishMovementState, params: MovementParams) {
     const padding = params.boundaryPadding;
+    let directionChanged = false;
     
     // Check horizontal boundaries
     if (state.position.x < padding) {
       state.position.x = padding;
-      state.velocity.x = Math.abs(state.velocity.x) * 0.8; // Stronger bounce
-      // Fix: When bouncing off left wall, should face right (not left)
-      state.facingLeft = false;
+      // Fish hit left boundary - make it move right
+      if (state.velocity.x < 0) {
+        state.velocity.x = Math.abs(state.velocity.x) * 0.8; // Bounce
+        state.facingLeft = false; // Always face right when bouncing off left wall
+        directionChanged = true;
+      }
     } else if (state.position.x > aquariumBounds.width - padding) {
       state.position.x = aquariumBounds.width - padding;
-      state.velocity.x = -Math.abs(state.velocity.x) * 0.8; // Stronger bounce
-      // Fix: When bouncing off right wall, should face left (not right)
-      state.facingLeft = true;
+      // Fish hit right boundary - make it move left
+      if (state.velocity.x > 0) {
+        state.velocity.x = -Math.abs(state.velocity.x) * 0.8; // Bounce
+        state.facingLeft = true; // Always face left when bouncing off right wall
+        directionChanged = true;
+      }
     }
     
     // Check vertical boundaries
     if (state.position.y < padding) {
       state.position.y = padding;
-      state.velocity.y = Math.abs(state.velocity.y) * 0.8; // Stronger bounce
+      state.velocity.y = Math.abs(state.velocity.y) * 0.8; // Bounce
     } else if (state.position.y > aquariumBounds.height - padding) {
       state.position.y = aquariumBounds.height - padding;
-      state.velocity.y = -Math.abs(state.velocity.y) * 0.8; // Stronger bounce
+      state.velocity.y = -Math.abs(state.velocity.y) * 0.8; // Bounce
     }
+    
+    return directionChanged;
   }
   
   // Return fish states with transformed positions as percentages for rendering
-  return fishStates.map(state => ({
-    id: state.id,
-    position: {
-      x: (state.position.x / aquariumBounds.width) * 100,
-      y: (state.position.y / aquariumBounds.height) * 100
-    },
-    facingLeft: state.facingLeft,
-    behaviorState: state.behaviorState
-  }));
+  return fishStates.map(state => {
+    // CRITICAL: Ensure facingLeft is consistent with velocity direction
+    // This is the final check before rendering to make sure fish never move backwards
+    if (Math.abs(state.velocity.x) > 1) {
+      state.facingLeft = state.velocity.x < 0;
+    }
+    
+    return {
+      id: state.id,
+      position: {
+        x: (state.position.x / aquariumBounds.width) * 100,
+        y: (state.position.y / aquariumBounds.height) * 100
+      },
+      facingLeft: state.facingLeft,
+      behaviorState: state.behaviorState
+    };
+  });
 } 

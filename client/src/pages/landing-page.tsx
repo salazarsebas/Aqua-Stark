@@ -26,7 +26,7 @@ export default function LandingPage() {
       <BubblesBackground bubbles={bubbles} />
       <Navbar />
 
-      <main className="relative z-10 container mx-auto px-4 py-8 flex flex-col items-center">
+      <main className="relative  container mx-auto px-4 py-8 flex flex-col items-center">
         <HeroSection />
         <FeaturedFish />
         <FishStatusTips />
