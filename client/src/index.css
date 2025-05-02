@@ -192,6 +192,105 @@
     }
   }
 
+  /* More natural fish swimming animations with subtle body movements */
+  /* Idle swimming - very subtle */
+  .animate-swim-idle {
+    animation: swim-idle 2s ease-in-out infinite;
+  }
+
+  @keyframes swim-idle {
+    0% {
+      transform: scaleX(1.00);
+    }
+    50% {
+      transform: scaleX(1.02);
+    }
+    100% {
+      transform: scaleX(1.00);
+    }
+  }
+
+  /* Darting swimming - more pronounced but still natural */
+  .animate-swim-dart {
+    animation: swim-dart 0.5s ease-in-out infinite;
+  }
+
+  @keyframes swim-dart {
+    0% {
+      transform: scaleX(1.00);
+    }
+    50% {
+      transform: scaleX(1.04);
+    }
+    100% {
+      transform: scaleX(1.00);
+    }
+  }
+  
+  /* Hovering animation - very subtle movement */
+  .animate-hover {
+    animation: hover 3s ease-in-out infinite;
+  }
+  
+  @keyframes hover {
+    0% {
+      transform: scaleX(1.00) scaleY(1.00);
+    }
+    50% {
+      transform: scaleX(1.01) scaleY(0.99);
+    }
+    100% {
+      transform: scaleX(1.00) scaleY(1.00);
+    }
+  }
+  
+  /* Smooth fish direction change transition */
+  .fish-image {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .fish-flipping {
+    animation: flip-transition 0.4s ease-in-out;
+  }
+  
+  @keyframes flip-transition {
+    0% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scaleX(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  /* Legacy swim animation - being replaced with the above */
+  .animate-swim {
+    animation: swim 0.8s ease-in-out infinite;
+  }
+
+  @keyframes swim {
+    0% {
+      transform: scaleX(1.00);
+    }
+    25% {
+      transform: scaleX(1.03);
+    }
+    50% {
+      transform: scaleX(1.00);
+    }
+    75% {
+      transform: scaleX(1.03);
+    }
+    100% {
+      transform: scaleX(1.00);
+    }
+  }
+
   .animate-float {
     animation: floating 3s ease-in-out infinite;
   }
