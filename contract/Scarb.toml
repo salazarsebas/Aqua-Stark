@@ -15,6 +15,7 @@ move = "sozo execute dojo_starter-actions move -c 1 --wait" # scarb run move
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo.git", tag = "v1.4.0" }
 openzeppelin_token = { git = "https://github.com/openzeppelin/cairo-contracts", tag = "v1.0.0" }
+origami_map = { git = "https://github.com/dojoengine/origami" }
 
 
 [[target.starknet-contract]]

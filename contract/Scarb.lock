@@ -29,6 +29,7 @@ dependencies = [
  "dojo",
  "dojo_cairo_test",
  "openzeppelin_token",
+ "origami_map",
 ]
 
 [[package]]
@@ -69,3 +70,8 @@ dependencies = [
 name = "openzeppelin_utils"
 version = "1.0.0"
 source = "git+https://github.com/openzeppelin/cairo-contracts?tag=v1.0.0#755ce1adbf8d89ed23fbb8daa328fcbeab7c6424"
+
+[[package]]
+name = "origami_map"
+version = "1.1.2"
+source = "git+https://github.com/dojoengine/origami#4d6a98e4fee4c71c885a1669660a545b979283c7"

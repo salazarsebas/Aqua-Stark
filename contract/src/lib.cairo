@@ -7,6 +7,7 @@ pub mod components {
     pub mod auction;
     pub mod aquarium;
     pub mod fish;
+    pub mod friends;
 }
 
 pub mod models;
@@ -18,6 +19,7 @@ pub mod entities {
     pub mod decoration;
     pub mod fish;
     pub mod player;
+    pub mod friends;
 }
 
 pub mod tests {
