@@ -1,10 +1,10 @@
 use starknet::{ContractAddress, contract_address_const, testing};
 use dojo::model::ModelStorage;
 use dojo::world::WorldStorageTrait;
-use dojo_starter::entities::fish::Fish;
-use dojo_starter::components::fish::{IFishStateDispatcher, IFishStateDispatcherTrait};
-use dojo_starter::components::aquarium::{IAquariumStateDispatcher, IAquariumStateDispatcherTrait};
-use dojo_starter::tests::test_utils::setup;
+use aqua_stark::entities::fish::Fish;
+use aqua_stark::components::fish::{IFishStateDispatcher, IFishStateDispatcherTrait};
+use aqua_stark::components::aquarium::{IAquariumStateDispatcher, IAquariumStateDispatcherTrait};
+use aqua_stark::tests::test_utils::setup;
 
 fn OWNER() -> ContractAddress {
     contract_address_const::<'owner'>()
