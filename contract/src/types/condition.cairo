@@ -6,7 +6,7 @@ pub enum Condition {
     DecorateAquarium,
     WinTournament,
     CompleteCollection,
-    MaintainHappiness
+    MaintainHappiness,
 }
 
 pub impl ConditionIntoFelt252 of Into<Condition, felt252> {

@@ -1,12 +1,12 @@
 #[derive(Serde, Copy, Drop, Introspect, PartialEq)]
 pub enum Reward {
-    Shells,    
-    Pearls,   
-    FishEgg,   
+    Shells,
+    Pearls,
+    FishEgg,
     Decoration,
-    AquariumExpansion, 
-    RareFish,  
-    Experience  
+    AquariumExpansion,
+    RareFish,
+    Experience,
 }
 
 pub impl RewardIntoFelt252 of Into<Reward, felt252> {
