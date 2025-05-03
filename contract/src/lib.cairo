@@ -7,6 +7,8 @@ pub mod types {
     pub mod status;
     pub mod condition;
     pub mod reward;
+    pub mod rarity;
+    pub mod types;
 }
 
 pub mod components {
@@ -25,6 +27,7 @@ pub mod entities {
     pub mod fish;
     pub mod player;
     pub mod mission;
+    pub mod achievement;
 }
 
 pub mod tests {
