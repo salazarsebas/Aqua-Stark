@@ -18,8 +18,8 @@ pub trait IAquariumState<TContractState> {
 #[dojo::contract]
 pub mod AquariumState {
     use super::*;
-    use dojo_starter::entities::aquarium::Aquarium;
-    use dojo_starter::entities::base::{
+    use aqua_stark::entities::aquarium::Aquarium;
+    use aqua_stark::entities::base::{
         CustomErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded, FishRemoved,
         Id,
     };
@@ -203,7 +203,7 @@ pub mod AquariumState {
     impl InternalImpl of InternalTrait {
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
             // self.world(@"aquastark")
-            self.world(@"dojo_starter")
+            self.world(@"aqua_stark")
         }
 
         fn generate_aquarium_id(self: @ContractState) -> u64 {

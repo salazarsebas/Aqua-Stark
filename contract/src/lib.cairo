@@ -3,6 +3,12 @@ pub mod systems {
     pub mod ownership;
 }
 
+pub mod types {
+    pub mod status;
+    pub mod condition;
+    pub mod reward;
+}
+
 pub mod components {
     pub mod auction;
     pub mod aquarium;
@@ -18,6 +24,7 @@ pub mod entities {
     pub mod decoration;
     pub mod fish;
     pub mod player;
+    pub mod mission;
 }
 
 pub mod tests {
