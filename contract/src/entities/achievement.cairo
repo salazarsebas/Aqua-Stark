@@ -13,7 +13,7 @@ pub struct Achievement {
     pub name: felt252, // Name of the achievement
     pub description: ByteArray, // Detailed description of the achievement
     pub is_hidden: bool, // Whether the achievement is hidden by default
-    pub is_unlocked: bool, // Whether the achievement has been unlocked by the player
+    pub is_unlocked: bool // Whether the achievement has been unlocked by the player
 }
 
 #[derive(Copy, Drop, Serde)]
@@ -23,7 +23,7 @@ pub struct AchievementProgress {
     pub player_id: ContractAddress, // Player ContractAddress
     pub achievement_id: u64, // Achievement ID
     pub progress: u32, // Progress to unlock achievement
-    pub is_unlocked: bool, // If achievement is unlock or not
+    pub is_unlocked: bool // If achievement is unlock or not
 }
 
 #[generate_trait]
@@ -69,7 +69,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Win your first battle",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -82,7 +82,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Win 10 battles",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -95,7 +95,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Win 100 battles",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -108,7 +108,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Capture your first beast",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -121,7 +121,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Capture 10 different beasts",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -134,7 +134,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Capture a rare beast",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -147,7 +147,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Interact with your first NPC",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -160,7 +160,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Win 3 random encounters in a row",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -173,7 +173,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Fully evolve 5 different beasts",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -186,7 +186,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Complete all main story quests",
                 is_hidden: true,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -199,7 +199,7 @@ fn initialize_default_achievements() -> Array<Achievement> {
                 description: "Achieve a total score of 100,000 points",
                 is_hidden: false,
                 is_unlocked: false,
-            }
+            },
         );
 
     achievements
@@ -223,7 +223,7 @@ fn initialize_player_achievement_progress(address: ContractAddress) -> Array<Ach
                     achievement_id: *achievement.achievement_id,
                     progress: 0,
                     is_unlocked: false,
-                }
+                },
             );
         i += 1;
     };
@@ -233,7 +233,7 @@ fn initialize_player_achievement_progress(address: ContractAddress) -> Array<Ach
 
 
 fn update_achievement_progress(
-    ref achievement: Achievement, ref progress: AchievementProgress, increment: u32
+    ref achievement: Achievement, ref progress: AchievementProgress, increment: u32,
 ) -> felt252 {
     if progress.is_unlocked {
         // If it is unlocked, just update the progress
@@ -275,7 +275,7 @@ mod tests {
     use super::{
         Types, AchievementImpl, Rarity, Achievement, AchievementProgress,
         initialize_default_achievements, initialize_player_achievement_progress,
-        update_achievement_progress, get_unlocked_achievements
+        update_achievement_progress, get_unlocked_achievements,
     };
     use core::array::ArrayTrait;
     use starknet::{ContractAddress, contract_address_const};
@@ -293,11 +293,9 @@ mod tests {
         assert(*first_achievement.name == 'First Victory', 'First achievement name mismatch');
         assert(
             *first_achievement.achievement_type == Types::FirstWin,
-            'First achievement type mismatch'
+            'First achievement type mismatch',
         );
-        assert(
-            *first_achievement.rarity == Rarity::Common, 'Achievement rarity mismatch'
-        );
+        assert(*first_achievement.rarity == Rarity::Common, 'Achievement rarity mismatch');
         assert(!*first_achievement.is_hidden, 'This should not be hidden');
         assert(!*first_achievement.is_unlocked, 'This should not be unlocked');
 
@@ -307,7 +305,7 @@ mod tests {
         assert(*last_achievement.name == 'High Scorer', 'Last achievement name mismatch');
         assert(
             *last_achievement.achievement_type == Types::TopScorer,
-            'Last achievement type mismatch'
+            'Last achievement type mismatch',
         );
     }
 
@@ -335,20 +333,20 @@ mod tests {
         progress_array
             .append(
                 AchievementProgress {
-                    player_id: address, achievement_id: 1, progress: 1, is_unlocked: true
-                }
+                    player_id: address, achievement_id: 1, progress: 1, is_unlocked: true,
+                },
             );
         progress_array
             .append(
                 AchievementProgress {
-                    player_id: address, achievement_id: 2, progress: 5, is_unlocked: false
-                }
+                    player_id: address, achievement_id: 2, progress: 5, is_unlocked: false,
+                },
             );
         progress_array
             .append(
                 AchievementProgress {
-                    player_id: address, achievement_id: 3, progress: 10, is_unlocked: true
-                }
+                    player_id: address, achievement_id: 3, progress: 10, is_unlocked: true,
+                },
             );
 
         let unlocked = get_unlocked_achievements(progress_array);

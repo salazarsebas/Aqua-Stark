@@ -26,7 +26,6 @@ mod tests {
 
     #[test]
     fn test_achievement_rarity_into_felt252() {
-
         let common = Rarity::Common;
         let uncommon = Rarity::Uncommon;
         let rare = Rarity::Rare;

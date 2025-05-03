@@ -15,6 +15,7 @@ pub mod components {
     pub mod auction;
     pub mod aquarium;
     pub mod fish;
+    pub mod playerstate;
 }
 
 pub mod models;
@@ -45,4 +46,6 @@ pub mod tests {
     #[cfg(test)]
     mod test_utils;
     mod test_world;
+    #[cfg(test)]
+    mod test_playerstate;
 }

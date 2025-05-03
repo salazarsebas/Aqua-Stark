@@ -37,7 +37,6 @@ mod tests {
 
     #[test]
     fn test_achievement_type_into_felt252() {
-
         let first_win = Types::FirstWin;
         let ten_wins = Types::TenWins;
         let hundred_wins = Types::HundredWins;
