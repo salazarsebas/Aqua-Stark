@@ -37,4 +37,6 @@ pub mod tests {
     #[cfg(test)]
     mod test_utils;
     mod test_world;
+    #[cfg(test)]
+    mod test_friends;
 }

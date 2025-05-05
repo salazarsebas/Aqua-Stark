@@ -164,6 +164,43 @@ pub struct AuctionCompleted {
     pub final_price: u256,
 }
 
+#[derive(Copy, Drop, Serde)]
+#[dojo::event]
+pub struct FriendRequestSent {
+    #[key]
+    pub request_id: u64,
+    #[key]
+    pub player: u64,
+    pub sender: u64
+}
+#[derive(Copy, Drop, Serde)]
+#[dojo::event]
+pub struct FriendRequestAccepted {
+    #[key]
+    pub request_id: u64,
+    #[key]
+    pub player: u64,
+    pub sender: u64
+}
+#[derive(Copy, Drop, Serde)]
+#[dojo::event]
+pub struct FriendRequestRejected {
+    #[key]
+    pub request_id: u64,
+    #[key]
+    pub player: u64,
+    pub sender: u64
+}
+#[derive(Copy, Drop, Serde)]
+#[dojo::event]
+pub struct FriendRequestDeleted {
+    #[key]
+    pub request_id: u64,
+    #[key]
+    pub player: u64,
+    pub sender: u64
+}
+
 
 // Custom Errors
 pub mod CustomErrors {

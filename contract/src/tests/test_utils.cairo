@@ -9,7 +9,10 @@ use dojo_starter::entities::aquarium::m_Aquarium;
 use dojo_starter::entities::fish::m_Fish;
 use dojo_starter::entities::decoration::m_Decoration;
 use dojo_starter::entities::player::m_Player;
+use dojo_starter::entities::friends::{m_FriendRequest, m_FriendRequestCount, m_FriendsList};
 use dojo_starter::components::aquarium::AquariumState;
+use dojo_starter::components::friends::FriendState;
+
 use dojo_starter::components::auction::{AuctionState, IAuctionStateDispatcher};
 use dojo_starter::components::fish::{FishState, IFishStateDispatcher};
 use dojo_starter::tests::mocks::erc20_mock::erc20_mock;
@@ -34,12 +37,16 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Model(m_Fish::TEST_CLASS_HASH),
             TestResource::Model(m_Decoration::TEST_CLASS_HASH),
             TestResource::Model(m_Player::TEST_CLASS_HASH),
+            TestResource::Model(m_FriendRequest::TEST_CLASS_HASH),
+            TestResource::Model(m_FriendRequestCount::TEST_CLASS_HASH),
+            TestResource::Model(m_FriendsList::TEST_CLASS_HASH),
             TestResource::Model(base::m_Id::TEST_CLASS_HASH),
             // Contracts
             TestResource::Contract(AquariumState::TEST_CLASS_HASH),
             TestResource::Contract(FishState::TEST_CLASS_HASH),
             TestResource::Contract(AuctionState::TEST_CLASS_HASH),
             TestResource::Contract(erc20_mock::TEST_CLASS_HASH),
+            TestResource::Contract(FriendState::TEST_CLASS_HASH),
             // Aquarium Events
             TestResource::Event(base::e_AquariumCreated::TEST_CLASS_HASH),
             TestResource::Event(base::e_AquariumCleaned::TEST_CLASS_HASH),
@@ -59,6 +66,12 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Event(base::e_AuctionCanceled::TEST_CLASS_HASH),
             TestResource::Event(base::e_AuctionCompleted::TEST_CLASS_HASH),
             TestResource::Event(base::e_NewBid::TEST_CLASS_HASH),
+            // Friends Events
+            TestResource::Event(base::e_FriendRequestSent::TEST_CLASS_HASH),
+            TestResource::Event(base::e_FriendRequestAccepted::TEST_CLASS_HASH),
+            TestResource::Event(base::e_FriendRequestRejected::TEST_CLASS_HASH),
+            TestResource::Event(base::e_FriendRequestDeleted::TEST_CLASS_HASH),
+
         ]
             .span(),
     };
@@ -75,6 +88,8 @@ pub fn contract_defs() -> Span<ContractDef> {
         ContractDefTrait::new(@"dojo_starter", @"AuctionState")
             .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
         ContractDefTrait::new(@"dojo_starter", @"erc20_mock")
+            .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
+        ContractDefTrait::new(@"dojo_starter", @"FriendState")
             .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
     ]
         .span()
