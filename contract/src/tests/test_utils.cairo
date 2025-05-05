@@ -9,10 +9,12 @@ use aqua_stark::entities::aquarium::m_Aquarium;
 use aqua_stark::entities::fish::m_Fish;
 use aqua_stark::entities::decoration::m_Decoration;
 use aqua_stark::entities::player::m_Player;
+use aqua_stark::entities::friends::{m_FriendRequest, m_FriendRequestCount, m_FriendsList};
 use aqua_stark::components::aquarium::AquariumState;
 use aqua_stark::components::auction::{AuctionState, IAuctionStateDispatcher};
 use aqua_stark::components::fish::{FishState, IFishStateDispatcher};
 use aqua_stark::components::playerstate::{IPlayerStateDispatcher, PlayerState};
+use aqua_stark::components::friends::FriendState;
 use aqua_stark::tests::mocks::erc20_mock::erc20_mock;
 use openzeppelin_token::erc20::interface::IERC20Dispatcher;
 use starknet::testing;
@@ -35,12 +37,16 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Model(m_Fish::TEST_CLASS_HASH),
             TestResource::Model(m_Decoration::TEST_CLASS_HASH),
             TestResource::Model(m_Player::TEST_CLASS_HASH),
+            TestResource::Model(m_FriendRequest::TEST_CLASS_HASH),
+            TestResource::Model(m_FriendRequestCount::TEST_CLASS_HASH),
+            TestResource::Model(m_FriendsList::TEST_CLASS_HASH),
             TestResource::Model(base::m_Id::TEST_CLASS_HASH),
             // Contracts
             TestResource::Contract(AquariumState::TEST_CLASS_HASH),
             TestResource::Contract(FishState::TEST_CLASS_HASH),
             TestResource::Contract(AuctionState::TEST_CLASS_HASH),
             TestResource::Contract(erc20_mock::TEST_CLASS_HASH),
+            TestResource::Contract(FriendState::TEST_CLASS_HASH),
             TestResource::Contract(PlayerState::TEST_CLASS_HASH),
             // Aquarium Events
             TestResource::Event(base::e_AquariumCreated::TEST_CLASS_HASH),
@@ -61,6 +67,12 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Event(base::e_AuctionCanceled::TEST_CLASS_HASH),
             TestResource::Event(base::e_AuctionCompleted::TEST_CLASS_HASH),
             TestResource::Event(base::e_NewBid::TEST_CLASS_HASH),
+            // Friends Events
+            TestResource::Event(base::e_FriendRequestSent::TEST_CLASS_HASH),
+            TestResource::Event(base::e_FriendRequestAccepted::TEST_CLASS_HASH),
+            TestResource::Event(base::e_FriendRequestRejected::TEST_CLASS_HASH),
+            TestResource::Event(base::e_FriendRequestDeleted::TEST_CLASS_HASH),
+
         ]
             .span(),
     };
@@ -79,6 +91,8 @@ pub fn contract_defs() -> Span<ContractDef> {
         ContractDefTrait::new(@"aqua_stark", @"erc20_mock")
             .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
         ContractDefTrait::new(@"aqua_stark", @"PlayerState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"FriendState")
             .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
     ]
         .span()
