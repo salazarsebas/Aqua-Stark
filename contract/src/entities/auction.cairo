@@ -1,6 +1,6 @@
 use starknet::{ContractAddress, get_block_timestamp};
 use crate::models::AuctionStatus;
-use dojo_starter::entities::base::Bid;
+use aqua_stark::entities::base::Bid;
 
 #[derive(Copy, Drop, Serde, Debug)]
 #[dojo::model]

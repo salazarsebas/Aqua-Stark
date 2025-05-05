@@ -19,12 +19,12 @@ pub trait IAuctionState<TContractState> {
 #[dojo::contract]
 pub mod AuctionState {
     use super::*;
-    use dojo_starter::entities::{auction::{Auction, AuctionTrait}, fish::Fish};
-    use dojo_starter::entities::base::{
+    use aqua_stark::entities::{auction::{Auction, AuctionTrait}, fish::Fish};
+    use aqua_stark::entities::base::{
         AuctionCreated, NewBid, AuctionCanceled, AuctionCompleted, Bid, Id, CustomErrors,
     };
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
-    use dojo_starter::models::AuctionStatus;
+    use aqua_stark::models::AuctionStatus;
     use starknet::{
         get_caller_address, get_block_timestamp, contract_address_const, get_contract_address,
     };
@@ -228,7 +228,7 @@ pub mod AuctionState {
     impl InternalImpl of InternalTrait {
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
             // self.world(@"aquastark")
-            self.world(@"dojo_starter")
+            self.world(@"aqua_stark")
         }
 
         fn generate_auction_id(self: @ContractState) -> u64 {

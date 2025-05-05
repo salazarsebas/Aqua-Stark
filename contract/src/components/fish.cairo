@@ -20,8 +20,8 @@ pub trait IFishState<ContractState> {
 #[dojo::contract]
 pub mod FishState {
     use super::*;
-    use dojo_starter::entities::fish::Fish;
-    use dojo_starter::entities::base::{
+    use aqua_stark::entities::fish::Fish;
+    use aqua_stark::entities::base::{
         FishAgeUpdated, FishCreated, FishDamaged, FishFed, FishGrown, FishHealed, FishHungerUpdated,
         CustomErrors, Id,
     };
@@ -260,7 +260,7 @@ pub mod FishState {
     impl InternalImpl of InternalTrait {
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
             // self.world(@"aquastark")
-            self.world(@"dojo_starter")
+            self.world(@"aqua_stark")
         }
 
         fn generate_fish_id(self: @ContractState) -> u64 {

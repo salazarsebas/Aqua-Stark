@@ -1,4 +1,4 @@
-use dojo_starter::models::{Direction, Position};
+use aqua_stark::models::{Direction, Position};
 
 // define the interface
 #[starknet::interface]
@@ -12,7 +12,7 @@ pub trait IActions<T> {
 pub mod actions {
     use super::{IActions, Direction, Position, next_position};
     use starknet::{ContractAddress, get_caller_address};
-    use dojo_starter::models::{Vec2, Moves};
+    use aqua_stark::models::{Vec2, Moves};
 
     use dojo::model::{ModelStorage};
     use dojo::event::EventStorage;
@@ -96,10 +96,10 @@ pub mod actions {
 
     #[generate_trait]
     impl InternalImpl of InternalTrait {
-        /// Use the default namespace "dojo_starter". This function is handy since the ByteArray
+        /// Use the default namespace "aqua_stark". This function is handy since the ByteArray
         /// can't be const.
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
-            self.world(@"dojo_starter")
+            self.world(@"aqua_stark")
         }
     }
 }

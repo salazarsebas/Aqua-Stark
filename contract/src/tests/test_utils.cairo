@@ -3,19 +3,19 @@ use dojo_cairo_test::{
     WorldStorageTestTrait,
 };
 use dojo::world::{WorldStorage, WorldStorageTrait};
-use dojo_starter::entities::base;
-use dojo_starter::entities::auction::m_Auction;
-use dojo_starter::entities::aquarium::m_Aquarium;
-use dojo_starter::entities::fish::m_Fish;
-use dojo_starter::entities::decoration::m_Decoration;
-use dojo_starter::entities::player::m_Player;
-use dojo_starter::entities::friends::{m_FriendRequest, m_FriendRequestCount, m_FriendsList};
-use dojo_starter::components::aquarium::AquariumState;
-use dojo_starter::components::friends::FriendState;
-
-use dojo_starter::components::auction::{AuctionState, IAuctionStateDispatcher};
-use dojo_starter::components::fish::{FishState, IFishStateDispatcher};
-use dojo_starter::tests::mocks::erc20_mock::erc20_mock;
+use aqua_stark::entities::base;
+use aqua_stark::entities::auction::m_Auction;
+use aqua_stark::entities::aquarium::m_Aquarium;
+use aqua_stark::entities::fish::m_Fish;
+use aqua_stark::entities::decoration::m_Decoration;
+use aqua_stark::entities::player::m_Player;
+use aqua_stark::entities::friends::{m_FriendRequest, m_FriendRequestCount, m_FriendsList};
+use aqua_stark::components::aquarium::AquariumState;
+use aqua_stark::components::auction::{AuctionState, IAuctionStateDispatcher};
+use aqua_stark::components::fish::{FishState, IFishStateDispatcher};
+use aqua_stark::components::playerstate::{IPlayerStateDispatcher, PlayerState};
+use aqua_stark::components::friends::FriendState;
+use aqua_stark::tests::mocks::erc20_mock::erc20_mock;
 use openzeppelin_token::erc20::interface::IERC20Dispatcher;
 use starknet::testing;
 
@@ -29,7 +29,7 @@ pub struct TestContracts {
 
 pub fn namespace_def() -> NamespaceDef {
     let ndef = NamespaceDef {
-        namespace: "dojo_starter",
+        namespace: "aqua_stark",
         resources: [
             // Models
             TestResource::Model(m_Auction::TEST_CLASS_HASH),
@@ -47,6 +47,7 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Contract(AuctionState::TEST_CLASS_HASH),
             TestResource::Contract(erc20_mock::TEST_CLASS_HASH),
             TestResource::Contract(FriendState::TEST_CLASS_HASH),
+            TestResource::Contract(PlayerState::TEST_CLASS_HASH),
             // Aquarium Events
             TestResource::Event(base::e_AquariumCreated::TEST_CLASS_HASH),
             TestResource::Event(base::e_AquariumCleaned::TEST_CLASS_HASH),
@@ -81,16 +82,18 @@ pub fn namespace_def() -> NamespaceDef {
 
 pub fn contract_defs() -> Span<ContractDef> {
     [
-        ContractDefTrait::new(@"dojo_starter", @"AquariumState")
-            .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
-        ContractDefTrait::new(@"dojo_starter", @"FishState")
-            .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
-        ContractDefTrait::new(@"dojo_starter", @"AuctionState")
-            .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
-        ContractDefTrait::new(@"dojo_starter", @"erc20_mock")
-            .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
-        ContractDefTrait::new(@"dojo_starter", @"FriendState")
-            .with_writer_of([dojo::utils::bytearray_hash(@"dojo_starter")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"AquariumState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"FishState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"AuctionState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"erc20_mock")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"PlayerState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"FriendState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
     ]
         .span()
 }
@@ -124,6 +127,12 @@ pub fn initialize_contacts() -> TestContracts {
     let fish_system = IFishStateDispatcher { contract_address: fish_address };
 
     TestContracts { world, auction_system, fish_system, erc20_token }
+}
+pub fn initialize_player_contacts() -> (WorldStorage, IPlayerStateDispatcher) {
+    let mut world = setup();
+    let (player_address, _) = world.dns(@"PlayerState").unwrap();
+    let player_registry = IPlayerStateDispatcher { contract_address: player_address };
+    (world, player_registry)
 }
 // pub fn setup_world() -> (IWorldDispatcher, IAquariumStateDispatcher) {
 //     let mut models = array![Aquarium::TEST_CLASS_HASH, Fish::TEST_CLASS_HASH];

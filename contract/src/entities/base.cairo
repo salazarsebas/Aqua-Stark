@@ -223,4 +223,5 @@ pub mod CustomErrors {
     pub const AUCTION_CANCELED: felt252 = 'AUCTION ALREADY CANCELED';
     pub const AUCTION_NOT_ENDED: felt252 = 'AUCTION NOT ENDED';
     pub const AUCTION_ENDED: felt252 = 'AUCTION ENDED';
+    pub const ALREADY_REGISTERED: felt252 = 'ALREADY_REGISTERED';
 }

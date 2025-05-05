@@ -1,19 +1,44 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ItemType } from "@/data/mock-game";
 
 interface StoreTabsProps {
-  activeTab: string
-  onTabChange: (tab: string) => void
+  activeTab: ItemType;
+  onTabChange: (tab: ItemType) => void;
 }
 
 export function StoreTabs({ activeTab, onTabChange }: StoreTabsProps) {
   return (
-    <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="grid grid-cols-4 gap-2 p-1 bg-blue-700 rounded-lg">
-        <TabsTrigger value="fish">Fish</TabsTrigger>
-        <TabsTrigger value="food">Food</TabsTrigger>
-        <TabsTrigger value="decorations">Decorations</TabsTrigger>
-        <TabsTrigger value="others">Others</TabsTrigger>
+    <Tabs
+      value={activeTab}
+      onValueChange={(value) => onTabChange(value as ItemType)}
+      className="w-full"
+    >
+      <TabsList className="flex items-center justify-start w-full gap-0.5 p-0 bg-transparent md:w-fit">
+        <TabsTrigger
+          value="fish"
+          className="font-bold rounded-none rounded-tl-3xl py-4 md:py-3 md:pl-6 md:pr-4 md:rounded-none text-white uppercase data-[state=active]:bg-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-b-orange-500 data-[state=inactive]:border-none data-[state=active]:text-white data-[state=inactive]:text-white"
+        >
+          Fish
+        </TabsTrigger>
+        <TabsTrigger
+          value="food"
+          className="font-bold rounded-none py-4 md:py-3 md:px-4 md:rounded-none text-white uppercase data-[state=active]:bg-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-b-orange-500 data-[state=inactive]:border-none data-[state=active]:text-white data-[state=inactive]:text-white"
+        >
+          Food
+        </TabsTrigger>
+        <TabsTrigger
+          value="decorations"
+          className="font-bold rounded-none py-4 md:py-3 md:px-4 md:rounded-none text-white uppercase data-[state=active]:bg-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-b-orange-500 data-[state=inactive]:border-none data-[state=active]:text-white data-[state=inactive]:text-white"
+        >
+          Decorations
+        </TabsTrigger>
+        <TabsTrigger
+          value="others"
+          className="font-bold rounded-none rounded-tr-3xl py-4 md:py-3 md:px-4 md:rounded-none text-white uppercase data-[state=active]:bg-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-b-orange-500 data-[state=inactive]:border-none data-[state=active]:text-white data-[state=inactive]:text-white"
+        >
+          Others
+        </TabsTrigger>
       </TabsList>
     </Tabs>
-  )
+  );
 }
