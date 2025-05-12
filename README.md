@@ -40,7 +40,6 @@
 ## 📖 Documentation  
 
 🔹 Frontend README: [Frontend Documentation](https://github.com/AquaStark/Aqua-Stark-V.2/blob/main/client/README.md)  
-🔹 Backend README: [Backend Documentation](https://github.com/AquaStark/Aqua-Stark-V.2/blob/main/contract/README.md)  
 
 ## 🌍 Connecting to StarkNet  
 To play, make sure you have a StarkNet-compatible wallet like **ArgentX** or **Braavos**. Game assets are backed by **Cairo smart contracts**, ensuring authenticity and scarcity.  
