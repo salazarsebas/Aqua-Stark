@@ -1,14 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { GameHeader } from "@/components/game/game-header"
 import { GameSidebarButtons } from "@/components/game/game-sidebar-buttons"
 import { AquariumTabs } from "@/components/game/aquarium-tabs"
 import { TipsPopup } from "@/components/game/tips-popup"
 import { FishDisplay } from "@/components/game/fish-display"
+import { DirtOverlay } from "@/components/game/dirt-overlay"
+import { DirtDebugControls } from "@/components/game/dirt-debug-controls"
+import { DirtCounter } from "@/components/game/dirt-counter"
 import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
+import { useDirtSystem } from "@/hooks/use-dirt-system"
 import { GameMenu } from "@/components/game/game-menu"
 import { useBubbles } from "@/hooks/use-bubbles"
 import { BubblesBackground } from "@/components/bubble-background"
@@ -18,6 +22,30 @@ export default function GamePage() {
   const { selectedAquarium, handleAquariumChange, aquariums } = useAquarium()
   const [showMenu, setShowMenu] = useState(false)
   const [showTips, setShowTips] = useState(false)
+  const [showDirtDebug, setShowDirtDebug] = useState(true) // Debug controls visibility
+
+  // Initialize dirt system
+  const dirtSystem = useDirtSystem({
+    spawnInterval: 15000, // 15 seconds for demo
+    maxSpots: 5,
+    aquariumBounds: {
+      x: 0,
+      y: 0,
+      width: 1000,
+      height: 600,
+    },
+    spawnChance: 0.8,
+  })
+
+  // Update aquarium bounds when component mounts
+  useEffect(() => {
+    dirtSystem.updateAquariumBounds({
+      x: 100, // Account for fish tank margins
+      y: 100,
+      width: 800,
+      height: 400,
+    })
+  }, [dirtSystem])
 
   const bubbles = useBubbles({
     initialCount: 10,
@@ -50,10 +78,15 @@ export default function GamePage() {
 
       {/* Effects */}
       <div className="absolute inset-0 light-rays z-20"></div>
-      <div className="absolute inset-0 animate-water-movement z-20"></div>
-
-      {/* Fish */}
+      <div className="absolute inset-0 animate-water-movement z-20"></div>      {/* Fish */}
       <FishDisplay fish={MOCK_FISH} />
+
+      {/* Dirt System */}
+      <DirtOverlay 
+        spots={dirtSystem.spots}
+        onRemoveSpot={dirtSystem.removeDirtSpot}
+        className="absolute inset-0"
+      />
 
       {/* Header */}
       <GameHeader
@@ -65,6 +98,48 @@ export default function GamePage() {
 
       {showMenu && <GameMenu show={showMenu} />}
       <GameSidebarButtons />
+
+      {/* Dirt Counter */}
+      <div className="absolute top-20 left-4 z-40">
+        <DirtCounter
+          spotCount={dirtSystem.spots.length}
+          maxSpots={dirtSystem.config.maxSpots}
+          cleanlinessScore={dirtSystem.cleanlinessScore}
+        />
+      </div>
+
+      {/* Debug Controls */}
+      {showDirtDebug && (
+        <div className="absolute top-4 right-4 z-40">
+          <DirtDebugControls
+            isSpawnerActive={dirtSystem.isSpawnerActive}
+            spotCount={dirtSystem.spots.length}
+            maxSpots={dirtSystem.config.maxSpots}
+            totalCreated={dirtSystem.totalSpotsCreated}
+            totalRemoved={dirtSystem.totalSpotsRemoved}
+            cleanlinessScore={dirtSystem.cleanlinessScore}
+            onToggleSpawner={dirtSystem.toggleSpawner}
+            onForceSpawn={dirtSystem.forceSpawnSpot}
+            onClearAll={dirtSystem.clearAllSpots}
+          />
+          <button
+            onClick={() => setShowDirtDebug(false)}
+            className="mt-2 w-full text-xs text-gray-400 hover:text-white transition-colors"
+          >
+            Hide Debug
+          </button>
+        </div>
+      )}
+
+      {/* Show Debug Button (when hidden) */}
+      {!showDirtDebug && (
+        <button
+          onClick={() => setShowDirtDebug(true)}
+          className="absolute top-4 right-4 z-40 bg-black/50 text-white px-3 py-1 rounded text-xs hover:bg-black/70 transition-colors"
+        >
+          🧹 Debug
+        </button>
+      )}
 
       {/* Tips */}
       <div className="absolute bottom-0 right-4 mb-4 z-30">
