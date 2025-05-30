@@ -36,5 +36,39 @@ pub impl AquariumImpl of IAquarium {
             housed_fish: array![],
         }
     }
+
+    fn add_fish(&mut aquarium: Aquarium, fish_id: u64) -> Aquarium {
+        // add fish to an aquarium
+
+        let number_of_fishes_in_aquarium = aquarium.housed_fish.len();
+        assert!(number_of_fishes_in_aquarium < aquarium.max_capacity, "Aquarium is full");
+        aquarium.housed_fish.push(fish_id);
+        aquarium
+    }
+    fn remove_fish(&mut aquarium: Aquarium, fish_id: u64) -> Aquarium{
+        aquarium.housed_fish.iter().position(|&id| id == fish_id).map_or(aquarium, |index| {
+            aquarium.housed_fish.remove(index);
+        });
+
+        aquarium
+    }
+    fn clean(aquarium: Aquarium, amount: u32) -> Aquarium {
+
+    }
+    fn update_cleanliness(aquarium: Aquarium, hours_passed: u32) -> Aquarium {
+
+    }
+    fn get_cleanliness(aquarium: Aquarium) -> u32 {
+
+    }
+    fn get_capacity(aquarium: Aquarium) -> u32 {
+
+    }
+    fn get_fish_count(aquarium: Aquarium) -> u32 {
+
+    }
+    fn is_full(aquarium: Aquarium) -> bool {
+
+    }
 }
 
