@@ -8,16 +8,19 @@ pub trait IPlayerState<ContractState> {
     fn is_player_registered(self: @ContractState, wallet: ContractAddress) -> bool;
     fn get_player_id(self: @ContractState, wallet: ContractAddress) -> u64;
     fn is_player_verified(self: @ContractState, wallet: ContractAddress) -> bool;
-    fn verify_player(self: @ContractState, wallet: ContractAddress) -> bool;
+    fn verify_player(ref self: ContractState, wallet: ContractAddress) -> bool;
+    fn get_player_data(
+        self: @ContractState, wallet: ContractAddress,
+    ) -> (u64, u64, u32, bool); // (id, experience, level, is_verified)
 }
 
 #[dojo::contract]
 pub mod PlayerState {
-    use super::*;
-    use starknet::{get_block_timestamp, contract_address_const};
+    use aqua_stark::entities::base::{CustomErrors, Id};
     use aqua_stark::entities::player::Player;
-    use aqua_stark::entities::base::{Id, CustomErrors};
     use dojo::model::ModelStorage;
+    use starknet::{contract_address_const, get_block_timestamp};
+    use super::*;
 
     #[abi(embed_v0)]
     impl PlayerStateImpl of IPlayerState<ContractState> {
@@ -35,6 +38,8 @@ pub mod PlayerState {
                 inventory_ref: contract_address_const::<0>(),
                 is_verified: false,
                 registered_at: get_block_timestamp(),
+                experience: 0_u64,
+                level: 1_u32,
             };
 
             world.write_model(@player);
@@ -42,8 +47,7 @@ pub mod PlayerState {
             new_id
         }
 
-
-        fn verify_player(self: @ContractState, wallet: ContractAddress) -> bool {
+        fn verify_player(ref self: ContractState, wallet: ContractAddress) -> bool {
             let mut world = self.world_default();
             let mut player: Player = world.read_model(wallet);
             player.is_verified = true;
@@ -67,6 +71,12 @@ pub mod PlayerState {
             let mut world = self.world_default();
             let player: Player = world.read_model(wallet);
             player.id
+        }
+
+        fn get_player_data(self: @ContractState, wallet: ContractAddress) -> (u64, u64, u32, bool) {
+            let mut world = self.world_default();
+            let player: Player = world.read_model(wallet);
+            (player.id, player.experience, player.level, player.is_verified)
         }
     }
 

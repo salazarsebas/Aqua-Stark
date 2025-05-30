@@ -1,11 +1,10 @@
+use starknet::{ContractAddress, testing};
 use crate::systems::ownership::Ownership;
-use starknet::ContractAddress;
-use starknet::testing;
 
 #[starknet::contract]
 mod MockContract {
-    use crate::systems::ownership::Ownership;
     use starknet::ContractAddress;
+    use crate::systems::ownership::Ownership;
 
     component!(path: Ownership, storage: ownable, event: OwnableEvent);
 

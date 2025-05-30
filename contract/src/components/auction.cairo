@@ -18,19 +18,20 @@ pub trait IAuctionState<TContractState> {
 
 #[dojo::contract]
 pub mod AuctionState {
-    use super::*;
-    use aqua_stark::entities::{auction::{Auction, AuctionTrait}, fish::Fish};
+    use aqua_stark::entities::auction::{Auction, AuctionTrait};
     use aqua_stark::entities::base::{
-        AuctionCreated, NewBid, AuctionCanceled, AuctionCompleted, Bid, Id, CustomErrors,
+        AuctionCanceled, AuctionCompleted, AuctionCreated, Bid, CustomErrors, Id, NewBid,
     };
-    use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
+    use aqua_stark::entities::fish::Fish;
     use aqua_stark::models::AuctionStatus;
-    use starknet::{
-        get_caller_address, get_block_timestamp, contract_address_const, get_contract_address,
-    };
+    use core::option::Option;
     use dojo::event::EventStorage;
     use dojo::model::ModelStorage;
-    use core::option::Option;
+    use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
+    use starknet::{
+        contract_address_const, get_block_timestamp, get_caller_address, get_contract_address,
+    };
+    use super::*;
 
 
     #[abi(embed_v0)]
