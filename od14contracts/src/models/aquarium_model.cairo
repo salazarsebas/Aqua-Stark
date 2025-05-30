@@ -1,4 +1,4 @@
-use starknet::ContractAddress;
+use starknet::{ContractAddress, contract_address_const};
 
 #[derive(Drop, Serde, Debug)]
 #[dojo::model]
@@ -37,38 +37,60 @@ pub impl AquariumImpl of IAquarium {
         }
     }
 
-    fn add_fish(&mut aquarium: Aquarium, fish_id: u64) -> Aquarium {
+    fn add_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium {
         // add fish to an aquarium
 
         let number_of_fishes_in_aquarium = aquarium.housed_fish.len();
         assert!(number_of_fishes_in_aquarium < aquarium.max_capacity, "Aquarium is full");
-        aquarium.housed_fish.push(fish_id);
-        aquarium
+        aquarium.housed_fish.append(fish_id);
+        return aquarium;
     }
-    fn remove_fish(&mut aquarium: Aquarium, fish_id: u64) -> Aquarium{
-        aquarium.housed_fish.iter().position(|&id| id == fish_id).map_or(aquarium, |index| {
-            aquarium.housed_fish.remove(index);
-        });
+    fn remove_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium{
+        // Aquarium {
+        //     id: 0,
+        //     owner: contract_address_const::<0>(),
+        //     max_capacity: 0,
+        //     cleanliness: 100, // Start with a clean aquarium
+        //     housed_fish: array![],
+        // }
 
-        aquarium
-    }
-    fn clean(aquarium: Aquarium, amount: u32) -> Aquarium {
+        let len_of_fishes = aquarium.housed_fish.len();
+        let last_fish_id = aquarium.housed_fish[len_of_fishes - 1];
 
-    }
-    fn update_cleanliness(aquarium: Aquarium, hours_passed: u32) -> Aquarium {
+        
 
-    }
-    fn get_cleanliness(aquarium: Aquarium) -> u32 {
 
+        return aquarium;
     }
-    fn get_capacity(aquarium: Aquarium) -> u32 {
-
+    fn clean(mut aquarium: Aquarium, amount: u32) -> Aquarium {
+        Aquarium {
+            id: 0,
+            owner: contract_address_const::<0>(),
+            max_capacity: 0,
+            cleanliness: 100, // Start with a clean aquarium
+            housed_fish: array![],
+        }
     }
-    fn get_fish_count(aquarium: Aquarium) -> u32 {
-
+    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
+        Aquarium {
+            id: 0,
+            owner: contract_address_const::<0>(),
+            max_capacity: 0,
+            cleanliness: 100, // Start with a clean aquarium
+            housed_fish: array![],
+        }
     }
-    fn is_full(aquarium: Aquarium) -> bool {
-
-    }
+    // fn get_cleanliness(aquarium: Aquarium) -> u32 {
+    //     0_u32
+    // }
+    // fn get_capacity(aquarium: Aquarium) -> u32 {
+    //     0_u32
+    // }
+    // fn get_fish_count(aquarium: Aquarium) -> u32 {
+    //     0_u32
+    // }
+    // fn is_full(aquarium: Aquarium) -> bool {
+    //     true
+    // }
 }
 
