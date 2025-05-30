@@ -103,13 +103,15 @@ pub impl AquariumImpl of IAquarium {
         return aquarium;
     }
     fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
-        Aquarium {
-            id: 0,
-            owner: contract_address_const::<0>(),
-            max_capacity: 0,
-            cleanliness: 100,
-            housed_fish: array![],
-        }
+        // calculate for the cleanliness decrease
+        let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5)) / 10;
+
+        aquarium.cleanliness = if aquarium.cleanliness < cleanliness_decrease {
+            0_u32
+        } else {
+            aquarium.cleanliness - cleanliness_decrease
+        };
+        return aquarium;
     }
 
     // run getters in the contract 
