@@ -90,14 +90,17 @@ pub impl AquariumImpl of IAquarium {
         aquarium.housed_fish = new_fishes_id;
         return aquarium;
     }
-    fn clean(mut aquarium: Aquarium, amount: u32) -> Aquarium {
-        Aquarium {
-            id: 0,
-            owner: contract_address_const::<0>(),
-            max_capacity: 0,
-            cleanliness: 100, 
-            housed_fish: array![],
-        }
+    fn clean(mut aquarium: Aquarium, amount: u32, owner: ContractAddress) -> Aquarium {
+        // check ownership of the aquarium
+        assert!(aquarium.owner == owner, "Not the owner of this aquarium");
+        // clean the aquarium
+        let new_cleanliness = if aquarium.cleanliness + amount > 100 {
+            100_u32
+        } else {
+            aquarium.cleanliness + amount
+        };
+        
+        return aquarium;
     }
     fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
         Aquarium {
@@ -108,17 +111,7 @@ pub impl AquariumImpl of IAquarium {
             housed_fish: array![],
         }
     }
-    // fn get_cleanliness(aquarium: Aquarium) -> u32 {
-    //     0_u32
-    // }
-    // fn get_capacity(aquarium: Aquarium) -> u32 {
-    //     0_u32
-    // }
-    // fn get_fish_count(aquarium: Aquarium) -> u32 {
-    //     0_u32
-    // }
-    // fn is_full(aquarium: Aquarium) -> bool {
-    //     true
-    // }
+
+    // run getters in the contract 
 }
 
