@@ -129,9 +129,16 @@ pub mod Actions {
 
     #[abi(embed_v0)]
     pub impl ActionsImpl of IActions<ContractState> {
-        fn create_aquarium(ref self: ContractState, aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> u256 {
+        fn create_aquarium(ref self: WorldStorage, aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> u256 {
 
             return aquarium_id;
+        }
+    }
+
+    impl InternalImpl of InternalTrait {
+        /// Use the default namespace "aqua_stark_od".
+        fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
+            self.world(@"aqua_stark_od")
         }
     }
 }
