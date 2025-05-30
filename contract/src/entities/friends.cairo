@@ -1,9 +1,8 @@
-
 #[derive(Copy, Drop)]
 pub enum FriendRequestStatus {
     PENDING,
     ACCEPTED,
-    REJECTED
+    REJECTED,
 }
 pub impl FriendRequestStatusIntoU8 of Into<FriendRequestStatus, u8> {
     fn into(self: FriendRequestStatus) -> u8 {
@@ -23,7 +22,7 @@ pub struct FriendRequest {
     pub sender: u64, // player_id
     pub sent: bool,
     pub accepted: bool,
-    pub status: u8, // 0 => PENDING, 1 => ACCEPTED, 2 => REJECTED
+    pub status: u8 // 0 => PENDING, 1 => ACCEPTED, 2 => REJECTED
 }
 
 #[derive(Copy, Drop, Serde)]

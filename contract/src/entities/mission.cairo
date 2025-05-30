@@ -1,7 +1,7 @@
-use starknet::{ContractAddress, contract_address_const};
-use aqua_stark::types::status::{Status, StatusIntoFelt252};
 use aqua_stark::types::condition::{Condition, ConditionIntoFelt252};
 use aqua_stark::types::reward::{Reward, RewardIntoFelt252};
+use aqua_stark::types::status::{Status, StatusIntoFelt252};
+use starknet::{ContractAddress, contract_address_const};
 
 #[derive(Drop, Serde, Clone)]
 #[dojo::model]
@@ -65,11 +65,11 @@ pub impl MissionImpl of MissionTrait {
 
 #[cfg(test)]
 mod tests {
-    use super::{MissionImpl};
-    use aqua_stark::types::status::{Status};
-    use aqua_stark::types::condition::{Condition};
-    use aqua_stark::types::reward::{Reward};
+    use aqua_stark::types::condition::Condition;
+    use aqua_stark::types::reward::Reward;
+    use aqua_stark::types::status::Status;
     use starknet::{ContractAddress, contract_address_const};
+    use super::MissionImpl;
 
     #[test]
     fn test_mission_creation() {

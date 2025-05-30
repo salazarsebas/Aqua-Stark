@@ -13,10 +13,9 @@ pub struct Aquarium {
 
 #[cfg(test)]
 mod tests {
-    use super::Aquarium;
-    use super::*;
-    use starknet::contract_address_const;
     use core::array::ArrayTrait;
+    use starknet::contract_address_const;
+    use super::{*, Aquarium};
 
     fn zero_address() -> ContractAddress {
         contract_address_const::<0>()
