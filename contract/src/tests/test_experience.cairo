@@ -71,7 +71,7 @@ fn test_grant_experience() {
     testing::set_contract_address(OWNER());
 
     // Register a player
-    let player_id = player_system.register_player(PLAYER1(), USERNAME1());
+    let player_id = player_system.register(PLAYER1(), USERNAME1());
     assert(player_id == 1, 'Player ID should be 1');
 
     // Grant experience as owner (should work)
@@ -107,7 +107,7 @@ fn test_unauthorized_experience_grant() {
     testing::set_contract_address(OWNER());
 
     // Register a player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Try to grant experience as unauthorized user
     testing::set_contract_address(PLAYER2());
@@ -120,7 +120,7 @@ fn test_authorized_granter() {
     testing::set_contract_address(OWNER());
 
     // Register a player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Add authorized granter
     experience_system.add_experience_granter(GRANTER());
@@ -141,7 +141,7 @@ fn test_remove_granter() {
     testing::set_contract_address(OWNER());
 
     // Register a player and add granter
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
     experience_system.add_experience_granter(GRANTER());
 
     // Remove granter
@@ -163,7 +163,7 @@ fn test_level_progress() {
     testing::set_contract_address(OWNER());
 
     // Register and give experience to player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
     experience_system.grant_experience(PLAYER1(), 120); // Level 2 with 20 extra XP
 
     let (current_exp_in_level, exp_needed_for_next) = experience_system
@@ -178,7 +178,7 @@ fn test_max_level() {
     testing::set_contract_address(OWNER());
 
     // Register player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Grant massive experience to reach max level
     experience_system.grant_experience(PLAYER1(), 1000000);
@@ -201,7 +201,7 @@ fn test_query_functions() {
     testing::set_contract_address(OWNER());
 
     // Register and give experience to player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
     experience_system.grant_experience(PLAYER1(), 180);
 
     // Test query functions
@@ -218,7 +218,7 @@ fn test_multiple_experience_grants() {
     testing::set_contract_address(OWNER());
 
     // Register player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Grant experience in small increments
     experience_system.grant_experience(PLAYER1(), 25);
@@ -244,7 +244,7 @@ fn test_experience_integration_ready() {
     testing::set_contract_address(OWNER());
 
     // Register player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Test that system is ready for external integration
     assert(experience_system.can_grant_experience(OWNER()), 'Owner should be able to grant');

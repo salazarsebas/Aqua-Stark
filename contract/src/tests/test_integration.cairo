@@ -40,7 +40,7 @@ fn test_full_integration_experience_system() {
     let fish_system = IFishStateDispatcher { contract_address: fish_address };
 
     // 1. Register a player
-    let player_id = player_system.register_player(PLAYER1(), USERNAME1());
+    let player_id = player_system.register(PLAYER1(), USERNAME1());
     assert(player_id == 1, 'Player should be registered');
 
     // 2. Add fish system as experience granter (simulating game integration)
@@ -93,7 +93,7 @@ fn test_multiple_system_integration() {
     let player_system = IPlayerStateDispatcher { contract_address: player_address };
 
     // Register player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Add multiple experience granters (simulating different game systems)
     let quest_system = contract_address_const::<'quest_system'>();
@@ -132,7 +132,7 @@ fn test_level_progression_realistic_scenario() {
     let player_system = IPlayerStateDispatcher { contract_address: player_address };
 
     // Register player
-    player_system.register_player(PLAYER1(), USERNAME1());
+    player_system.register(PLAYER1(), USERNAME1());
 
     // Simulate realistic gameplay progression
     let mut total_exp = 0_u64;
