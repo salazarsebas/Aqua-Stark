@@ -44,8 +44,8 @@ const fallbackImages = [
 ];
 
 export function FishDisplay({
-  fish,
-  containerWidth = 1000,
+  fish, 
+  containerWidth = 1000, 
   containerHeight = 600,
   minFishCount = 10 // Increase fish count even more for visibility
 }: FishDisplayProps) {
@@ -54,10 +54,10 @@ export function FishDisplay({
     width: containerWidth,
     height: containerHeight
   });
-
+  
   // Combined fish data (original + generated)
   const [allFish, setAllFish] = useState<FishType[]>(fish);
-
+  
   // Generate additional fish if needed to meet minFishCount
   useEffect(() => {
     if (fish.length < minFishCount) {      
@@ -88,10 +88,10 @@ export function FishDisplay({
           image: sampleFish.image || fallbackImage,
           position: {
             x: xPos,
-            y: yPos,
+            y: yPos
           },
           rarity: sampleFish.rarity || "Common",
-          generation: sampleFish.generation || 1,
+          generation: sampleFish.generation || 1
         });
       }
       
@@ -105,11 +105,11 @@ export function FishDisplay({
   // Track window resize for responsive behavior
   useEffect(() => {
     const handleResize = () => {
-      const container = document.querySelector(".fish-container");
+      const container = document.querySelector('.fish-container');
       if (container) {
         setDimensions({
           width: container.clientWidth,
-          height: container.clientHeight,
+          height: container.clientHeight
         });
       }
     };
@@ -130,32 +130,32 @@ export function FishDisplay({
     aquariumBounds: dimensions,
     collisionRadius: 40, // Radius to consider for collision avoidance
   });
-
+  
   // Diagnostic logging for fish count discrepancy
   useEffect(() => {
     // Check if all fish IDs are present in the movement results
     const allFishIds = new Set(allFish.map((f) => f.id));
     const movementFishIds = new Set(fishWithMovement.map((f) => f.id));
     const missingIds = [...allFishIds].filter((id) => !movementFishIds.has(id));
-
+    
     if (missingIds.length > 0) {
     }
   }, [allFish, fishWithMovement]);
-
+  
   return (
     <div className="relative w-full h-full fish-container overflow-hidden bg-cyan-500/20">
       {/* Display the number of fish for debugging */}
       <div className="absolute top-0 right-0 p-2 text-white text-xs opacity-50 z-50">
         Fish count: {fishWithMovement.length}
       </div>
-
+      
       {fishWithMovement.map((fishState) => {
         // Find the original fish data by ID
         const fishData = allFish.find((f) => f.id === fishState.id);
         if (!fishData) {
           return null;
         }
-
+        
         return (
           <Fish
             key={fishData.id}
