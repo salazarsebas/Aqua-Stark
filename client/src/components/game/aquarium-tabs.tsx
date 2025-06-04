@@ -1,13 +1,13 @@
-import React from "react";
-import { Grid } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { MOCK_AQUARIUMS } from "@/data/game-data";
+import React from "react"
+import { Grid } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { MOCK_AQUARIUMS } from "@/data/game-data"
 
 interface AquariumTabProps {
-  name: string;
-  active: boolean;
-  icon?: React.ReactNode;
-  onClick: () => void;
+  name: string
+  active: boolean
+  icon?: React.ReactNode
+  onClick: () => void
 }
 
 function AquariumTab({ name, active, icon, onClick }: AquariumTabProps) {
@@ -24,13 +24,13 @@ function AquariumTab({ name, active, icon, onClick }: AquariumTabProps) {
       {icon && icon}
       {name}
     </button>
-  );
+  )
 }
 
 interface AquariumTabsProps {
-  aquariums: typeof MOCK_AQUARIUMS;
-  selectedAquarium: (typeof MOCK_AQUARIUMS)[0];
-  onAquariumSelect: (aquarium?: (typeof MOCK_AQUARIUMS)[0]) => void;
+  aquariums: typeof MOCK_AQUARIUMS
+  selectedAquarium: (typeof MOCK_AQUARIUMS)[0]
+  onAquariumSelect: (aquarium?: (typeof MOCK_AQUARIUMS)[0]) => void
 }
 
 export function AquariumTabs({
@@ -59,5 +59,5 @@ export function AquariumTabs({
         </div>
       </div>
     </div>
-  );
+  )
 }

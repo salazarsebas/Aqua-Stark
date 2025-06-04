@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { MOCK_AQUARIUMS } from "@/data/game-data";
-import { AquariumData } from "@/types/game";
+import { useState } from "react"
+import { MOCK_AQUARIUMS } from "@/data/game-data"
+import { AquariumData } from "@/types/game"
 
 export function useAquarium() {
-  const [selectedAquarium, setSelectedAquarium] = useState(MOCK_AQUARIUMS[0]);
+  const [selectedAquarium, setSelectedAquarium] = useState(MOCK_AQUARIUMS[0])
   const mergedAquariums: AquariumData = {
     id: 0,
     name: "View All",
@@ -26,5 +26,5 @@ export function useAquarium() {
     selectedAquarium,
     handleAquariumChange,
     aquariums: MOCK_AQUARIUMS,
-  };
+  }
 }

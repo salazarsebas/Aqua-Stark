@@ -16,43 +16,43 @@ const sampleFishData: Partial<FishType>[] = [
     name: "Blue Striped Fish",
     image: "/fish/fish1.png", // Make sure this file exists
     rarity: "Rare",
-    generation: 1,
+    generation: 1
   },
   {
     name: "Tropical Coral Fish",
     image: "/fish/fish2.png", // Make sure this file exists
     rarity: "Uncommon",
-    generation: 2,
+    generation: 2
   },
   {
     name: "Orange Tropical Fish",
     image: "/fish/fish3.png", // Make sure this file exists
     rarity: "Epic",
-    generation: 1,
+    generation: 1
   },
   {
     name: "Scarlet Fin",
     image: "/fish/fish4.png", // Make sure this file exists
     rarity: "Legendary",
-    generation: 1,
+    generation: 1
   },
 ];
 
 // Fallback to these guaranteed paths if the fish images don't load
 const fallbackImages = [
-  "/fish/fish1.png", // This is our guaranteed file
+  "/fish/fish1.png" // This is our guaranteed file
 ];
 
 export function FishDisplay({
   fish,
   containerWidth = 1000,
   containerHeight = 600,
-  minFishCount = 10, // Increase fish count even more for visibility
+  minFishCount = 10 // Increase fish count even more for visibility
 }: FishDisplayProps) {
   // Set up container dimensions for fish movement
   const [dimensions, setDimensions] = useState({
     width: containerWidth,
-    height: containerHeight,
+    height: containerHeight
   });
 
   // Combined fish data (original + generated)
@@ -60,26 +60,26 @@ export function FishDisplay({
 
   // Generate additional fish if needed to meet minFishCount
   useEffect(() => {
-    if (fish.length < minFishCount) {
+    if (fish.length < minFishCount) {      
       const additionalFish: FishType[] = [];
       const numToAdd = minFishCount - fish.length;
-
+      
       for (let i = 0; i < numToAdd; i++) {
         // Get random sample fish data
         const sampleIndex = Math.floor(Math.random() * sampleFishData.length);
         const sampleFish = sampleFishData[sampleIndex];
-
+        
         // Use the fallback image to guarantee something renders
         const fallbackImage = fallbackImages[0];
-
+        
         // Generate a unique ID that won't conflict with existing fish
         const uniqueId = 1000 + fish.length + i;
-
+        
         // Create a more distributed starting layout
         // This ensures fish are spread across the entire aquarium
         const xPos = 10 + (i % 5) * 20 + Math.random() * 10; // 10-90% width range
         const yPos = 10 + Math.floor(i / 5) * 20 + Math.random() * 10; // 10-90% height range
-
+        
         // Add new fish with better distribution
         additionalFish.push({
           id: uniqueId,
@@ -94,14 +94,14 @@ export function FishDisplay({
           generation: sampleFish.generation || 1,
         });
       }
-
-      // Combine original and additional fish
+      
+      // Combine original and additional fish      
       setAllFish([...fish, ...additionalFish]);
     } else {
       setAllFish(fish);
     }
   }, [fish, minFishCount]);
-
+  
   // Track window resize for responsive behavior
   useEffect(() => {
     const handleResize = () => {
@@ -113,17 +113,17 @@ export function FishDisplay({
         });
       }
     };
-
+    
     // Set initial dimensions
     handleResize();
-
+    
     // Update dimensions on resize
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Log when dimensions change to help debug
-  useEffect(() => {}, [dimensions]);
+  useEffect(() => { }, [dimensions]);
 
   // Use the fish movement hook to animate fish positions
   const fishWithMovement = useFishMovement(allFish, {
