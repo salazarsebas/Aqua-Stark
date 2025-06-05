@@ -11,3 +11,36 @@ pub struct AquariumCreated {
     pub max_capacity: u32,
     pub cleanliness: u32
 }
+
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+pub struct FishAdded {
+    #[key]
+    pub aquarium_id: u256,
+    pub fish_id: u64
+}
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+pub struct FishRemoved {
+    #[key]
+    pub aquarium_id: u256,
+    pub fish_id: u64
+}
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+pub struct AquariumCleaned {
+    #[key]
+    pub aquarium_id: u256,
+    pub new_cleanliness: u32
+}
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+pub struct CleanlinessUpdated {
+    #[key]
+    pub aquarium_id: u256,
+    pub new_cleanliness: u32
+}

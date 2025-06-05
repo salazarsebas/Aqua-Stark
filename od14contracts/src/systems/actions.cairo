@@ -180,6 +180,20 @@ pub mod Actions {
             );
             return new_aqurium_id;
         }
+
+        fn add_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
+            // get the world
+            let mut world = self.world_default();
+
+            // get the aquarium
+            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
+            assert!(found_aquarium.id > 0, "could not locate aqua");
+
+            // call on the Aquarium interface 
+            let aqua = IAquarium::add_fish(found_aquarium, fish_id);
+
+            return true;
+        }
     }
 
 
