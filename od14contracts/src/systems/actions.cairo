@@ -263,7 +263,27 @@ pub mod Actions {
             );
         }
 
-
+        fn get_cleanliness(self: @ContractState, aquarium_id: u64) -> u32 {
+            let world = self.world_default();
+            let found_aquarium: Aquarium = world.read_model(aquarium_id);
+            return found_aquarium.cleanliness;
+        }
+    fn get_capacity(self: @ContractState, aquarium_id: u64) -> u32 {
+            let world = self.world_default();
+            let found_aquarium: Aquarium = world.read_model(aquarium_id);
+            return found_aquarium.max_capacity;
+    }
+    fn get_fish_count(self: @ContractState, aquarium_id: u64) -> u32 {
+            let world = self.world_default();
+            let found_aquarium: Aquarium = world.read_model(aquarium_id);
+            return found_aquarium.housed_fish.len();
+    }
+    fn is_full(self: @ContractState, aquarium_id: u64) -> bool {
+            let world = self.world_default();
+            let found_aquarium: Aquarium = world.read_model(aquarium_id);
+            // return (found_aquarium.housed_fish.len()  as u32) >= found_aquarium.max_capacity;
+            true
+    }
 
     }
 
