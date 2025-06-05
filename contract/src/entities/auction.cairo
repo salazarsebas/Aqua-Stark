@@ -1,6 +1,6 @@
+use aqua_stark::entities::base::Bid;
 use starknet::{ContractAddress, get_block_timestamp};
 use crate::models::AuctionStatus;
-use aqua_stark::entities::base::Bid;
 
 #[derive(Copy, Drop, Serde, Debug)]
 #[dojo::model]
@@ -62,9 +62,8 @@ impl AutionItemImpl of AuctionTrait<Auction> {
 
 #[cfg(test)]
 mod tests {
-    use super::Auction;
-    use super::*;
     use starknet::contract_address_const;
+    use super::{*, Auction};
 
     fn zero_address() -> ContractAddress {
         contract_address_const::<0>()

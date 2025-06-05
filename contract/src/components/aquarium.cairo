@@ -17,16 +17,16 @@ pub trait IAquariumState<TContractState> {
 
 #[dojo::contract]
 pub mod AquariumState {
-    use super::*;
     use aqua_stark::entities::aquarium::Aquarium;
     use aqua_stark::entities::base::{
-        CustomErrors, AquariumCreated, AquariumCleaned, CleanlinessUpdated, FishAdded, FishRemoved,
+        AquariumCleaned, AquariumCreated, CleanlinessUpdated, CustomErrors, FishAdded, FishRemoved,
         Id,
     };
-    use starknet::get_caller_address;
     use core::array::ArrayTrait;
     use dojo::event::EventStorage;
     use dojo::model::ModelStorage;
+    use starknet::get_caller_address;
+    use super::*;
     // use dojo::model::{ModelStorage, ModelValueStorage};
     // use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -110,7 +110,7 @@ pub mod AquariumState {
                     found = true;
                 }
                 i += 1;
-            };
+            }
 
             if found {
                 aquarium.housed_fish = new_fish_array;

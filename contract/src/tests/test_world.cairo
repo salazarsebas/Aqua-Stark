@@ -1,14 +1,13 @@
 #[cfg(test)]
 mod tests {
-    use dojo_cairo_test::WorldStorageTestTrait;
+    use aqua_stark::models::{Direction, Moves, Position, m_Moves, m_Position};
+    use aqua_stark::systems::actions::{IActionsDispatcher, IActionsDispatcherTrait, actions};
     use dojo::model::{ModelStorage, ModelStorageTest};
     use dojo::world::WorldStorageTrait;
     use dojo_cairo_test::{
-        spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
+        ContractDef, ContractDefTrait, NamespaceDef, TestResource, WorldStorageTestTrait,
+        spawn_test_world,
     };
-
-    use aqua_stark::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use aqua_stark::models::{Position, m_Position, Moves, m_Moves, Direction};
 
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {

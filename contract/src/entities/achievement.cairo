@@ -1,7 +1,7 @@
 use aqua_stark::types::rarity::{Rarity, RarityIntoFelt252};
 use aqua_stark::types::types::{Types, TypesIntoFelt252};
 use core::array::ArrayTrait;
-use starknet::{ContractAddress};
+use starknet::ContractAddress;
 
 #[derive(Drop, Serde)]
 #[dojo::model]
@@ -226,7 +226,7 @@ fn initialize_player_achievement_progress(address: ContractAddress) -> Array<Ach
                 },
             );
         i += 1;
-    };
+    }
 
     player_progress
 }
@@ -265,20 +265,20 @@ fn get_unlocked_achievements(player_progress: Array<AchievementProgress>) -> Arr
             unlocked.append(*progress.achievement_id);
         }
         i += 1;
-    };
+    }
     unlocked
 }
 
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        Types, AchievementImpl, Rarity, Achievement, AchievementProgress,
-        initialize_default_achievements, initialize_player_achievement_progress,
-        update_achievement_progress, get_unlocked_achievements,
-    };
     use core::array::ArrayTrait;
     use starknet::{ContractAddress, contract_address_const};
+    use super::{
+        Achievement, AchievementImpl, AchievementProgress, Rarity, Types, get_unlocked_achievements,
+        initialize_default_achievements, initialize_player_achievement_progress,
+        update_achievement_progress,
+    };
 
     #[test]
     fn test_initialize_default_achievements() {
