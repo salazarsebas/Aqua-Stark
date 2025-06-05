@@ -127,6 +127,21 @@ pub mod Actions {
     use aqua_stark_od::models::aquarium_model::{ Aquarium, IAquarium, AquariumId };
     use aqua_stark_od::interfaces::i_actions::{ IActions };
     use dojo::world::WorldStorage;
+    use aqua_stark_od::constants::{aquarium_constants::{ AQUARIUM_ID_TARGET, MAXIMUM_CLEANLINESS }, aqua_constant::{ AQUA_NAME_SPACE }};
+
+    #[constructor]
+    fn constructor(ref self: ContractState) {
+        // initialize the aquarium_id model
+
+        let mut world = self.world_default();
+        let aquarium_id = AquariumId {
+            id: AQUARIUM_ID_TARGET,
+            prev: 0_u256,
+            next: 0_u256,
+        };
+        world.write_model(@aquarium_id);
+
+    }
 
     #[abi(embed_v0)]
     pub impl ActionsImpl of IActions<ContractState> {
@@ -151,7 +166,7 @@ pub mod Actions {
     impl InternalImpl of InternalTrait {
         /// Use the default namespace "aqua_stark_od".
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
-            self.world(@"aqua_stark_od")
+            self.world(@"aquastarkod")
         }
     }
 }
