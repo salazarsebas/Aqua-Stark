@@ -1,5 +1,3 @@
-
-
 use starknet::ContractAddress;
 
 #[derive(Copy, Drop, Serde)]
@@ -9,7 +7,7 @@ pub struct AquariumCreated {
     pub id: u256,
     pub owner: ContractAddress,
     pub max_capacity: u32,
-    pub cleanliness: u32
+    pub cleanliness: u32,
 }
 
 
@@ -18,7 +16,7 @@ pub struct AquariumCreated {
 pub struct FishAdded {
     #[key]
     pub aquarium_id: u64,
-    pub fish_id: u64
+    pub fish_id: u64,
 }
 
 #[dojo::event]
@@ -26,7 +24,7 @@ pub struct FishAdded {
 pub struct FishRemoved {
     #[key]
     pub aquarium_id: u64,
-    pub fish_id: u64
+    pub fish_id: u64,
 }
 
 #[dojo::event]
@@ -34,7 +32,7 @@ pub struct FishRemoved {
 pub struct AquariumCleaned {
     #[key]
     pub aquarium_id: u64,
-    pub new_cleanliness: u32
+    pub new_cleanliness: u32,
 }
 
 #[dojo::event]
@@ -42,5 +40,5 @@ pub struct AquariumCleaned {
 pub struct CleanlinessUpdated {
     #[key]
     pub aquarium_id: u64,
-    pub new_cleanliness: u32
+    pub new_cleanliness: u32,
 }

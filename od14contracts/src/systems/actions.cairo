@@ -281,8 +281,11 @@ pub mod Actions {
     fn is_full(self: @ContractState, aquarium_id: u64) -> bool {
             let world = self.world_default();
             let found_aquarium: Aquarium = world.read_model(aquarium_id);
-            // return (found_aquarium.housed_fish.len()  as u32) >= found_aquarium.max_capacity;
-            true
+            
+            let housed_fishes = found_aquarium.housed_fish.len();
+            let aqua_max_capacity = found_aquarium.max_capacity;
+
+            return housed_fishes >= aqua_max_capacity;
     }
 
     }

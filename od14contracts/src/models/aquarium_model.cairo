@@ -1,6 +1,5 @@
-use starknet::{ContractAddress,};
 use aqua_stark_od::constants::aquarium_constants::MAXIMUM_CLEANLINESS;
-
+use starknet::ContractAddress;
 
 
 #[dojo::model]
@@ -20,12 +19,11 @@ pub struct Aquarium {
     pub owner: ContractAddress,
     pub max_capacity: u32,
     pub cleanliness: u32, // 0-100 scale
-    pub housed_fish: Array::<u64>, // Array of fish IDs
+    pub housed_fish: Array<u64> // Array of fish IDs
 }
 
 #[generate_trait]
 pub impl AquariumImpl of IAquarium {
-
     fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium {
         Aquarium {
             id: aquarium_id,
@@ -44,8 +42,7 @@ pub impl AquariumImpl of IAquarium {
         aquarium.housed_fish.append(fish_id);
         return aquarium;
     }
-    fn remove_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium{
-
+    fn remove_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium {
         let len_of_aquarium_fishes = aquarium.housed_fish.len();
         assert!(len_of_aquarium_fishes > 0, "No fish to remove");
         let mut index = 0;
@@ -72,20 +69,21 @@ pub impl AquariumImpl of IAquarium {
         };
 
         aquarium.cleanliness = new_cleanliness;
-        
+
         return aquarium;
     }
-    
-    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
-    let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5)) / 10;
-    aquarium.cleanliness = if aquarium.cleanliness < cleanliness_decrease {
-        0
-    } else {
-        aquarium.cleanliness - cleanliness_decrease
-    };
-    aquarium
-}
 
-    // run getters in the contract 
+    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
+        let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5)) / 10;
+        aquarium
+            .cleanliness =
+                if aquarium.cleanliness < cleanliness_decrease {
+                    0
+                } else {
+                    aquarium.cleanliness - cleanliness_decrease
+                };
+        aquarium
+    }
+    // run getters in the contract
 }
 

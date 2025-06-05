@@ -15,8 +15,8 @@ pub mod tests {
 }
 
 pub mod constants {
-    pub mod aquarium_constants;
     pub mod aqua_constant;
+    pub mod aquarium_constants;
 }
 
 
