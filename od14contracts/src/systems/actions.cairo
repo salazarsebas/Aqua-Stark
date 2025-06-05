@@ -136,8 +136,7 @@ pub mod Actions {
         let mut world = self.world_default();
         let aquarium_id = AquariumId {
             id: AQUARIUM_ID_TARGET,
-            prev: 0_u256,
-            next: 0_u256,
+            count: 0_u256,
         };
         world.write_model(@aquarium_id);
 
@@ -149,16 +148,28 @@ pub mod Actions {
 
             let mut world = self.world_default();
 
-            //  let mut world = self.world_default();
-            // let mut aquarium_id: Id = world.read_model(AQUARIUM_ID_TARGET);
-            // let new_id = aquarium_id.nonce + 1;
-            // aquarium_id.nonce = new_id;
-            // world.write_model(@aquarium_id);
-            // new_id
+            // get the aquarium_id model
+            let mut aquarium_id_model: AquariumId = world.read_model(AQUARIUM_ID_TARGET);
+
+            // generate the id for the new aquarium
+            let new_aqurium_id: u256 = aquarium_id_model.count + 1;
+
+            // generate the new aquarium
+            let new_aquarium: Aquarium = IAquarium::create_aquarium(new_aqurium_id, owner, max_capacity);
+
+            // save the aquarium 
+            world.write_model(@new_aquarium);
+
+            // save the aquarium_id model
+            aquarium_id_model.count = new_aqurium_id;
+            world.write_model(@aquarium_id_model);
 
 
-
-            return aquarium_id;
+            // emit an event to notify about the new aquarium creation
+            world.emit_event(
+                
+            );
+            return new_aqurium_id;
         }
     }
 

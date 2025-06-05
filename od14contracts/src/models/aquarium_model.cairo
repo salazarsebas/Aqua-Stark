@@ -1,6 +1,5 @@
 use starknet::{ContractAddress, contract_address_const};
-// use Option::{ OptionTrait};
-// use array::{ Array, ArrayTrait };
+use aqua_stark_od::constants::aquarium_constants::MAXIMUM_CLEANLINESS;
 
 
 
@@ -9,8 +8,7 @@ use starknet::{ContractAddress, contract_address_const};
 pub struct AquariumId {
     #[key]
     pub id: felt252,
-    pub prev: u256,
-    pub next: u256,
+    pub count: u256,
 }
 
 
@@ -21,19 +19,19 @@ pub struct Aquarium {
     pub id: u64,
     pub owner: ContractAddress,
     pub max_capacity: u32,
-    pub cleanliness: u32, // 0-100 scale
+    pub cleanliness: u8, // 0-100 scale
     pub housed_fish: Array::<u64>, // Array of fish IDs
 }
 
 #[generate_trait]
 pub impl AquariumImpl of IAquarium {
 
-    fn create_aquarium(aquarium_id: u64, owner: ContractAddress, max_capacity: u32) -> Aquarium {
+    fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium {
         Aquarium {
             id: aquarium_id,
             owner: owner,
             max_capacity: max_capacity,
-            cleanliness: 100, // Start with a clean aquarium
+            cleanliness: MAXIMUM_CLEANLINESS, // Start with a clean aquarium
             housed_fish: array![],
         }
     }
@@ -63,24 +61,24 @@ pub impl AquariumImpl of IAquarium {
         aquarium.housed_fish = new_fishes_id;
         return aquarium;
     }
-    fn clean(mut aquarium: Aquarium, amount: u32, owner: ContractAddress) -> Aquarium {
+    fn clean(mut aquarium: Aquarium, amount: u8, owner: ContractAddress) -> Aquarium {
         // check ownership of the aquarium
         assert!(aquarium.owner == owner, "Not the owner of this aquarium");
         // clean the aquarium
         let new_cleanliness = if aquarium.cleanliness + amount > 100 {
-            100_u32
+            100_u8
         } else {
             aquarium.cleanliness + amount
         };
         
         return aquarium;
     }
-    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
+    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u8) -> Aquarium {
         // calculate for the cleanliness decrease
-        let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5)) / 10;
+        let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5).into()) / 10;
 
         aquarium.cleanliness = if aquarium.cleanliness < cleanliness_decrease {
-            0_u32
+            0_u8
         } else {
             aquarium.cleanliness - cleanliness_decrease
         };

@@ -18,3 +18,8 @@ pub mod constants {
     pub mod aquarium_constants;
     pub mod aqua_constant;
 }
+
+
+pub mod events {
+    pub mod aquarium_events;
+}
