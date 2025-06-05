@@ -194,6 +194,41 @@ pub mod Actions {
 
             return true;
         }
+
+        fn remove_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
+            let mut world = self.world_default();
+
+            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
+            assert!(found_aquarium.id > 0, "could not locate aqua");
+
+            IAquarium::remove_fish(found_aquarium, fish_id);
+
+            return true;
+
+        }
+
+        fn clean(ref self: ContractState, aquarium_id: u64, amount: u32) {
+
+             let mut world = self.world_default();
+             let caller = get_caller_address();
+
+            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
+            assert!(found_aquarium.id > 0, "could not locate aqua");
+
+            IAquarium::clean(found_aquarium, amount, caller);
+
+        }
+
+        fn update_cleanliness(ref self: ContractState, aquarium_id: u64, hours_passed: u32) {
+             let mut world = self.world_default();
+             let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
+            assert!(found_aquarium.id > 0, "could not locate aqua");
+
+            IAquarium::update_cleanliness(found_aquarium, hours_passed, );
+        }
+
+
+
     }
 
 
@@ -204,5 +239,7 @@ pub mod Actions {
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
             self.world(@"aquastarkod")
         }
+
+        
     }
 }
