@@ -1,4 +1,4 @@
 use dojo::world::WorldStorage;
-fn world_default(self: ContractState) -> WorldStorage {
-    self.world(@"aqua_stark")
+pub fn world_default_w(self: ContractState) -> WorldStorage {
+    self.world(@"aqua_stark_od")
 }

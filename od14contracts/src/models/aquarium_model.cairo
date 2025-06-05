@@ -3,6 +3,17 @@ use starknet::{ContractAddress, contract_address_const};
 // use array::{ Array, ArrayTrait };
 
 
+
+#![dojo::model]
+#[derive(Drop, Introspect, Serde, Debug)]
+pub struct AquariumId {
+    #[key]
+    pub id: 'aquarium_od',
+    pub prev: u256,
+    pub next: u256,
+}
+
+
 #[derive(Drop, Introspect, Serde, Debug)]
 #[dojo::model]
 pub struct Aquarium {
@@ -36,31 +47,6 @@ pub impl AquariumImpl of IAquarium {
         return aquarium;
     }
     fn remove_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium{
-
-        // let len_of_fishes = aquarium.housed_fish.len();
-        // assert!(len_of_fishes> 0, "No fish to remove");
-        // let last_fish_id = aquarium.housed_fish[len_of_fishes - 1];
-        // let mut index = 0;
-        // let mut target_index = Option::None;
-        // while index < len_of_fishes {
-        //     if *aquarium.housed_fish.at(index) == fish_id {
-        //         target_index = Option::Some(index);
-        //         break;
-        //     }
-        //     index += 1;
-        // };
-
-        // let mut new_housed_aquarium_fishes_id = ArrayTrait::<u64>::new();
-        // index = 0;
-        // while index < (len_of_fishes - 1 ){
-
-        //     if index == target_index.unwrap() {
-        //         new_housed_aquarium_fishes_id.append(@last_fish_id);
-        //     }
-        //     new_housed_aquarium_fishes_id.append(aquarium.housed_fish[index]);
-        //     index += 1;
-        // };
-        // aquarium.housed_fish = *new_housed_aquarium_fishes_id;
 
         let len_of_aquarium_fishes = aquarium.housed_fish.len();
         assert!(len_of_aquarium_fishes > 0, "No fish to remove");
