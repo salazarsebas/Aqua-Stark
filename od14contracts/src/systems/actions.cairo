@@ -124,19 +124,18 @@ pub mod Actions {
 
     use starknet::{ ContractAddress, get_caller_address };
     use dojo::model::{ ModelStorage, ModelValueStorage };
-    use aqua_stark_od::models::aquarium_model::{ Aquarium, IAquarium };
+    use aqua_stark_od::models::aquarium_model::{ Aquarium, IAquarium, AquariumId };
     use aqua_stark_od::interfaces::i_actions::{ IActions };
     use dojo::world::WorldStorage;
 
     #[abi(embed_v0)]
     pub impl ActionsImpl of IActions<ContractState> {
         fn create_aquarium(ref self: ContractState, aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> u256 {
-            // let mut world = self.world_default();
 
             let mut world = self.world_default();
 
             //  let mut world = self.world_default();
-            let mut aquarium_id: Id = world.read_model(AQUARIUM_ID_TARGET);
+            // let mut aquarium_id: Id = world.read_model(AQUARIUM_ID_TARGET);
             // let new_id = aquarium_id.nonce + 1;
             // aquarium_id.nonce = new_id;
             // world.write_model(@aquarium_id);

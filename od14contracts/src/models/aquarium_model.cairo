@@ -4,11 +4,11 @@ use starknet::{ContractAddress, contract_address_const};
 
 
 
-#![dojo::model]
+#[dojo::model]
 #[derive(Drop, Introspect, Serde, Debug)]
 pub struct AquariumId {
     #[key]
-    pub id: 'aquarium_od',
+    pub id: felt252,
     pub prev: u256,
     pub next: u256,
 }

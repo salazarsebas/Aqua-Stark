@@ -14,6 +14,6 @@ pub mod tests {
     mod test_world;
 }
 
-// pub mod constants {
-//     pub mod world_default;
-// }
+pub mod constants {
+    pub mod aquarium_constants;
+}
