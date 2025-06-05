@@ -182,12 +182,9 @@ pub mod Actions {
         }
 
         fn add_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
-            // get the world
-            let mut world = self.world_default();
+           
 
-            // get the aquarium
-            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
-            assert!(found_aquarium.id > 0, "could not locate aqua");
+           let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
             // call on the Aquarium interface 
             let aqua = IAquarium::add_fish(found_aquarium, fish_id);
@@ -196,10 +193,8 @@ pub mod Actions {
         }
 
         fn remove_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
-            let mut world = self.world_default();
-
-            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
-            assert!(found_aquarium.id > 0, "could not locate aqua");
+            
+            let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
             IAquarium::remove_fish(found_aquarium, fish_id);
 
@@ -209,20 +204,17 @@ pub mod Actions {
 
         fn clean(ref self: ContractState, aquarium_id: u64, amount: u32) {
 
-             let mut world = self.world_default();
              let caller = get_caller_address();
 
-            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
-            assert!(found_aquarium.id > 0, "could not locate aqua");
+             let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
             IAquarium::clean(found_aquarium, amount, caller);
 
         }
 
         fn update_cleanliness(ref self: ContractState, aquarium_id: u64, hours_passed: u32) {
-             let mut world = self.world_default();
-             let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
-            assert!(found_aquarium.id > 0, "could not locate aqua");
+            
+            let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
             IAquarium::update_cleanliness(found_aquarium, hours_passed, );
         }
@@ -240,6 +232,12 @@ pub mod Actions {
             self.world(@"aquastarkod")
         }
 
-        
+        fn aquarium_checker(ref self: ContractState, aquarium_id: u64) -> Aquarium {
+            let mut world = self.world_default();
+             let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
+            assert!(found_aquarium.id > 0, "could not locate aqua");
+
+            return found_aquarium;
+        }
     }
 }
