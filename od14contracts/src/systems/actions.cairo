@@ -128,6 +128,10 @@ pub mod Actions {
     use aqua_stark_od::interfaces::i_actions::{ IActions };
     use dojo::world::WorldStorage;
     use aqua_stark_od::constants::{aquarium_constants::{ AQUARIUM_ID_TARGET, MAXIMUM_CLEANLINESS }, aqua_constant::{ AQUA_NAME_SPACE }};
+    use dojo::event::EventStorage;
+    use aqua_stark_od::events::aquarium_events::{
+        AquariumCreated
+    };
 
     #[constructor]
     fn constructor(ref self: ContractState) {
@@ -167,11 +171,18 @@ pub mod Actions {
 
             // emit an event to notify about the new aquarium creation
             world.emit_event(
-                
+                @AquariumCreated {
+                    id: new_aqurium_id,
+                    owner,
+                    max_capacity, 
+                    cleanliness: new_aquarium.cleanliness
+                }
             );
             return new_aqurium_id;
         }
     }
+
+
 
     #[generate_trait]
     impl InternalImpl of InternalTrait {

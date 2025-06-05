@@ -16,10 +16,10 @@ pub struct AquariumId {
 #[dojo::model]
 pub struct Aquarium {
     #[key]
-    pub id: u64,
+    pub id: u256,
     pub owner: ContractAddress,
     pub max_capacity: u32,
-    pub cleanliness: u8, // 0-100 scale
+    pub cleanliness: u32, // 0-100 scale
     pub housed_fish: Array::<u64>, // Array of fish IDs
 }
 
@@ -61,29 +61,28 @@ pub impl AquariumImpl of IAquarium {
         aquarium.housed_fish = new_fishes_id;
         return aquarium;
     }
-    fn clean(mut aquarium: Aquarium, amount: u8, owner: ContractAddress) -> Aquarium {
+    fn clean(mut aquarium: Aquarium, amount: u32, owner: ContractAddress) -> Aquarium {
         // check ownership of the aquarium
         assert!(aquarium.owner == owner, "Not the owner of this aquarium");
         // clean the aquarium
         let new_cleanliness = if aquarium.cleanliness + amount > 100 {
-            100_u8
+            100_u32
         } else {
             aquarium.cleanliness + amount
         };
         
         return aquarium;
     }
-    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u8) -> Aquarium {
-        // calculate for the cleanliness decrease
-        let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5).into()) / 10;
-
-        aquarium.cleanliness = if aquarium.cleanliness < cleanliness_decrease {
-            0_u8
-        } else {
-            aquarium.cleanliness - cleanliness_decrease
-        };
-        return aquarium;
-    }
+    
+    fn update_cleanliness(mut aquarium: Aquarium, hours_passed: u32) -> Aquarium {
+    let cleanliness_decrease = (hours_passed * (aquarium.housed_fish.len() * 5)) / 10;
+    aquarium.cleanliness = if aquarium.cleanliness < cleanliness_decrease {
+        0
+    } else {
+        aquarium.cleanliness - cleanliness_decrease
+    };
+    aquarium
+}
 
     // run getters in the contract 
 }
