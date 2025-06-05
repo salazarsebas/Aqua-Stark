@@ -54,7 +54,7 @@ pub impl AquariumImpl of IAquarium {
                 new_fishes_id.append(gotten_aquarium_fish_id);
             }
             index += 1;
-        };
+        }
         aquarium.housed_fish = new_fishes_id;
         return aquarium;
     }
