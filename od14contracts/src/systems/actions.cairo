@@ -127,7 +127,7 @@ pub mod Actions {
     use aqua_stark_od::models::aquarium_model::{ Aquarium, IAquarium, AquariumId };
     use aqua_stark_od::interfaces::i_actions::{ IActions };
     use dojo::world::WorldStorage;
-    use aqua_stark_od::constants::{aquarium_constants::{ AQUARIUM_ID_TARGET, MAXIMUM_CLEANLINESS }, aqua_constant::{ AQUA_NAME_SPACE }};
+    use aqua_stark_od::constants::{aquarium_constants::{ AQUARIUM_ID_TARGET,  },};
     use dojo::event::EventStorage;
     use aqua_stark_od::events::aquarium_events::{
         AquariumCreated
@@ -187,7 +187,7 @@ pub mod Actions {
            let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
             // call on the Aquarium interface 
-            let aqua = IAquarium::add_fish(found_aquarium, fish_id);
+            IAquarium::add_fish(found_aquarium, fish_id);
 
             return true;
         }

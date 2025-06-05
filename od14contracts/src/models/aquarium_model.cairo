@@ -1,4 +1,4 @@
-use starknet::{ContractAddress, contract_address_const};
+use starknet::{ContractAddress,};
 use aqua_stark_od::constants::aquarium_constants::MAXIMUM_CLEANLINESS;
 
 
@@ -70,6 +70,8 @@ pub impl AquariumImpl of IAquarium {
         } else {
             aquarium.cleanliness + amount
         };
+
+        aquarium.cleanliness = new_cleanliness;
         
         return aquarium;
     }
