@@ -130,7 +130,7 @@ pub mod Actions {
     use aqua_stark_od::constants::{aquarium_constants::{ AQUARIUM_ID_TARGET,  },};
     use dojo::event::EventStorage;
     use aqua_stark_od::events::aquarium_events::{
-        AquariumCreated
+        AquariumCreated, FishAdded, FishRemoved, AquariumCleaned, CleanlinessUpdated
     };
 
     #[constructor]
@@ -182,21 +182,43 @@ pub mod Actions {
         }
 
         fn add_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
-           
 
            let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
             // call on the Aquarium interface 
-            IAquarium::add_fish(found_aquarium, fish_id);
+            found_aquarium = IAquarium::add_fish(found_aquarium, fish_id);
 
+            let mut world = self.world_default();
+
+            world.emit_event(
+                @FishAdded {
+                    aquarium_id,
+                    fish_id
+                }
+            );
+
+            world.write_model(@found_aquarium);
+            
             return true;
         }
 
         fn remove_fish(ref self: ContractState, aquarium_id: u64, fish_id: u64) -> bool {
             
+            
             let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
-            IAquarium::remove_fish(found_aquarium, fish_id);
+            found_aquarium = IAquarium::remove_fish(found_aquarium, fish_id);
+
+            let mut world = self.world_default();
+
+            world.emit_event(
+                @FishRemoved {
+                    aquarium_id,
+                    fish_id
+                }
+            );
+
+            world.write_model(@found_aquarium);
 
             return true;
 
@@ -208,7 +230,18 @@ pub mod Actions {
 
              let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
-            IAquarium::clean(found_aquarium, amount, caller);
+            found_aquarium = IAquarium::clean(found_aquarium, amount, caller);
+
+            let mut world = self.world_default();
+
+            world.write_model(@found_aquarium);
+
+            world.emit_event(
+                @AquariumCleaned {
+                    aquarium_id,
+                    new_cleanliness: found_aquarium.cleanliness
+                }
+            );
 
         }
 
@@ -216,7 +249,18 @@ pub mod Actions {
             
             let mut found_aquarium = self.aquarium_checker(aquarium_id);
 
-            IAquarium::update_cleanliness(found_aquarium, hours_passed, );
+            found_aquarium = IAquarium::update_cleanliness(found_aquarium, hours_passed, );
+
+            let mut world = self.world_default();
+
+            world.write_model(@found_aquarium);
+
+            world.emit_event(
+                @CleanlinessUpdated {
+                    aquarium_id,
+                    new_cleanliness: found_aquarium.cleanliness
+                }
+            );
         }
 
 
@@ -233,7 +277,7 @@ pub mod Actions {
         }
 
         fn aquarium_checker(ref self: ContractState, aquarium_id: u64) -> Aquarium {
-            let mut world = self.world_default();
+            let world = self.world_default();
              let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
             assert!(found_aquarium.id > 0, "could not locate aqua");
 
