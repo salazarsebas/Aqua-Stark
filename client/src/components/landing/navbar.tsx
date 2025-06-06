@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useConnect, useDisconnect, useAccount, Connector } from "@starknet-react/core";
+import {
+  useConnect,
+  useDisconnect,
+  useAccount,
+  Connector,
+} from "@starknet-react/core";
 import WalletModal from "../modal/walletConnectModal";
 
 export function Navbar() {
@@ -10,7 +15,6 @@ export function Navbar() {
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
 
-  
   useEffect(() => {
     if (isConnected && address) {
       console.log("Connected to wallet:", address);
@@ -20,7 +24,7 @@ export function Navbar() {
   const handleConnectWallet = async (connector: Connector) => {
     try {
       await connect({ connector });
-      setIsModalOpen(false); 
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error connecting wallet:", error);
       if (error instanceof Error) {
@@ -57,7 +61,9 @@ export function Navbar() {
         {isConnected ? (
           <div className="flex items-center gap-2">
             <span className="text-white text-sm">
-              {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "Connected"}
+              {address
+                ? `${address.slice(0, 6)}...${address.slice(-4)}`
+                : "Connected"}
             </span>
             <button
               onClick={handleDisconnectWallet}
