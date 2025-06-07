@@ -12,7 +12,7 @@ pub mod Aquarium {
     use aqua_stark_od::interfaces::i_aquarium::IAquarium;
     use aqua_stark_od::constants::aquarium_constants::AQUARIUM_ID_TARGET;
     use aqua_stark_od::events::aquarium_events::{
-        AquariumCreated, FishAdded, FishRemoved, AquariumCleaned, CleanlinessUpdated
+        AquariumCreated, FishAdded, FishRemoved, AquariumCleaned, CleanlinessUpdated, AquariumOwnershipTransferred
     };
 
     // since it is a constract , it can have a constructor
@@ -134,6 +134,27 @@ pub mod Aquarium {
                     new_cleanliness: aquarium.cleanliness,
                 }
             );
+        }
+
+        fn transfer_ownership(ref self: ContractState, aquarium_id: u256, new_owner: ContractAddress) -> bool {
+            // get the world
+            let (mut world, mut aquarium) = self.get_mutable_aquarium(aquarium_id);
+            let caller = get_caller_address();
+            assert!(aquarium.owner == caller, "Not the owner of this aquarium");
+            // transfer ownership of the aquarium
+            aquarium.transfer_ownership(new_owner);
+            // write the updated aquarium back to the world storage
+            world.write_model(@aquarium);
+
+            world.emit_event(
+                @AquariumOwnershipTransferred {
+                    aquarium_id: aquarium_id,
+                    old_owner: caller,
+                    new_owner: new_owner,
+                }
+            );
+
+            return true;
         }
 
         fn get_cleanliness(self: @ContractState, aquarium_id: u256) -> u32 {

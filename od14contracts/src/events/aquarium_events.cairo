@@ -42,3 +42,12 @@ pub struct CleanlinessUpdated {
     pub aquarium_id: u256,
     pub new_cleanliness: u32,
 }
+
+#[dojo::event]
+#[derive(Drop, Serde)]
+pub struct AquariumOwnershipTransferred {
+    #[key]
+    pub aquarium_id: u256,
+    pub old_owner: ContractAddress,
+    pub new_owner: ContractAddress,
+}

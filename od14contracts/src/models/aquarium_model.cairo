@@ -106,7 +106,11 @@ pub impl AquariumChangerImpl of AquariumChanger {
                 };
         // self
     }
-    // run getters in the contract
+
+    fn transfer_ownership(ref self: Aquarium, new_owner: ContractAddress) {
+        // transfer ownership of the aquarium
+        self.owner = new_owner;
+    }
 }
 
 // #[generate_trait]

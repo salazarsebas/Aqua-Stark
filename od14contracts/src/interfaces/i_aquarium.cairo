@@ -14,4 +14,5 @@ pub trait IAquarium<T> {
     fn get_fish_count(self: @T, aquarium_id: u256) -> u32;
     fn is_full(self: @T, aquarium_id: u256) -> bool;
     fn get_aquarium(self: @T, aquarium_id: u256) -> Aquarium;
+    fn transfer_ownership(ref self: T, aquarium_id: u256, new_owner: ContractAddress) -> bool;
 }
