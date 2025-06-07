@@ -1,8 +1,8 @@
 // dojo decorator
 #[dojo::contract]
 pub mod AquaStark {
-    use dojo_starter::interfaces::IAquaStark::IAquaStark;
-    use dojo_starter::models::fish_model::{Fish, FishCounter, FishOwner, FishTrait, Species};
+    use aqua_stark_od::interfaces::IAquaStark::IAquaStark;
+    use aqua_stark_od::models::fish_model::{Fish, FishCounter, FishOwner, FishTrait, Species};
 
     use dojo::model::ModelStorage;
     use starknet::{ContractAddress, get_caller_address};

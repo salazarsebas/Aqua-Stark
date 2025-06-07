@@ -1,4 +1,4 @@
-use dojo_starter::models::fish_model::{Fish, Species};
+use aqua_stark_od::models::fish_model::{Fish, Species};
 use starknet::ContractAddress;
 // define the interface
 #[starknet::interface]
