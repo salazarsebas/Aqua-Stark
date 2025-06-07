@@ -15,7 +15,7 @@ pub struct AquariumCreated {
 #[derive(Drop, Serde)]
 pub struct FishAdded {
     #[key]
-    pub aquarium_id: u64,
+    pub aquarium_id: u256,
     pub fish_id: u64,
 }
 

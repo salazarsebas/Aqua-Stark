@@ -12,6 +12,10 @@ pub mod constants {
     pub mod aquarium_constants;
 }
 
+pub mod events {
+    pub mod aquarium_events;
+}
+
 pub mod models {
     pub mod fish_model;
     pub mod aquarium_model;
