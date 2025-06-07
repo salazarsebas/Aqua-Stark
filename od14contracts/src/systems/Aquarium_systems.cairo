@@ -60,9 +60,10 @@ pub mod Aquarium {
 
         fn add_fish(ref self: ContractState, aquarium_id: u256, fish_id: u64) -> bool {
             // get the world
-            let mut world = self.world_default();
-            // read the aquarium
-            let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            // let mut world = self.world_default();
+            // // read the aquarium
+            // let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            let (mut world, mut aquarium) = self.get_mutable_aquarium(aquarium_id);
             // add the fish to the aquarium
             aquarium.add_fish(fish_id);
             // write the updated aquarium back to the world storage
@@ -79,9 +80,10 @@ pub mod Aquarium {
 
         fn remove_fish(ref self: ContractState, aquarium_id: u256, fish_id: u64) -> bool {
             // get the world
-            let mut world = self.world_default();
-            // read the aquarium
-            let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            // let mut world = self.world_default();
+            // // read the aquarium
+            // let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            let (mut world, mut aquarium) = self.get_mutable_aquarium(aquarium_id);
             // remove the fish from the aquarium
             aquarium.remove_fish(fish_id);
             // write the updated aquarium back to the world storage
@@ -98,9 +100,10 @@ pub mod Aquarium {
 
         fn clean(ref self: ContractState, aquarium_id: u256, amount: u32) {
             // get the world
-            let mut world = self.world_default();
-            // read the aquarium
-            let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            // let mut world = self.world_default();
+            // // read the aquarium
+            // let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            let (mut world, mut aquarium) = self.get_mutable_aquarium(aquarium_id);
             // clean the aquarium
             aquarium.clean(amount, get_caller_address());
             // write the updated aquarium back to the world storage
@@ -116,9 +119,10 @@ pub mod Aquarium {
 
         fn update_cleanliness(ref self: ContractState, aquarium_id: u256, hours_passed: u32) {
             // get the world
-            let mut world = self.world_default();
-            // read the aquarium
-            let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            // let mut world = self.world_default();
+            // // read the aquarium
+            // let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            let (mut world, mut aquarium) = self.get_mutable_aquarium(aquarium_id);
             // update the cleanliness of the aquarium
             aquarium.update_cleanliness(hours_passed);
             // write the updated aquarium back to the world storage
@@ -186,13 +190,13 @@ pub mod Aquarium {
             self.world(@"dojo_starter")
         }
 
-        fn get_mutable_aquarium(self: @ContractState, aquarium_id: u256) -> Aquarium {
+        fn get_mutable_aquarium(self: @ContractState, aquarium_id: u256) -> (dojo::world::WorldStorage, Aquarium) {
             // get the world
             let mut world = self.world_default();
             // read the aquarium
             let mut aquarium: Aquarium = world.read_model(aquarium_id);
             // return the mutable aquarium
-            return aquarium;
+            return (world, aquarium);
         }
 
     } 
