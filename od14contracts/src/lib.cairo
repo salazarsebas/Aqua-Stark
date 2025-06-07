@@ -1,5 +1,6 @@
 pub mod systems {
     pub mod AquaStark;
+    pub mod Aquarium_systems;
 }
 
 pub mod interfaces {
@@ -16,9 +17,5 @@ pub mod models {
 }
 pub mod tests {
     mod test_world;
-}
-
-pub mod components {
-    pub mod aquarium_component;
 }
 
