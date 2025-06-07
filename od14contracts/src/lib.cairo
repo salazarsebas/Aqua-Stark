@@ -5,6 +5,7 @@ pub mod systems {
 
 pub mod interfaces {
     pub mod IAquaStark;
+    pub mod i_aquarium;
 }
 
 pub mod constants {
