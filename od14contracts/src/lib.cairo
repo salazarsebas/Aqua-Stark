@@ -1,25 +1,15 @@
 pub mod systems {
-    pub mod actions;
-}
-
-pub mod models {
-    pub mod aquarium_model;
+    pub mod AquaStark;
 }
 
 pub mod interfaces {
-    pub mod i_actions;
+    pub mod IAquaStark;
 }
 
+pub mod models {
+    pub mod fish_model;
+}
 pub mod tests {
     mod test_world;
 }
 
-pub mod constants {
-    pub mod aqua_constant;
-    pub mod aquarium_constants;
-}
-
-
-pub mod events {
-    pub mod aquarium_events;
-}

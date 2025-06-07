@@ -119,25 +119,19 @@
 // }
 
 #[dojo::contract]
-pub mod Actions {
-    use aqua_stark_od::constants::aquarium_constants::AQUARIUM_ID_TARGET;
-    use aqua_stark_od::events::aquarium_events::{
-        AquariumCleaned, AquariumCreated, CleanlinessUpdated, FishAdded, FishRemoved,
-    };
-    use aqua_stark_od::interfaces::i_actions::IActions;
-    use aqua_stark_od::models::aquarium_model::{Aquarium, AquariumId, IAquarium};
+pub mod actions {
     use dojo::event::EventStorage;
-    use dojo::model::{ModelStorage, ModelValueStorage};
-    use dojo::world::WorldStorage;
+    use dojo::model::ModelStorage;
+    use dojo_starter::models::{Moves, Vec2};
     use starknet::{ContractAddress, get_caller_address};
+    use super::{Direction, IActions, Position, next_position};
 
-    #[constructor]
-    fn constructor(ref self: ContractState) {
-        // initialize the aquarium_id model
-
-        let mut world = self.world_default();
-        let aquarium_id = AquariumId { id: AQUARIUM_ID_TARGET, count: 0_u256 };
-        world.write_model(@aquarium_id);
+    #[derive(Copy, Drop, Serde)]
+    #[dojo::event]
+    pub struct Moved {
+        #[key]
+        pub player: ContractAddress,
+        pub direction: Direction,
     }
 
     #[abi(embed_v0)]
@@ -274,13 +268,19 @@ pub mod Actions {
         fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
             self.world(@"aquastarkod")
         }
-
-        fn aquarium_checker(ref self: ContractState, aquarium_id: u64) -> Aquarium {
-            let world = self.world_default();
-            let mut found_aquarium: Aquarium = world.read_model(aquarium_id);
-            assert!(found_aquarium.id > 0, "could not locate aqua");
-
-            return found_aquarium;
-        }
     }
+}
+
+// Define function like this:
+fn next_position(mut position: Position, direction: Option<Direction>) -> Position {
+    match direction {
+        Option::None => { return position; },
+        Option::Some(d) => match d {
+            Direction::Left => { position.vec.x -= 1; },
+            Direction::Right => { position.vec.x += 1; },
+            Direction::Up => { position.vec.y -= 1; },
+            Direction::Down => { position.vec.y += 1; },
+        },
+    }
+    position
 }
