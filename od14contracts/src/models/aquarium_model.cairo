@@ -1,4 +1,4 @@
-// use aqua_stark_od::constants::aquarium_constants::MAXIMUM_CLEANLINESS;
+use aqua_stark_od::constants::aquarium_constants::MAXIMUM_CLEANLINESS;
 use starknet::ContractAddress;
 
 
@@ -41,6 +41,72 @@ pub  impl AquariumGetterImpl of AquariumGetter {
     fn is_full(self: @Aquarium) -> bool {
         self.housed_fish.len() >= *self.max_capacity
     }
+}
+
+#[generate_trait]
+pub impl AquariumChangerImpl of AquariumChanger {
+    fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium {
+        Aquarium {
+            id: aquarium_id,
+            owner: owner,
+            max_capacity: max_capacity,
+            cleanliness: MAXIMUM_CLEANLINESS, // Start with a clean aquarium
+            housed_fish: array![],
+        }
+    }
+
+    fn add_fish(ref self: Aquarium, fish_id: u64) {
+        // add fish to an aquarium
+        let number_of_fishes_in_aquarium = self.housed_fish.len();
+        assert!(number_of_fishes_in_aquarium < self.max_capacity, "Aquarium is full");
+        self.housed_fish.append(fish_id);
+        // return self;
+    }
+
+    fn remove_fish(ref self: Aquarium, fish_id: u64) {
+        let len_of_aquarium_fishes = self.housed_fish.len();
+        assert!(len_of_aquarium_fishes > 0, "No fish to remove");
+        let mut index = 0;
+        let mut new_fishes_id = array![];
+        while index < len_of_aquarium_fishes {
+            let gotten_aquarium_fish_id = *self.housed_fish.at(index);
+
+            if gotten_aquarium_fish_id != fish_id {
+                new_fishes_id.append(gotten_aquarium_fish_id);
+            }
+            index += 1;
+        };
+        self.housed_fish = new_fishes_id;
+        // return self;
+    }
+
+    fn clean(ref self: Aquarium, amount: u32, owner: ContractAddress)  {
+        // check ownership of the aquarium
+        assert!(self.owner == owner, "Not the owner of this aquarium");
+        // clean the aquarium
+        let new_cleanliness = if self.cleanliness + amount > 100 {
+            100_u32
+        } else {
+            self.cleanliness + amount
+        };
+
+        self.cleanliness = new_cleanliness;
+
+        // return self;
+    }
+
+    fn update_cleanliness(ref self: Aquarium, hours_passed: u32) {
+        let cleanliness_decrease = (hours_passed * (self.housed_fish.len() * 5)) / 10;
+        self
+            .cleanliness =
+                if self.cleanliness < cleanliness_decrease {
+                    0
+                } else {
+                    self.cleanliness - cleanliness_decrease
+                };
+        // self
+    }
+    // run getters in the contract
 }
 
 // #[generate_trait]

@@ -6,6 +6,10 @@ pub mod interfaces {
     pub mod IAquaStark;
 }
 
+pub mod constants {
+    pub mod aquarium_constants;
+}
+
 pub mod models {
     pub mod fish_model;
     pub mod aquarium_model;
