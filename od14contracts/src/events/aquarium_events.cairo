@@ -23,7 +23,7 @@ pub struct FishAdded {
 #[derive(Drop, Serde)]
 pub struct FishRemoved {
     #[key]
-    pub aquarium_id: u64,
+    pub aquarium_id: u256,
     pub fish_id: u64,
 }
 
@@ -31,7 +31,7 @@ pub struct FishRemoved {
 #[derive(Drop, Serde)]
 pub struct AquariumCleaned {
     #[key]
-    pub aquarium_id: u64,
+    pub aquarium_id: u256,
     pub new_cleanliness: u32,
 }
 
@@ -39,6 +39,6 @@ pub struct AquariumCleaned {
 #[derive(Drop, Serde)]
 pub struct CleanlinessUpdated {
     #[key]
-    pub aquarium_id: u64,
+    pub aquarium_id: u256,
     pub new_cleanliness: u32,
 }
