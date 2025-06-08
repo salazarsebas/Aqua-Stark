@@ -1,3 +1,15 @@
+
+use starknet::ContractAddress;
+
+#[derive(Serde, Copy, Drop, Introspect, PartialEq)]
+#[dojo::model]
+pub struct Player {
+    #[key]
+    pub id: u256,
+    pub last_login_day: u64, // day number
+    pub streak_counter: u64,
+    pub rewards_delivered: u64,
+
 use starknet::{ContractAddress, get_block_timestamp, get_caller_address, contract_address_const};
 use crate::models::aquarium_model::{Aquarium};
 use crate::models::fish_model::{Fish};
@@ -137,4 +149,5 @@ mod tests {
         };
         assert(player.id == 1, 'Player ID should match');
     }
+
 }
