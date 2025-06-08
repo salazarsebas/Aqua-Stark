@@ -1,10 +1,10 @@
-
-
 use starknet::ContractAddress;
 use aqua_stark_od::models::aquarium_model::Aquarium;
 #[starknet::interface]
 pub trait IAquarium<T> {
-    fn create_aquarium(ref self: T, aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> u256;
+    fn create_aquarium(
+        ref self: T, aquarium_id: u256, owner: ContractAddress, max_capacity: u32,
+    ) -> u256;
     fn add_fish(ref self: T, aquarium_id: u256, fish_id: u64) -> bool;
     fn remove_fish(ref self: T, aquarium_id: u256, fish_id: u64) -> bool;
     fn clean(ref self: T, aquarium_id: u256, amount: u32);

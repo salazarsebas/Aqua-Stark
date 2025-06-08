@@ -10,7 +10,6 @@ pub struct AquariumId {
     pub count: u256,
 }
 
-
 #[derive(Drop, Introspect, Serde, Debug)]
 #[dojo::model]
 pub struct Aquarium {
@@ -23,9 +22,8 @@ pub struct Aquarium {
 }
 
 
-
 #[generate_trait]
-pub  impl AquariumGetterImpl of AquariumGetter {
+pub impl AquariumGetterImpl of AquariumGetter {
     fn get_cleanliness(self: @Aquarium) -> u32 {
         *self.cleanliness
     }
@@ -35,7 +33,7 @@ pub  impl AquariumGetterImpl of AquariumGetter {
     }
 
     fn get_fish_count(self: @Aquarium) -> u32 {
-        self.housed_fish.len() 
+        self.housed_fish.len()
     }
 
     fn is_full(self: @Aquarium) -> bool {
@@ -80,7 +78,7 @@ pub impl AquariumChangerImpl of AquariumChanger {
         // return self;
     }
 
-    fn clean(ref self: Aquarium, amount: u32, owner: ContractAddress)  {
+    fn clean(ref self: Aquarium, amount: u32, owner: ContractAddress) {
         // check ownership of the aquarium
         assert!(self.owner == owner, "Not the owner of this aquarium");
         // clean the aquarium
@@ -91,7 +89,6 @@ pub impl AquariumChangerImpl of AquariumChanger {
         };
 
         self.cleanliness = new_cleanliness;
-
         // return self;
     }
 
@@ -112,10 +109,10 @@ pub impl AquariumChangerImpl of AquariumChanger {
         self.owner = new_owner;
     }
 }
-
 // #[generate_trait]
 // pub impl AquariumImpl of IAquarium {
-//     fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium {
+//     fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium
+//     {
 //         Aquarium {
 //             id: aquarium_id,
 //             owner: owner,
@@ -177,4 +174,5 @@ pub impl AquariumChangerImpl of AquariumChanger {
 //     }
 //     // run getters in the contract
 // }
+
 
