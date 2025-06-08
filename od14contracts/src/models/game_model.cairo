@@ -52,7 +52,7 @@ pub trait GameTrait {
     fn terminate_game(game: Game);
 }
 impl GameImpl of GameTrait {
-    fn new_game(id: u64, created_by: ContractAddress, created_at: u64) -> Game {
+    fn new_game(id: u64, created_by: ContractAddress) -> Game {
         Game {
             id,
             created_by,
