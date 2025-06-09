@@ -32,7 +32,7 @@ const options: ControllerOptions = {
   colorMode,
 
   namespace: "aqua_stark",
-  slot: "golem5",
+  slot: "aqua5",
 };
 
 const cartridgeConnector = new ControllerConnector(
