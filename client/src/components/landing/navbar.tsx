@@ -9,17 +9,25 @@ import {
 } from "@starknet-react/core";
 import WalletModal from "../modal/walletConnectModal";
 
+import ControllerConnector from "@cartridge/connector/controller";
+
 export function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { connect } = useConnect();
+  const [username, setUsername] = useState<string | null>(null);
+
+  const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
 
+  const controller = connectors[2] as ControllerConnector;
+
   useEffect(() => {
-    if (isConnected && address) {
-      console.log("Connected to wallet:", address);
+    if (isConnected && address && controller) {
+      controller.username()?.then((name) => setUsername(name));
+    } else {
+      setUsername(null);
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, controller]);
 
   const handleConnectWallet = async (connector: Connector) => {
     try {
@@ -40,6 +48,7 @@ export function Navbar() {
   const handleDisconnectWallet = async () => {
     try {
       await disconnect();
+      setUsername(null);
     } catch (error) {
       console.error("Error disconnecting:", error);
     }
@@ -57,13 +66,13 @@ export function Navbar() {
         />
       </div>
 
-      <div>
+      <div className="flex gap-3 items-center">
         {isConnected ? (
           <div className="flex items-center gap-2">
             <span className="text-white text-sm">
-              {address
-                ? `${address.slice(0, 6)}...${address.slice(-4)}`
-                : "Connected"}
+              {username
+                ? `${username}`
+                : `${address?.slice(0, 6)}...${address?.slice(-4)}`}
             </span>
             <button
               onClick={handleDisconnectWallet}
@@ -73,12 +82,14 @@ export function Navbar() {
             </button>
           </div>
         ) : (
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors"
-          >
-            Connect Wallet
-          </button>
+          <>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors"
+            >
+              Connect Wallet
+            </button>
+          </>
         )}
 
         <WalletModal
