@@ -12,7 +12,7 @@ import { DirtCounter } from "@/components/game/dirt-counter"
 import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
-import { useDirtSystem } from "@/hooks/use-dirt-system"
+import { useDirtSystemFixed as useDirtSystem } from "@/hooks/use-dirt-system-fixed"
 import { GameMenu } from "@/components/game/game-menu"
 import { useBubbles } from "@/hooks/use-bubbles"
 import { BubblesBackground } from "@/components/bubble-background"
@@ -22,11 +22,9 @@ export default function GamePage() {
   const { selectedAquarium, handleAquariumChange, aquariums } = useAquarium()
   const [showMenu, setShowMenu] = useState(false)
   const [showTips, setShowTips] = useState(false)
-  const [showDirtDebug, setShowDirtDebug] = useState(true) // Debug controls visibility
-
-  // Initialize dirt system
+  const [showDirtDebug, setShowDirtDebug] = useState(false) // Debug controls visibility  // Initialize dirt system
   const dirtSystem = useDirtSystem({
-    spawnInterval: 15000, // 15 seconds for demo
+    spawnInterval: 5000, // 5 seconds
     maxSpots: 5,
     aquariumBounds: {
       x: 0,
@@ -34,7 +32,7 @@ export default function GamePage() {
       width: 1000,
       height: 600,
     },
-    spawnChance: 0.8,
+    spawnChance: 0.7, // 70% chance
   })
 
   // Update aquarium bounds when component mounts
@@ -79,13 +77,11 @@ export default function GamePage() {
       {/* Effects */}
       <div className="absolute inset-0 light-rays z-20"></div>
       <div className="absolute inset-0 animate-water-movement z-20"></div>      {/* Fish */}
-      <FishDisplay fish={MOCK_FISH} />
-
-      {/* Dirt System */}
+      <FishDisplay fish={MOCK_FISH} />      {/* Dirt System */}
       <DirtOverlay 
         spots={dirtSystem.spots}
         onRemoveSpot={dirtSystem.removeDirtSpot}
-        className="absolute inset-0"
+        className="absolute inset-0 z-50"
       />
 
       {/* Header */}
@@ -106,9 +102,7 @@ export default function GamePage() {
           maxSpots={dirtSystem.config.maxSpots}
           cleanlinessScore={dirtSystem.cleanlinessScore}
         />
-      </div>
-
-      {/* Debug Controls */}
+      </div>      {/* Debug Controls */}
       {showDirtDebug && (
         <div className="absolute top-4 right-4 z-40">
           <DirtDebugControls

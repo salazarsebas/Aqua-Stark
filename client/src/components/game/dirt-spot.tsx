@@ -39,7 +39,6 @@ export function DirtSpot({ spot, onRemove, className = '' }: DirtSpotProps) {
       onRemove(spot.id);
     }, 300);
   };
-
   return (
     <div
       className={`absolute cursor-pointer transform-gpu transition-all duration-300 hover:scale-110 ${isRemoving ? 'animate-pulse scale-0' : ''} ${className}`}
@@ -54,8 +53,7 @@ export function DirtSpot({ spot, onRemove, className = '' }: DirtSpotProps) {
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           handleClick(e as any);
-        }
-      }}
+        }      }}
       aria-label="Click to clean dirt spot"
     >
       {/* Main dirt spot */}

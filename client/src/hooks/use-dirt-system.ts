@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { DirtSpot, DirtType, DirtSystemConfig, DirtSystemState } from '@/types/dirt';
 
 const DEFAULT_CONFIG: DirtSystemConfig = {
-  spawnInterval: 30000, // 30 seconds
+  spawnInterval: 5000, // 5 seconds
   maxSpots: 5,
   minSpotDistance: 60, // pixels
   aquariumBounds: {
@@ -48,21 +48,24 @@ export function useDirtSystem(config: Partial<DirtSystemConfig> = {}) {
       x: Math.random() * (aquariumBounds.width - padding * 2) + aquariumBounds.x + padding,
       y: Math.random() * (aquariumBounds.height - padding * 2) + aquariumBounds.y + padding,
     };
-  }, [finalConfig.aquariumBounds]);
-
-  // Create a new dirt spot
-  const createDirtSpot = useCallback((): DirtSpot | null => {
+  }, [finalConfig.aquariumBounds]);  // Create a new dirt spot
+  const createDirtSpot = useCallback((currentSpots: DirtSpot[]): DirtSpot | null => {
     const { maxSpots, spawnChance } = finalConfig;
     
-    if (state.spots.length >= maxSpots || Math.random() > spawnChance) {
+    if (currentSpots.length >= maxSpots) {
+      return null;
+    }
+    
+    if (Math.random() > spawnChance) {
       return null;
     }
 
     // Try to find a valid position (max 10 attempts)
     for (let attempts = 0; attempts < 10; attempts++) {
       const position = generateRandomPosition();
-      if (isValidPosition(position, state.spots)) {
-        return {
+      
+      if (isValidPosition(position, currentSpots)) {
+        const newSpot = {
           id: nextIdRef.current++,
           position,
           type: DirtType.BASIC, // For now, only basic dirt
@@ -70,37 +73,30 @@ export function useDirtSystem(config: Partial<DirtSystemConfig> = {}) {
           opacity: Math.random() * 0.3 + 0.6, // 0.6-0.9
           createdAt: Date.now(),
         };
+        return newSpot;
       }
     }
     
     return null; // Couldn't find valid position
-  }, [finalConfig, state.spots, generateRandomPosition, isValidPosition]);
-
-  // Spawn dirt spot
-  const spawnDirtSpot = useCallback(() => {
-    if (!state.isSpawnerActive) return;    const newSpot = createDirtSpot();
-    if (newSpot) {
-      setState((prev: DirtSystemState) => ({
-        ...prev,
-        spots: [...prev.spots, newSpot],
-        totalSpotsCreated: prev.totalSpotsCreated + 1,
-        cleanlinessScore: Math.max(0, prev.cleanlinessScore - (100 / finalConfig.maxSpots)),
-      }));
-    }
-  }, [state.isSpawnerActive, createDirtSpot, finalConfig.maxSpots]);
+  }, [finalConfig, generateRandomPosition, isValidPosition]);
+  
   // Force spawn (for debug)
   const forceSpawnSpot = useCallback(() => {
-    const newSpot = createDirtSpot();
-    if (newSpot) {
-      setState((prev: DirtSystemState) => ({
-        ...prev,
-        spots: [...prev.spots, newSpot],
-        totalSpotsCreated: prev.totalSpotsCreated + 1,
-        cleanlinessScore: Math.max(0, prev.cleanlinessScore - (100 / finalConfig.maxSpots)),
-      }));
-      return true;
-    }
-    return false;
+    let spawned = false;
+    setState((prev: DirtSystemState) => {
+      const newSpot = createDirtSpot(prev.spots);
+      if (newSpot) {
+        spawned = true;
+        return {
+          ...prev,
+          spots: [...prev.spots, newSpot],
+          totalSpotsCreated: prev.totalSpotsCreated + 1,
+          cleanlinessScore: Math.max(0, prev.cleanlinessScore - (100 / finalConfig.maxSpots)),
+        };
+      }
+      return prev;
+    });
+    return spawned;
   }, [createDirtSpot, finalConfig.maxSpots]);
   // Remove dirt spot
   const removeDirtSpot = useCallback((spotId: number) => {
@@ -131,12 +127,23 @@ export function useDirtSystem(config: Partial<DirtSystemConfig> = {}) {
       totalSpotsRemoved: prev.totalSpotsRemoved + prev.spots.length,
       cleanlinessScore: 100,
     }));
-  }, []);
-
-  // Setup spawn interval
+  }, []);  // Setup spawn interval
   useEffect(() => {
     if (state.isSpawnerActive) {
-      intervalRef.current = setInterval(spawnDirtSpot, finalConfig.spawnInterval);
+      intervalRef.current = setInterval(() => {
+        setState((prev: DirtSystemState) => {
+          const newSpot = createDirtSpot(prev.spots);
+          if (newSpot) {
+            return {
+              ...prev,
+              spots: [...prev.spots, newSpot],
+              totalSpotsCreated: prev.totalSpotsCreated + 1,
+              cleanlinessScore: Math.max(0, prev.cleanlinessScore - (100 / finalConfig.maxSpots)),
+            };
+          }
+          return prev;
+        });
+      }, finalConfig.spawnInterval);
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -149,7 +156,7 @@ export function useDirtSystem(config: Partial<DirtSystemConfig> = {}) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [state.isSpawnerActive, spawnDirtSpot, finalConfig.spawnInterval]);
+  }, [state.isSpawnerActive, finalConfig.spawnInterval, createDirtSpot, finalConfig.maxSpots]);
 
   // Update aquarium bounds
   const updateAquariumBounds = useCallback((bounds: DirtSystemConfig['aquariumBounds']) => {

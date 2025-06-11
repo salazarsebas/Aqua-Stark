@@ -1,4 +1,3 @@
-import React from 'react';
 import { DirtSpot } from './dirt-spot';
 import { DirtSpot as DirtSpotType } from '@/types/dirt';
 
@@ -10,7 +9,7 @@ interface DirtOverlayProps {
 
 export function DirtOverlay({ spots, onRemoveSpot, className = '' }: DirtOverlayProps) {
   return (
-    <div className={`absolute inset-0 pointer-events-none z-30 ${className}`}>
+    <div className={`absolute inset-0 pointer-events-none z-50 ${className}`}>
       {spots.map((spot) => (
         <div key={spot.id} className="pointer-events-auto">
           <DirtSpot 
