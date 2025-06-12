@@ -12,8 +12,6 @@ import { DirtDebugControls } from "@/components/game/dirt-debug-controls"
 import { DirtCounter } from "@/components/game/dirt-counter"
 import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
 
-import { INITIAL_GAME_STATE } from "@/data/game-data"
-
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
 import { useDirtSystemFixed as useDirtSystem } from "@/hooks/use-dirt-system-fixed"
