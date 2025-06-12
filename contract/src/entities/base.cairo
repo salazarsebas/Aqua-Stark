@@ -171,7 +171,7 @@ pub struct FriendRequestSent {
     pub request_id: u64,
     #[key]
     pub player: u64,
-    pub sender: u64
+    pub sender: u64,
 }
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
@@ -180,7 +180,7 @@ pub struct FriendRequestAccepted {
     pub request_id: u64,
     #[key]
     pub player: u64,
-    pub sender: u64
+    pub sender: u64,
 }
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
@@ -189,7 +189,7 @@ pub struct FriendRequestRejected {
     pub request_id: u64,
     #[key]
     pub player: u64,
-    pub sender: u64
+    pub sender: u64,
 }
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
@@ -198,7 +198,7 @@ pub struct FriendRequestDeleted {
     pub request_id: u64,
     #[key]
     pub player: u64,
-    pub sender: u64
+    pub sender: u64,
 }
 
 
@@ -224,4 +224,5 @@ pub mod CustomErrors {
     pub const AUCTION_NOT_ENDED: felt252 = 'AUCTION NOT ENDED';
     pub const AUCTION_ENDED: felt252 = 'AUCTION ENDED';
     pub const ALREADY_REGISTERED: felt252 = 'ALREADY_REGISTERED';
+    pub const USERNAME_EXISTS: felt252 = 'USERNAME_EXISTS';
 }

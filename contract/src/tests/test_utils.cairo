@@ -1,21 +1,22 @@
-use dojo_cairo_test::{
-    spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
-    WorldStorageTestTrait,
-};
-use dojo::world::{WorldStorage, WorldStorageTrait};
-use aqua_stark::entities::base;
-use aqua_stark::entities::auction::m_Auction;
-use aqua_stark::entities::aquarium::m_Aquarium;
-use aqua_stark::entities::fish::m_Fish;
-use aqua_stark::entities::decoration::m_Decoration;
-use aqua_stark::entities::player::m_Player;
-use aqua_stark::entities::friends::{m_FriendRequest, m_FriendRequestCount, m_FriendsList};
 use aqua_stark::components::aquarium::AquariumState;
 use aqua_stark::components::auction::{AuctionState, IAuctionStateDispatcher};
+use aqua_stark::components::experience::{IPlayerExperienceDispatcher, PlayerExperience};
 use aqua_stark::components::fish::{FishState, IFishStateDispatcher};
-use aqua_stark::components::playerstate::{IPlayerStateDispatcher, PlayerState};
 use aqua_stark::components::friends::FriendState;
+use aqua_stark::components::playerstate::{IPlayerStateDispatcher, PlayerState};
+use aqua_stark::entities::aquarium::m_Aquarium;
+use aqua_stark::entities::auction::m_Auction;
+use aqua_stark::entities::base;
+use aqua_stark::entities::decoration::m_Decoration;
+use aqua_stark::entities::fish::m_Fish;
+use aqua_stark::entities::friends::{m_FriendRequest, m_FriendRequestCount, m_FriendsList};
+use aqua_stark::entities::player::m_Player;
 use aqua_stark::tests::mocks::erc20_mock::erc20_mock;
+use dojo::world::{WorldStorage, WorldStorageTrait};
+use dojo_cairo_test::{
+    ContractDef, ContractDefTrait, NamespaceDef, TestResource, WorldStorageTestTrait,
+    spawn_test_world,
+};
 use openzeppelin_token::erc20::interface::IERC20Dispatcher;
 use starknet::testing;
 
@@ -48,6 +49,7 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Contract(erc20_mock::TEST_CLASS_HASH),
             TestResource::Contract(FriendState::TEST_CLASS_HASH),
             TestResource::Contract(PlayerState::TEST_CLASS_HASH),
+            TestResource::Contract(PlayerExperience::TEST_CLASS_HASH),
             // Aquarium Events
             TestResource::Event(base::e_AquariumCreated::TEST_CLASS_HASH),
             TestResource::Event(base::e_AquariumCleaned::TEST_CLASS_HASH),
@@ -72,7 +74,11 @@ pub fn namespace_def() -> NamespaceDef {
             TestResource::Event(base::e_FriendRequestAccepted::TEST_CLASS_HASH),
             TestResource::Event(base::e_FriendRequestRejected::TEST_CLASS_HASH),
             TestResource::Event(base::e_FriendRequestDeleted::TEST_CLASS_HASH),
-
+            // Experience Events
+            TestResource::Event(PlayerExperience::e_ExperienceGranted::TEST_CLASS_HASH),
+            TestResource::Event(PlayerExperience::e_LevelUp::TEST_CLASS_HASH),
+            TestResource::Event(PlayerExperience::e_ExperienceGranterAdded::TEST_CLASS_HASH),
+            TestResource::Event(PlayerExperience::e_ExperienceGranterRemoved::TEST_CLASS_HASH),
         ]
             .span(),
     };
@@ -93,6 +99,8 @@ pub fn contract_defs() -> Span<ContractDef> {
         ContractDefTrait::new(@"aqua_stark", @"PlayerState")
             .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
         ContractDefTrait::new(@"aqua_stark", @"FriendState")
+            .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
+        ContractDefTrait::new(@"aqua_stark", @"PlayerExperience")
             .with_writer_of([dojo::utils::bytearray_hash(@"aqua_stark")].span()),
     ]
         .span()
@@ -143,8 +151,18 @@ pub fn initialize_player_contacts() -> (WorldStorage, IPlayerStateDispatcher) {
 //     let contract_address = world
 //         .deploy_contract('salt', AquariumState::TEST_CLASS_HASH.try_into().unwrap());
 //     let aquarium_system = IAquariumStateDispatcher { contract_address };
+pub fn initialize_experience_contacts() -> (
+    WorldStorage, IPlayerExperienceDispatcher, IPlayerStateDispatcher,
+) {
+    let mut world = setup();
 
-//     (world, aquarium_system)
-// }
+    let (exp_address, _) = world.dns(@"PlayerExperience").unwrap();
+    let experience_system = IPlayerExperienceDispatcher { contract_address: exp_address };
 
+    let (player_address, _) = world.dns(@"PlayerState").unwrap();
+    let player_registry = IPlayerStateDispatcher { contract_address: player_address };
+    //     (world, aquarium_system)
+    // }
+    (world, experience_system, player_registry)
+}
 

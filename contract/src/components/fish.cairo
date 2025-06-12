@@ -19,15 +19,15 @@ pub trait IFishState<ContractState> {
 
 #[dojo::contract]
 pub mod FishState {
-    use super::*;
-    use aqua_stark::entities::fish::Fish;
     use aqua_stark::entities::base::{
-        FishAgeUpdated, FishCreated, FishDamaged, FishFed, FishGrown, FishHealed, FishHungerUpdated,
-        CustomErrors, Id,
+        CustomErrors, FishAgeUpdated, FishCreated, FishDamaged, FishFed, FishGrown, FishHealed,
+        FishHungerUpdated, Id,
     };
-    use starknet::get_caller_address;
+    use aqua_stark::entities::fish::Fish;
     use dojo::event::EventStorage;
     use dojo::model::ModelStorage;
+    use starknet::get_caller_address;
+    use super::*;
     // use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
     #[abi(embed_v0)]

@@ -6,16 +6,21 @@ import { GameSidebarButtons } from "@/components/game/game-sidebar-buttons"
 import { AquariumTabs } from "@/components/game/aquarium-tabs"
 import { TipsPopup } from "@/components/game/tips-popup"
 import { FishDisplay } from "@/components/game/fish-display"
+
 import { DirtOverlay } from "@/components/game/dirt-overlay"
 import { DirtDebugControls } from "@/components/game/dirt-debug-controls"
 import { DirtCounter } from "@/components/game/dirt-counter"
 import { MOCK_FISH, INITIAL_GAME_STATE } from "@/data/game-data"
+
+import { INITIAL_GAME_STATE } from "@/data/game-data"
+
 import { useAquarium } from "@/hooks/use-aquarium"
 import { useFishStats } from "@/hooks/use-fish-stats"
 import { useDirtSystemFixed as useDirtSystem } from "@/hooks/use-dirt-system-fixed"
 import { GameMenu } from "@/components/game/game-menu"
 import { useBubbles } from "@/hooks/use-bubbles"
 import { BubblesBackground } from "@/components/bubble-background"
+import { motion } from "framer-motion"
 
 export default function GamePage() {
   const { happiness, food, energy } = useFishStats(INITIAL_GAME_STATE)
@@ -76,6 +81,7 @@ export default function GamePage() {
 
       {/* Effects */}
       <div className="absolute inset-0 light-rays z-20"></div>
+
       <div className="absolute inset-0 animate-water-movement z-20"></div>      {/* Fish */}
       <FishDisplay fish={MOCK_FISH} />      {/* Dirt System */}
       <DirtOverlay 
@@ -83,6 +89,21 @@ export default function GamePage() {
         onRemoveSpot={dirtSystem.removeDirtSpot}
         className="absolute inset-0 z-50"
       />
+
+      <div className="absolute inset-0 animate-water-movement z-20"></div>
+
+      {/* Fish */}
+      <motion.div
+        key={selectedAquarium.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 1 }}
+        className="relative z-20 w-full h-full"
+      >
+        <FishDisplay fish={selectedAquarium.fishes} />
+      </motion.div>
+
 
       {/* Header */}
       <GameHeader
