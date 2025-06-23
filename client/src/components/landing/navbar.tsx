@@ -8,7 +8,6 @@ import {
 } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import WalletModal from "../modal/walletConnectModal";
-
 import ControllerConnector from "@cartridge/connector/controller";
 import { useNavigate } from "react-router-dom";
 
@@ -69,17 +68,17 @@ export function Navbar() {
         />
       </div>
 
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-4 items-center">
         {isConnected ? (
-          <div className="flex items-center gap-2">
-            <span className="text-white text-sm">
+          <div className="flex items-center gap-4">
+            <span className="text-white text-sm font-semibold tracking-wide">
               {username
                 ? `${username}`
                 : `${address?.slice(0, 6)}...${address?.slice(-4)}`}
             </span>
             <button
               onClick={handleDisconnectWallet}
-              className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600"
+              className="text-xl font-bold py-2 px-6 bg-red-400 hover:bg-red-500 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-red-300 border-b-4 border-r-4"
             >
               Disconnect
             </button>
@@ -88,7 +87,7 @@ export function Navbar() {
           <>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors"
+              className="text-xl font-bold py-2 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-purple-400 border-b-4 border-r-4"
             >
               Connect Wallet
             </button>
@@ -96,7 +95,7 @@ export function Navbar() {
         )}
         <button
           onClick={() => navigate("/test-game")}
-          className="bg-[#ffff] text-[#000] px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+          className="text-xl font-bold py-2 px-6 bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-orange-300 border-b-4 border-r-4"
         >
           Test Dojo Game
         </button>

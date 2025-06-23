@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useLocation } from "react-router-dom"
 import { GameHeader } from "@/components/game/game-header"
 import { GameSidebarButtons } from "@/components/game/game-sidebar-buttons"
 import { AquariumTabs } from "@/components/game/aquarium-tabs"
@@ -13,12 +14,15 @@ import { GameMenu } from "@/components/game/game-menu"
 import { useBubbles } from "@/hooks/use-bubbles"
 import { BubblesBackground } from "@/components/bubble-background"
 import { motion } from "framer-motion"
+import { FishType } from "@/types/game"
 
 export default function GamePage() {
   const { happiness, food, energy } = useFishStats(INITIAL_GAME_STATE)
   const { selectedAquarium, handleAquariumChange, aquariums } = useAquarium()
   const [showMenu, setShowMenu] = useState(false)
   const [showTips, setShowTips] = useState(false)
+
+  const location = useLocation()
 
   const bubbles = useBubbles({
     initialCount: 10,
@@ -33,6 +37,57 @@ export default function GamePage() {
   const handleTipsToggle = () => {
     setShowTips(!showTips)
   }
+
+  // Parse fish species from URL param
+  const searchParams = new URLSearchParams(location.search)
+  const fishesParam = searchParams.get("fishes")
+  const fishFromUrl = JSON.parse(decodeURIComponent(fishesParam || "[]")) as string[]
+
+  // Match species to mock data
+  const speciesToFishData = {
+    AngelFish: {
+      image: "/fish/fish1.png",
+      name: "Blue Striped Fish",
+      rarity: "Rare",
+      generation: 1,
+    },
+    GoldFish: {
+      image: "/fish/fish2.png",
+      name: "Tropical Coral Fish",
+      rarity: "Uncommon",
+      generation: 2,
+    },
+    Betta: {
+      image: "/fish/fish3.png",
+      name: "Orange Tropical Fish",
+      rarity: "Epic",
+      generation: 1,
+    },
+    NeonTetra: {
+      image: "/fish/fish4.png",
+      name: "Scarlet Fin",
+      rarity: "Legendary",
+      generation: 1,
+    },
+  }
+
+  const fishObjects: FishType[] = fishFromUrl.map((species, index) => {
+    const data = speciesToFishData[species as keyof typeof speciesToFishData] || {
+      image: "/fish/fish1.png",
+      name: "Unknown Fish",
+      rarity: "Common",
+      generation: 1,
+    }
+
+    return {
+      id: index,
+      name: data.name,
+      image: data.image,
+      rarity: data.rarity,
+      generation: data.generation,
+      position: { x: 0, y: 0 },
+    }
+  })
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#005C99]">
@@ -55,14 +110,16 @@ export default function GamePage() {
 
       {/* Fish */}
       <motion.div
-        key={selectedAquarium.id}
+        // Comentado: se usaba el selectedAquarium
+        // key={selectedAquarium.id}
+        key="fishes-from-url"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 1 }}
         className="relative z-20 w-full h-full"
       >
-        <FishDisplay fish={selectedAquarium.fishes} />
+        <FishDisplay fish={fishObjects} />
       </motion.div>
 
       {/* Header */}
