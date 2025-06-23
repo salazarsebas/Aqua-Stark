@@ -1,8 +1,22 @@
 "use client"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useAccount } from "@starknet-react/core"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 export function HeroSection() {
+  const { account } = useAccount()
+  const navigate = useNavigate()
+
+  const handlePlayNow = () => {
+    if (!account) {
+      toast.error("Connect your wallet before playing.")
+      return
+    }
+
+    navigate("/start")
+  }
+
   return (
     <section className="w-full max-w-4xl mx-auto text-center mb-12">
       <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-6">
@@ -12,11 +26,12 @@ export function HeroSection() {
         Breed, feed, and collect unique fish while customizing your aquarium in this incredible aquatic adventure.
       </p>
       <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-        <Link to="/game">
-          <Button className="play-button text-xl font-bold py-6 px-12 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-green-300 border-b-4 border-r-4">
-            PLAY NOW
-          </Button>
-        </Link>
+        <Button
+          onClick={handlePlayNow}
+          className="play-button text-xl font-bold py-6 px-12 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-green-300 border-b-4 border-r-4"
+        >
+          PLAY NOW
+        </Button>
         <Button
           variant="outline"
           className="text-lg font-bold py-6 px-8 bg-gradient-to-b from-blue-400/80 to-blue-600/80 hover:from-blue-500/80 hover:to-blue-700/80 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-blue-300 border-b-4 border-r-4"
