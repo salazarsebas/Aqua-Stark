@@ -30,10 +30,13 @@ jobs:
           asdf global dojo 1.5.0
       - name: Build contracts
         run: |
+          cd aqua_contract
           sozo build
       - name: Run tests
         run: |
+          cd aqua_contract
           sozo test
       - name: Check formatting
         run: |
+          cd aqua_contract
           scarb fmt --check
