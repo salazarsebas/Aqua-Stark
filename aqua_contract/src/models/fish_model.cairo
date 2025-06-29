@@ -1,5 +1,4 @@
 use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
-
 #[derive(Serde, Copy, Drop, Introspect, PartialEq)]
 #[dojo::model]
 pub struct FishCounter {
@@ -59,6 +58,7 @@ pub struct Fish {
     pub mutation_rate: u8,
     pub growth_counter: u8,
     pub can_grow: bool,
+    pub aquarium_id: u256,
 }
 
 pub trait FishTrait {
@@ -66,12 +66,14 @@ pub trait FishTrait {
     fn is_hungry(fish: Fish) -> bool;
     fn is_fully_grown(fish: Fish) -> bool;
     fn can_eat(fish: Fish) -> bool;
-    fn create_fish_by_species(fish: Fish, owner: ContractAddress, species: Species) -> Fish;
+    fn create_fish_by_species(
+        fish: Fish, aquarium_id: u256, owner: ContractAddress, species: Species,
+    ) -> Fish;
 
     fn create_offspring(
-        offspring: Fish, owner: ContractAddress, parent1: Fish, parent2: Fish,
+        offspring: Fish, owner: ContractAddress, aquarium_id: u256, parent1: Fish, parent2: Fish,
     ) -> Fish;
-    fn create_random_fish(fish: Fish, owner: ContractAddress) -> Fish;
+    fn create_random_fish(fish: Fish, owner: ContractAddress, aquarium_id: u256) -> Fish;
     fn feed(fish: Fish, amount: u8) -> Fish;
     fn grow(fish: Fish, amount: u64) -> Fish;
     fn heal(fish: Fish, amount: u8) -> Fish;
@@ -233,7 +235,9 @@ impl FishImpl of FishTrait {
 
         fish
     }
-    fn create_fish_by_species(mut fish: Fish, owner: ContractAddress, species: Species) -> Fish {
+    fn create_fish_by_species(
+        mut fish: Fish, aquarium_id: u256, owner: ContractAddress, species: Species,
+    ) -> Fish {
         let timestamp = get_block_timestamp();
 
         // Set base properties
@@ -246,6 +250,7 @@ impl FishImpl of FishTrait {
         fish.birth_time = timestamp;
         fish.parent_ids = (0, 0);
         fish.species = species;
+        fish.aquarium_id = aquarium_id;
 
         // Assign species-specific traits
         match species {
@@ -305,7 +310,11 @@ impl FishImpl of FishTrait {
 
 
     fn create_offspring(
-        mut offspring: Fish, owner: ContractAddress, parent1: Fish, parent2: Fish,
+        mut offspring: Fish,
+        owner: ContractAddress,
+        aquarium_id: u256,
+        parent1: Fish,
+        parent2: Fish,
     ) -> Fish {
         let timestamp = get_block_timestamp();
         let g: bool = timestamp % 2 == 0;
@@ -349,11 +358,12 @@ impl FishImpl of FishTrait {
         offspring.growth = 4;
         offspring.birth_time = timestamp;
         offspring.parent_ids = (parent1.id, parent2.id);
+        offspring.aquarium_id = aquarium_id;
 
         offspring
     }
 
-    fn create_random_fish(mut fish: Fish, owner: ContractAddress) -> Fish {
+    fn create_random_fish(mut fish: Fish, owner: ContractAddress, aquarium_id: u256) -> Fish {
         let timestamp = get_block_timestamp();
         let species_index = timestamp % 5;
 
@@ -367,6 +377,7 @@ impl FishImpl of FishTrait {
         fish.generation = 1;
         fish.birth_time = timestamp;
         fish.parent_ids = (0, 0);
+        fish.aquarium_id = aquarium_id;
 
         // Assign species-specific traits
         if species_index == 0 {
@@ -446,6 +457,7 @@ mod tests {
             growth_counter: 0,
             growth_rate: 4,
             can_grow: false,
+            aquarium_id: 1,
         };
         assert(fish.fish_type == 1, 'Fish type should match');
     }
@@ -472,9 +484,10 @@ mod tests {
             growth_counter: 0,
             growth_rate: 5,
             can_grow: false,
+            aquarium_id: 1,
         };
 
-        let new_fish: Fish = FishTrait::create_random_fish(fish, zero_address());
+        let new_fish: Fish = FishTrait::create_random_fish(fish, zero_address(), fish.aquarium_id);
         assert(new_fish.generation == 1, 'Fish generation error');
     }
 
@@ -500,13 +513,14 @@ mod tests {
             growth_counter: 0,
             growth_rate: 5,
             can_grow: false,
+            aquarium_id: 1,
         };
 
         let parent1: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::AngelFish,
+            fish, fish.aquarium_id, zero_address(), Species::AngelFish,
         );
         let parent: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::GoldFish,
+            fish, fish.aquarium_id, zero_address(), Species::GoldFish,
         );
         assert(parent1.species == Species::AngelFish, 'Fish Species error');
         assert(parent1.color == 'blue', 'Color error');
@@ -544,15 +558,18 @@ mod tests {
             growth_counter: 0,
             growth_rate: 0,
             can_grow: false,
+            aquarium_id: 1,
         };
 
         let parent2: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::AngelFish,
+            fish, fish.aquarium_id, zero_address(), Species::AngelFish,
         );
         let parent1: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::GoldFish,
+            fish, fish.aquarium_id, zero_address(), Species::GoldFish,
         );
-        let offspring: Fish = FishTrait::create_offspring(fish, zero_address(), parent1, parent2);
+        let offspring: Fish = FishTrait::create_offspring(
+            fish, zero_address(), fish.aquarium_id, parent1, parent2,
+        );
         assert(offspring.species == Species::Hybrid, 'offspring Species error');
         assert(offspring.pattern == Pattern::Spotted, 'offspring pattern error');
     }
@@ -579,15 +596,18 @@ mod tests {
             growth_counter: 0,
             growth_rate: 0,
             can_grow: false,
+            aquarium_id: 1,
         };
 
         let parent2: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::AngelFish,
+            fish, fish.aquarium_id, zero_address(), Species::AngelFish,
         );
         let parent1: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::AngelFish,
+            fish, fish.aquarium_id, zero_address(), Species::AngelFish,
         );
-        let offspring: Fish = FishTrait::create_offspring(fish, zero_address(), parent1, parent2);
+        let offspring: Fish = FishTrait::create_offspring(
+            fish, zero_address(), fish.aquarium_id, parent1, parent2,
+        );
         assert(offspring.species == Species::AngelFish, 'offspring Species error');
         assert(offspring.pattern == Pattern::Plain, 'offspring pattern error');
     }
@@ -614,10 +634,11 @@ mod tests {
             growth_counter: 0,
             growth_rate: 0,
             can_grow: false,
+            aquarium_id: 1,
         };
 
         let new_fish: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::AngelFish,
+            fish, fish.aquarium_id, zero_address(), Species::AngelFish,
         );
 
         let health: u8 = FishTrait::get_health(new_fish);
@@ -657,10 +678,11 @@ mod tests {
             growth_counter: 0,
             growth_rate: 4,
             can_grow: false,
+            aquarium_id: 1,
         };
 
         let new_fish: Fish = FishTrait::create_fish_by_species(
-            fish, zero_address(), Species::AngelFish,
+            fish, fish.aquarium_id, zero_address(), Species::AngelFish,
         );
 
         let growth: u8 = FishTrait::get_growth_rate(new_fish);

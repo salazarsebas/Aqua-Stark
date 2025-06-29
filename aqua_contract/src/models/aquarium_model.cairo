@@ -8,7 +8,9 @@ pub struct Aquarium {
     pub owner: ContractAddress,
     pub max_capacity: u32,
     pub cleanliness: u32, // 0-100 scale
-    pub housed_fish: Array<u64>,
+    pub housed_fish: Array<u256>,
+    pub housed_decorations: Array<u256>,
+    pub max_decorations: u32,
 }
 
 #[derive(Serde, Copy, Drop, Introspect, PartialEq)]
@@ -37,9 +39,13 @@ pub struct AquariumFishes {
 }
 
 pub trait AquariumTrait {
-    fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium;
-    fn add_fish(aquarium: Aquarium, fish_id: u64) -> Aquarium;
-    fn remove_fish(aquarium: Aquarium, fish_id: u64) -> Aquarium;
+    fn create_aquarium(
+        aquarium_id: u256, owner: ContractAddress, max_capacity: u32, max_decorations: u32,
+    ) -> Aquarium;
+    fn add_fish(aquarium: Aquarium, fish_id: u256) -> Aquarium;
+    fn remove_fish(aquarium: Aquarium, fish_id: u256) -> Aquarium;
+    fn add_decoration(aquarium: Aquarium, decoration_id: u256) -> Aquarium;
+    fn remove_decoration(aquarium: Aquarium, decoration_id: u256) -> Aquarium;
     fn clean(aquarium: Aquarium, amount: u32) -> Aquarium;
     fn update_cleanliness(aquarium: Aquarium, hours_passed: u32) -> Aquarium;
     fn get_cleanliness(aquarium: Aquarium) -> u32;
@@ -49,7 +55,9 @@ pub trait AquariumTrait {
 }
 
 impl AquariumImpl of AquariumTrait {
-    fn create_aquarium(aquarium_id: u256, owner: ContractAddress, max_capacity: u32) -> Aquarium {
+    fn create_aquarium(
+        aquarium_id: u256, owner: ContractAddress, max_capacity: u32, max_decorations: u32,
+    ) -> Aquarium {
         // Create new aquarium
         let aquarium = Aquarium {
             id: aquarium_id,
@@ -57,17 +65,19 @@ impl AquariumImpl of AquariumTrait {
             max_capacity,
             cleanliness: 100_u32,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations // Default max decorations
         };
         aquarium
     }
-    fn add_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium {
+    fn add_fish(mut aquarium: Aquarium, fish_id: u256) -> Aquarium {
         let is_full: bool = aquarium.housed_fish.len() >= aquarium.max_capacity;
         assert(!is_full, 'Aquarium full');
         aquarium.housed_fish.append(fish_id);
         aquarium
     }
 
-    fn remove_fish(mut aquarium: Aquarium, fish_id: u64) -> Aquarium {
+    fn remove_fish(mut aquarium: Aquarium, fish_id: u256) -> Aquarium {
         let is_empty: bool = aquarium.housed_fish.len() == 0;
         assert(!is_empty, 'Aquarium is empty');
         // Find and remove fish
@@ -91,6 +101,39 @@ impl AquariumImpl of AquariumTrait {
         }
         aquarium
     }
+
+    fn add_decoration(mut aquarium: Aquarium, decoration_id: u256) -> Aquarium {
+        let is_full: bool = aquarium.housed_decorations.len() >= aquarium.max_capacity;
+        assert(!is_full, 'Aquarium full');
+        aquarium.housed_decorations.append(decoration_id);
+        aquarium
+    }
+
+    fn remove_decoration(mut aquarium: Aquarium, decoration_id: u256) -> Aquarium {
+        let is_empty: bool = aquarium.housed_decorations.len() == 0;
+        assert(!is_empty, 'Aquarium is empty');
+
+        let mut found = false;
+        let mut i = 0;
+        let len = aquarium.housed_decorations.len();
+        let mut new_decor_array = ArrayTrait::new();
+
+        while i < len {
+            let current_decor = aquarium.housed_decorations.at(i);
+            if current_decor != @decoration_id {
+                new_decor_array.append(*current_decor);
+            } else {
+                found = true;
+            }
+            i += 1;
+        };
+
+        if found {
+            aquarium.housed_decorations = new_decor_array;
+        }
+        aquarium
+    }
+
 
     fn clean(mut aquarium: Aquarium, amount: u32) -> Aquarium {
         // Check ownership
@@ -156,6 +199,8 @@ mod tests {
             max_capacity: 10,
             cleanliness: 100,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations: 5 // Set a default max decorations
         };
 
         // Assert that the max capacity is correctly set
@@ -170,6 +215,8 @@ mod tests {
             max_capacity: 10,
             cleanliness: 100,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations: 5 // Set a default max decorations
         };
         let former_count: u32 = AquariumTrait::get_fish_count(aquarium.clone());
         let new: Aquarium = AquariumTrait::add_fish(aquarium, 1);
@@ -185,6 +232,8 @@ mod tests {
             max_capacity: 3,
             cleanliness: 100,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations: 5 // Set a default max decorations
         };
 
         let new: Aquarium = AquariumTrait::add_fish(aquarium, 1);
@@ -203,6 +252,8 @@ mod tests {
             max_capacity: 3,
             cleanliness: 50,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations: 5 // Set a default max decorations
         };
 
         // Clean the aquarium by adding 20 to cleanliness
@@ -225,6 +276,8 @@ mod tests {
             max_capacity: 3,
             cleanliness: 100,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations: 5 // Set a default max decorations
         };
 
         // Add three fish to the aquarium
@@ -255,6 +308,8 @@ mod tests {
             max_capacity: 2,
             cleanliness: 100,
             housed_fish: ArrayTrait::new(),
+            housed_decorations: ArrayTrait::new(),
+            max_decorations: 5 // Set a default max decorations
         };
 
         // Add the first fish
