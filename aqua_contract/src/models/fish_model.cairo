@@ -58,7 +58,7 @@ pub struct Fish {
     pub mutation_rate: u8,
     pub growth_counter: u8,
     pub can_grow: bool,
-    pub aquarium_id: u256 // ID of the aquarium this fish belongs to
+    pub aquarium_id: u256,
 }
 
 pub trait FishTrait {
