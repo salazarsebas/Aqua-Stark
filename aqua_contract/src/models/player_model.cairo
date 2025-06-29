@@ -67,6 +67,9 @@ pub struct Player {
     pub is_verified: bool,
     pub aquarium_count: u32,
     pub fish_count: u32,
+    pub player_fishes: Array<u256>,
+    pub player_aquariums: Array<u256>,
+    pub player_decorations: Array<u256>,
     pub decoration_count: u32,
     pub registered_at: u64,
 }
@@ -105,6 +108,9 @@ impl PlayerImpl of PlayerTrait {
             aquarium_count: 0,
             decoration_count: 0,
             fish_count: 0,
+            player_fishes: array![],
+            player_aquariums: array![],
+            player_decorations: array![],
         };
         player
     }
@@ -155,6 +161,9 @@ mod tests {
             aquarium_count: 0,
             fish_count: 0,
             decoration_count: 0,
+            player_fishes: array![],
+            player_aquariums: array![],
+            player_decorations: array![],
         };
         assert(player.id == 1, 'Player ID should match');
     }

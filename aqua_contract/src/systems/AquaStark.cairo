@@ -8,7 +8,9 @@ pub mod AquaStark {
     use aqua_stark::models::player_model::{
         Player, PlayerTrait, PlayerCounter, UsernameToAddress, AddressToUsername,
     };
-    use aqua_stark::models::aquarium_model::{Aquarium, AquariumCounter, AquariumOwner};
+    use aqua_stark::models::aquarium_model::{
+        Aquarium, AquariumTrait, AquariumCounter, AquariumOwner,
+    };
     use aqua_stark::models::decoration_model::{Decoration, DecorationCounter, DecorationTrait};
     use aqua_stark::models::fish_model::{Fish, FishCounter, Species, FishTrait, FishOwner};
 
@@ -71,22 +73,24 @@ pub mod AquaStark {
         }
 
         fn new_aquarium(
-            ref self: ContractState, owner: ContractAddress, max_capacity: u32,
+            ref self: ContractState,
+            owner: ContractAddress,
+            max_capacity: u32,
+            max_decorations: u32,
         ) -> Aquarium {
             let mut world = self.world_default();
             let caller = get_caller_address();
             let aquarium_id = self.create_aquarium_id();
             let mut aquarium: Aquarium = world.read_model(aquarium_id);
-            aquarium.id = aquarium_id;
-            aquarium.owner = owner;
-            aquarium.max_capacity = max_capacity;
-            aquarium.cleanliness = 100;
+            aquarium =
+                AquariumTrait::create_aquarium(aquarium_id, owner, max_capacity, max_decorations);
 
             let mut aquarium_owner: AquariumOwner = world.read_model(aquarium_id);
             aquarium_owner.owner = caller;
 
             let mut player: Player = world.read_model(caller);
             player.aquarium_count += 1;
+            player.player_aquariums.append(aquarium.id);
             world.write_model(@player);
 
             world.write_model(@aquarium_owner);
@@ -99,11 +103,30 @@ pub mod AquaStark {
             let mut world = self.world_default();
             let mut aquarium: Aquarium = world.read_model(aquarium_id);
             assert(aquarium.max_capacity < aquarium.housed_fish.len(), 'Aquarium full');
+            assert(fish.aquarium_id == aquarium_id, 'Fish in aquarium');
+            assert(fish.owner == get_caller_address(), 'You do not own this fish');
+            
+            AquariumTrait::add_fish(aquarium.clone(), fish.id);
+            world.write_model(@aquarium);
         }
 
         fn add_decoration_to_aquarium(
             ref self: ContractState, mut decoration: Decoration, aquarium_id: u256,
-        ) {}
+        ) {
+            let mut world = self.world_default();
+            let mut aquarium: Aquarium = world.read_model(aquarium_id);
+            assert(
+                aquarium.max_decorations > aquarium.housed_decorations.len(),
+                'Aquarium deco limit reached',
+            );
+            assert(
+                decoration.aquarium_id == aquarium_id,
+                'Deco in aquarium',
+            );
+            assert(decoration.owner == get_caller_address(), 'You do not own this deco');
+            AquariumTrait::add_decoration(aquarium.clone(), decoration.id);
+            world.write_model(@aquarium);
+        }
 
         fn new_decoration(
             ref self: ContractState,
@@ -114,6 +137,8 @@ pub mod AquaStark {
             rarity: felt252,
         ) -> Decoration {
             let mut world = self.world_default();
+            let aquarium = self.get_aquarium(aquarium_id);
+            assert(aquarium.owner == get_caller_address(), 'You do not own this aquarium');
             let id = self.create_decoration_id();
 
             let mut decoration = world.read_model(id);
@@ -125,6 +150,7 @@ pub mod AquaStark {
 
             let mut player: Player = world.read_model(get_caller_address());
             player.decoration_count += 1;
+            player.player_decorations.append(decoration.id);
             world.write_model(@player);
 
             world.write_model(@decoration);
@@ -132,18 +158,21 @@ pub mod AquaStark {
             decoration
         }
 
-        fn new_fish(ref self: ContractState, owner: ContractAddress, species: Species) -> Fish {
+        fn new_fish(ref self: ContractState, aquarium_id: u256, species: Species) -> Fish {
             let mut world = self.world_default();
             let caller = get_caller_address();
+            let aquarium = self.get_aquarium(aquarium_id);
+            assert(aquarium.owner == get_caller_address(), 'You do not own this aquarium');
             let fish_id = self.create_fish_id();
             let mut fish: Fish = world.read_model(fish_id);
 
-            fish = FishTrait::create_fish_by_species(fish, caller, species);
+            fish = FishTrait::create_fish_by_species(fish, aquarium_id, caller, species);
 
             let mut fish_owner: FishOwner = world.read_model(fish_id);
             fish_owner.owner = caller;
             let mut player: Player = world.read_model(caller);
             player.fish_count += 1;
+            player.player_fishes.append(fish_id);
             world.write_model(@player);
             world.write_model(@fish_owner);
             world.write_model(@fish);
@@ -182,14 +211,17 @@ pub mod AquaStark {
 
             // --- Aquarium Setup ---
 
-            let aquarium = self.new_aquarium(caller, 10);
+            let aquarium = self.new_aquarium(caller, 10, 5);
             new_player.aquarium_count += 1;
+            new_player.player_aquariums.append(aquarium.id);
 
-            self.new_fish(caller, Species::GoldFish);
+            let fish = self.new_fish(aquarium.id, Species::GoldFish);
             new_player.fish_count += 1;
+            new_player.player_fishes.append(fish.id);
 
-            self.new_decoration(aquarium.id, 'Pebbles', 'Shiny rocks', 0, 0);
+            let decoration = self.new_decoration(aquarium.id, 'Pebbles', 'Shiny rocks', 0, 0);
             new_player.decoration_count += 1;
+            new_player.player_decorations.append(decoration.id);
 
             // --- Persist to Storage ---
 
@@ -224,6 +256,53 @@ pub mod AquaStark {
             let mut world = self.world_default();
             let decoration: Decoration = world.read_model(id);
             decoration
+        }
+        fn get_player_fishes(self: @ContractState, player: ContractAddress) -> Array<Fish> {
+            let mut world = self.world_default();
+            let player_model: Player = world.read_model(player);
+            let mut fishes: Array<Fish> = array![];
+            for fish_id in player_model.player_fishes {
+                let fish: Fish = world.read_model(fish_id);
+                fishes.append(fish);
+            };
+            fishes
+        }
+        fn get_player_aquariums(self: @ContractState, player: ContractAddress) -> Array<Aquarium> {
+            let mut world = self.world_default();
+            let player_model: Player = world.read_model(player);
+            let mut aquariums: Array<Aquarium> = array![];
+            for aquarium_id in player_model.player_aquariums {
+                let aquarium: Aquarium = world.read_model(aquarium_id);
+                aquariums.append(aquarium);
+            };
+            aquariums
+        }
+        fn get_player_decorations(
+            self: @ContractState, player: ContractAddress,
+        ) -> Array<Decoration> {
+            let mut world = self.world_default();
+            let player_model: Player = world.read_model(player);
+            let mut decorations: Array<Decoration> = array![];
+            for decoration_id in player_model.player_decorations {
+                let decoration: Decoration = world.read_model(decoration_id);
+                decorations.append(decoration);
+            };
+            decorations
+        }
+        fn get_player_fish_count(self: @ContractState, player: ContractAddress) -> u32 {
+            let mut world = self.world_default();
+            let player_model: Player = world.read_model(player);
+            player_model.fish_count
+        }
+        fn get_player_aquarium_count(self: @ContractState, player: ContractAddress) -> u32 {
+            let mut world = self.world_default();
+            let player_model: Player = world.read_model(player);
+            player_model.aquarium_count
+        }
+        fn get_player_decoration_count(self: @ContractState, player: ContractAddress) -> u32 {
+            let mut world = self.world_default();
+            let player_model: Player = world.read_model(player);
+            player_model.decoration_count
         }
     }
 
