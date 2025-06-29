@@ -105,7 +105,7 @@ pub mod AquaStark {
             assert(aquarium.max_capacity < aquarium.housed_fish.len(), 'Aquarium full');
             assert(fish.aquarium_id == aquarium_id, 'Fish in aquarium');
             assert(fish.owner == get_caller_address(), 'You do not own this fish');
-            
+
             AquariumTrait::add_fish(aquarium.clone(), fish.id);
             world.write_model(@aquarium);
         }
@@ -119,10 +119,7 @@ pub mod AquaStark {
                 aquarium.max_decorations > aquarium.housed_decorations.len(),
                 'Aquarium deco limit reached',
             );
-            assert(
-                decoration.aquarium_id == aquarium_id,
-                'Deco in aquarium',
-            );
+            assert(decoration.aquarium_id == aquarium_id, 'Deco in aquarium');
             assert(decoration.owner == get_caller_address(), 'You do not own this deco');
             AquariumTrait::add_decoration(aquarium.clone(), decoration.id);
             world.write_model(@aquarium);
