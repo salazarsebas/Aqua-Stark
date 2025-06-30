@@ -25,8 +25,8 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::UnderwaterExplorer => 'UnderwaterExplorer', // Player participates in first event
             Achievement::SuccessfulBreeding => 'SuccessfulBreeding', // Player completes breeding
             Achievement::Collector => 'Collector', // Player owns 10 unique fish
-            Achievement::DecoratedAquarium => 'DecoratedAquarium', // Player places 3+ decorations
-        }        
+            Achievement::DecoratedAquarium => 'DecoratedAquarium' // Player places 3+ decorations
+        }
     }
 
     #[inline]
@@ -141,11 +141,28 @@ pub impl AchievementImpl of AchievementTrait {
     fn tasks(self: Achievement) -> Span<Task> {
         match self {
             Achievement::None => [].span(),
-            Achievement::FirstFish => array![TaskTrait::new('FirstFish', 1, "Obtain your first fish NFT")].span(),
-            Achievement::UnderwaterExplorer => array![TaskTrait::new('UnderwaterExplorer', 1, "Participate in your first aquarium event")].span(),
-            Achievement::SuccessfulBreeding => array![TaskTrait::new('SuccessfulBreeding', 1, "Complete a breeding action")].span(),
-            Achievement::Collector => array![TaskTrait::new('Collector', 10, "Own 10 different fish NFTs")].span(),
-            Achievement::DecoratedAquarium => array![TaskTrait::new('DecoratedAquarium', 3, "Place 3 or more decorations in your aquarium")].span(),
+            Achievement::FirstFish => array![
+                TaskTrait::new('FirstFish', 1, "Obtain your first fish NFT"),
+            ]
+                .span(),
+            Achievement::UnderwaterExplorer => array![
+                TaskTrait::new('UnderwaterExplorer', 1, "Participate in your first aquarium event"),
+            ]
+                .span(),
+            Achievement::SuccessfulBreeding => array![
+                TaskTrait::new('SuccessfulBreeding', 1, "Complete a breeding action"),
+            ]
+                .span(),
+            Achievement::Collector => array![
+                TaskTrait::new('Collector', 10, "Own 10 different fish NFTs"),
+            ]
+                .span(),
+            Achievement::DecoratedAquarium => array![
+                TaskTrait::new(
+                    'DecoratedAquarium', 3, "Place 3 or more decorations in your aquarium",
+                ),
+            ]
+                .span(),
         }
     }
 
@@ -183,4 +200,4 @@ pub impl IntoU8Achievement of Into<u8, Achievement> {
             _ => Achievement::None,
         }
     }
-} 
+}
